@@ -107,14 +107,15 @@ export default function UnitPlan({ s, locale, sqft }: { s: Strings; locale: stri
   const listRef = useRef<HTMLUListElement>(null);
   const active = hover ?? selected;
 
-  // A unit picked on the plan or in the hero is brought into view inside the scrolling list
-  useEffect(() => {
+  // A unit hovered or picked on the plan (or in the hero) is brought into view inside the scrolling list
+  const showInList = (id: string | null) => {
     const list = listRef.current;
-    const row = selected ? list?.querySelector<HTMLElement>(`[data-row="${selected}"]`) : null;
+    const row = id ? list?.querySelector<HTMLElement>(`[data-row="${id}"]`) : null;
     if (!list || !row) return;
     const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     list.scrollTo({ top: row.offsetTop - list.clientHeight / 2 + row.offsetHeight / 2, behavior: smooth ? "smooth" : "auto" });
-  }, [selected]);
+  };
+  useEffect(() => showInList(selected), [selected]);
 
   // Units for sale switch on, one after another, the first time the plan scrolls into view
   useEffect(() => {
@@ -241,7 +242,10 @@ export default function UnitPlan({ s, locale, sqft }: { s: Strings; locale: stri
                   className="sale-fill cursor-pointer"
                   fill={on ? "#ffffff" : "#d4f0c9"}
                   style={{ transitionDelay: `${lit ? 120 + order * 110 : 0}ms, 0ms` }}
-                  onMouseEnter={() => setHover(c.sale!.id)}
+                  onMouseEnter={() => {
+                    setHover(c.sale!.id);
+                    showInList(c.sale!.id);
+                  }}
                   onClick={() => setSelected(c.sale!.id)}
                 />
               );
