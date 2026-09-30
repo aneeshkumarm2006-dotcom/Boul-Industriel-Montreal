@@ -1,0 +1,68 @@
+{
+  "aerial-outlined": {
+    "width": 2048,
+    "height": 1245,
+    "widths": [
+      480,
+      800,
+      1200,
+      1800
+    ],
+    "blur": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAACwAQCdASoQAAoAA4BaJYwAAuXfW3YAAP61/052xYS7f0fPnBNSp8n+92k5QypwWztJQJaGbB4QAA=="
+  },
+  "aerial-southwest": {
+    "width": 2048,
+    "height": 1365,
+    "widths": [
+      480,
+      800,
+      1200,
+      1800
+    ],
+    "blur": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAAAQAgCdASoQAAsAA4BaJQBOgCIBOjPwyenAAPhjZSeR8B/qjfb7qKnode0YSbHPT3r4n2wpvIqGNmdQnvvOXc1qisSTgpvNUKBKTjE+acDBAAAA"
+  },
+  "aerial-summer": {
+    "width": 2048,
+    "height": 1365,
+    "widths": [
+      480,
+      800,
+      1200,
+      1800
+    ],
+    "blur": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAADwAQCdASoQAAsAA4BaJZgCdAEU7zUCvAAA/I7vIVI627p8c+cZZKdSYxxHUvj4RugIGrelLGMlUgtV12agsNd0ZYqiX7wORYS6GiEkArtg8R2gAAA="
+  },
+  "aerial-top": {
+    "width": 2048,
+    "height": 1365,
+    "widths": [
+      480,
+      800,
+      1200,
+      1800
+    ],
+    "blur": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAAAQAgCdASoQAAsAA4BaJYwAAqsp7VW+DNAAAOIO5PpCFCJYOaEwPBTXnZ4e1FHDhpsh1b033xFSalLJTyCj3f/TQAA="
+  },
+  "building-end": {
+    "width": 2048,
+    "height": 1364,
+    "widths": [
+      480,
+      800,
+      1200,
+      1800
+    ],
+    "blur": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAADwAQCdASoQAAsAA4BaJYgC7AEU5DVwmQgA/rItUpqN1e+1n737JJstu5iCczFiYAGNSMEjonIlIF+NAFhDouQT76Gx4oAA"
+  },
+  "hero-aerial": {
+    "width": 1730,
+    "height": 660,
+    "widths": [
+      480,
+      800,
+      1200,
+      1730
+    ],
+    "blur": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoQAAYAA4BaJYgC7ADW6OZ1gAD7dlTuXFTdKZPaLfIP3yZBF0SrkO1K9MzoJQuWTdvJ41Nhmee4M8AA"
+  }
+}

@@ -1,0 +1,114 @@
+// Single source of truth for project facts.
+// Sources: LoopNet listing 35093549 (industrial condo units, last updated 2026-09-08),
+// the building's earlier sale listing (unit features), and the client's unit plan.
+// To update availability, edit `forSale` below; every section reads from it.
+
+export interface UnitForSale {
+  id: string; // civic number used as the unit id
+  civics: readonly string[]; // more than one when units were combined
+  sqft: number;
+}
+
+export interface PlanColumn {
+  w: number; // width in feet, measured off the client's floor plan
+  top?: string; // civic number of the unit in the 12680–12702 row
+  bottom?: string; // civic number of the unit in the 12650–12672 row
+  deep?: boolean; // the office block at the boulevard end runs ~10 ft deeper on each side
+  through?: boolean; // top and bottom cells form a single unit
+  service?: boolean; // electrical room
+}
+
+export const project = {
+  company: "Boul-Industriel-Montreal",
+  street: "boulevard Industriel",
+  civicRange: "12650–12702",
+  borough: "Pointe-aux-Trembles",
+  city: "Montréal",
+  province: "QC",
+  postalCode: "H1A 3V2",
+  mapsQuery: "12650 Boulevard Industriel, Montréal, QC",
+  geo: { lat: 45.6548, lng: -73.51611 },
+
+  building: {
+    sqft: 32_850,
+    units: 24,
+    lengthFt: 490,
+    depthFt: 70,
+    yearBuilt: 1989,
+    lotAcres: 2.2,
+    parkingPer1000: 3.41,
+    zoning: "I269",
+  },
+
+  // Every unit in the building has these (per the listing)
+  unitFeatures: {
+    garageDoor: "10' × 12'",
+    voltage: "110 V / 220 V / 550 V",
+    waterHeaterGallons: 15,
+  },
+
+  availabilityAsOf: "2026-09-08",
+  forSale: [
+    { id: "12652", civics: ["12652", "12700"], sqft: 2509 },
+    { id: "12656", civics: ["12656"], sqft: 1252 },
+    { id: "12658", civics: ["12658"], sqft: 1780 },
+    { id: "12660", civics: ["12660"], sqft: 1776 },
+    { id: "12696", civics: ["12696"], sqft: 1259 },
+  ] satisfies readonly UnitForSale[],
+
+  // Left to right from the boulevard end. Row depth 35 ft (70 ft total).
+  plan: [
+    { w: 52.2, top: "12680", bottom: "12672", deep: true },
+    { w: 32.9, top: "12682", bottom: "12670", deep: true },
+    { w: 29.4, top: "12684", bottom: "12668" },
+    { w: 30.5, top: "12686", bottom: "12666" },
+    { w: 43.1, top: "12688", bottom: "12664" },
+    { w: 42.5, top: "12690", bottom: "12662" },
+    { w: 56.5, top: "12692", bottom: "12660" },
+    { w: 4.7, service: true },
+    { w: 56.5, top: "12694", bottom: "12658" },
+    { w: 38.4, top: "12696", bottom: "12656" },
+    { w: 37, top: "12698", bottom: "12654" },
+    { w: 37, top: "12700", bottom: "12652", through: true },
+    { w: 28.8, top: "12702", bottom: "12650" },
+  ] satisfies readonly PlanColumn[],
+
+  // Free-flow drive times (OSRM routing from the building), rounded to the minute
+  driveTimes: [
+    { key: "a40", min: 3 },
+    { key: "a25", min: 10 },
+    { key: "repentigny", min: 14 },
+    { key: "southShore", min: 23 },
+    { key: "laval", min: 30 },
+    { key: "downtown", min: 31 },
+    { key: "airport", min: 36 },
+  ],
+
+  contact: {
+    phone: "+15147360511", // listing brokers' line (LoopNet 35093549)
+    phoneDisplay: "514 736-0511",
+    email: "", // optional: shown and used as the form fallback when set
+    // Formspree-compatible endpoint (JSON POST). Set NEXT_PUBLIC_FORM_ENDPOINT at build time.
+    formEndpoint: process.env.NEXT_PUBLIC_FORM_ENDPOINT ?? "",
+  },
+
+  images: {
+    hero: "hero-aerial",
+    building: "aerial-outlined",
+    map: "aerial-top",
+    gallery: ["aerial-summer", "aerial-southwest", "aerial-top", "aerial-outlined", "building-end"],
+  },
+} as const;
+
+export const forSale = project.forSale;
+export const sqftRange = [Math.min(...forSale.map((u) => u.sqft)), Math.max(...forSale.map((u) => u.sqft))] as const;
+
+/** "12652 + 12700" for combined units. */
+export function unitName(u: UnitForSale): string {
+  return u.civics.join(" + ");
+}
+
+/** Civic number → the unit for sale that contains it, if any. */
+export const saleByCivic: Record<string, UnitForSale> = Object.fromEntries(
+  forSale.flatMap((u) => u.civics.map((c) => [c, u])),
+);

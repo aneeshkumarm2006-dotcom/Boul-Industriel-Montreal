@@ -1,0 +1,308 @@
+@import "tailwindcss";
+
+/*
+  Palette, taken from the client's own unit-plan graphic (slate-teal cells, pale mint
+  civic numbers) and from the building itself (mint fascia, poured concrete).
+  paper    #F3F5F2  page: cool drafting paper
+  paper-2  #E7ECE8  alternate bands
+  ink      #0F1D1E  text
+  slate    #1D3A3C  plan + contact bands, primary actions
+  teal     #557A7C  the client's cell teal: secondary lines, focus rings on light
+  mint     #D4F0C9  marks what can be bought, nothing else
+  steel    #56666A  secondary text
+  line     #CBD5D1  hairlines
+
+  Type: Archivo (variable width) is the building's painted lettering; Overpass Mono,
+  drawn from the highway-sign alphabet, is the draftsman's annotation voice.
+*/
+@theme {
+  --color-paper: #f3f5f2;
+  --color-paper-2: #e7ece8;
+  --color-ink: #0f1d1e;
+  --color-slate: #1d3a3c;
+  --color-slate-2: #26484a;
+  --color-slate-3: #315759;
+  --color-teal: #557a7c;
+  --color-mint: #d4f0c9;
+  --color-mint-2: #bfe6b1;
+  --color-steel: #56666a;
+  --color-line: #cbd5d1;
+
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-overpass-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --ease-draft: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--color-mint);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-teal);
+    outline-offset: 3px;
+  }
+  .on-dark :focus-visible {
+    outline-color: var(--color-mint);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-delay: 0ms !important;
+      transition-duration: 0.01ms !important;
+      transition-delay: 0ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Headlines: Archivo pushed wide, like lettering painted over a loading door */
+  .display {
+    font-variation-settings: "wdth" 116;
+    font-weight: 720;
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+  .h2 {
+    font-size: clamp(2rem, 1.25rem + 2.4vw, 3.25rem);
+    font-variation-settings: "wdth" 112;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.02;
+    text-wrap: balance;
+  }
+  .h3 {
+    font-variation-settings: "wdth" 104;
+    font-weight: 650;
+    letter-spacing: -0.012em;
+    line-height: 1.25;
+  }
+  /* Civic numbers: the product itself */
+  .civic {
+    font-variation-settings: "wdth" 125;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums lining-nums;
+    line-height: 1;
+  }
+  /* Annotation voice: eyebrows, dimensions, data */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.3;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .mono {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+  .lead {
+    font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+    line-height: 1.6;
+    text-wrap: pretty;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    min-height: 3rem;
+    padding: 0 1.35rem;
+    border-radius: 0.5rem;
+    font-size: 0.975rem;
+    font-weight: 650;
+    font-variation-settings: "wdth" 104;
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+    transition:
+      background-color 0.2s,
+      color 0.2s,
+      box-shadow 0.2s,
+      transform 0.2s;
+  }
+  .btn:active {
+    transform: translateY(1px);
+  }
+  .btn-primary {
+    background: var(--color-slate);
+    color: #fff;
+  }
+  .btn-primary:hover {
+    background: var(--color-ink);
+  }
+  .btn-mint {
+    background: var(--color-mint);
+    color: var(--color-slate);
+  }
+  .btn-mint:hover {
+    background: #fff;
+  }
+  .btn-ghost {
+    box-shadow: inset 0 0 0 1.5px currentColor;
+  }
+  .btn-ghost:hover {
+    background: color-mix(in srgb, currentColor 8%, transparent);
+  }
+  .btn .arrow {
+    transition: transform 0.2s var(--ease-draft);
+  }
+  .btn:hover .arrow,
+  a:hover > .arrow {
+    transform: translateX(3px);
+  }
+
+  .select-chevron {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4' fill='none' stroke='%230f1d1e' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.9rem center;
+    background-size: 1rem;
+  }
+
+  /* Drive-time panel set like a Québec guide sign: white rule inset from the edge */
+  .sign {
+    background: var(--color-slate);
+    color: #fff;
+    border-radius: 0.875rem;
+    outline: 2px solid rgb(255 255 255 / 0.82);
+    outline-offset: -9px;
+  }
+}
+
+/* ---------- Hero: the building draws itself onto the aerial ---------- */
+.outline-draw {
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 1;
+  animation: outline-draw 1.7s var(--ease-draft) 0.35s forwards;
+}
+.outline-fill {
+  opacity: 0;
+  animation: fade-in 0.9s ease 1.5s forwards;
+}
+.outline-shade {
+  opacity: 0;
+  animation: fade-in 1.2s ease 1.2s forwards;
+}
+.pin-in {
+  opacity: 0;
+  translate: 0 8px;
+  animation: pin-in 0.7s var(--ease-draft) 1.75s forwards;
+}
+@keyframes outline-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes fade-in {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes pin-in {
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* ---------- Plan: cells for sale switch on when the plan scrolls into view ---------- */
+.plan .sale-fill {
+  transition:
+    fill-opacity 0.5s ease,
+    fill 0.2s ease;
+}
+.plan.is-armed .sale-fill {
+  fill-opacity: 0;
+}
+.plan.is-armed.is-lit .sale-fill {
+  fill-opacity: 1;
+}
+.plan .sale-label {
+  transition: opacity 0.4s ease;
+}
+.plan.is-armed .sale-label {
+  opacity: 0;
+}
+.plan.is-armed.is-lit .sale-label {
+  opacity: 1;
+}
+
+@media print {
+  .plan.is-armed .sale-fill {
+    fill-opacity: 1;
+  }
+  .plan.is-armed .sale-label {
+    opacity: 1;
+  }
+}
+
+/* Plan annotation sizes, in plan feet (SVG user units) */
+.pl-civic {
+  font-size: 6.4px;
+}
+.pl-area {
+  font-size: 4.3px;
+}
+.pl-code {
+  font-size: 4.4px;
+}
+.pl-anno {
+  font-size: 3.9px;
+  letter-spacing: 0.1em;
+}
+@media (max-width: 1023px) {
+  .pl-civic {
+    font-size: 7.2px;
+  }
+  .pl-area {
+    font-size: 5px;
+  }
+  .pl-code {
+    font-size: 5px;
+  }
+}
+
+/* Horizontal plan scroller below lg */
+.plan-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-slate-3) transparent;
+}
+
+/* The count in the hero headline, set as a unit cell from the plan */
+.hero-count {
+  display: inline-block;
+  min-width: 0.84em;
+  padding: 0.07em 0.13em 0.03em;
+  margin-right: 0.02em;
+  border-radius: 0.1em;
+  background: var(--color-slate);
+  color: var(--color-mint);
+  font-variation-settings: "wdth" 125;
+  font-weight: 800;
+  line-height: 0.9;
+  text-align: center;
+}
