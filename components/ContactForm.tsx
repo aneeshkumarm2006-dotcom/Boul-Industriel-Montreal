@@ -83,11 +83,6 @@ export default function ContactForm({
       message: String(data.get("message") ?? "").trim(),
       language: lang,
       page: window.location.href,
-      // FormSubmit options (ignored by other endpoints)
-      _subject: `${s.mailSubject} · ${String(data.get("name")).trim()}`,
-      _replyto: String(data.get("email")).trim(),
-      _template: "table",
-      _captcha: "false",
     };
     setFirstName(payload.name.split(/\s+/)[0]);
 
@@ -96,10 +91,11 @@ export default function ContactForm({
       try {
         const res = await fetch(endpoint, {
           method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
-        setStatus(res.ok ? "sent" : "error");
+        const out = await res.json().catch(() => ({ ok: res.ok }));
+        setStatus(res.ok && out.ok !== false ? "sent" : "error");
       } catch {
         setStatus("error");
       }

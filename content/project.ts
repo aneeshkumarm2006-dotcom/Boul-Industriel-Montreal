@@ -107,9 +107,8 @@ export const project = {
     phone: "+15142987050",
     phoneDisplay: "514 298-7050",
     email: "management@bayviewpartners.ca",
-    // JSON POST endpoint. Defaults to FormSubmit, which emails every submission to `email`
-    // (the first one sends an activation link to that inbox). Override with NEXT_PUBLIC_FORM_ENDPOINT.
-    formEndpoint: process.env.NEXT_PUBLIC_FORM_ENDPOINT || "https://formsubmit.co/ajax/management@bayviewpartners.ca",
+    // app/api/contact emails each submission from automations@davnoot.com to `email` (SMTP env vars on Vercel)
+    formEndpoint: "/api/contact/",
   },
 
   images: {

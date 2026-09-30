@@ -8,3 +8,7 @@ next-env.d.ts
 # Local video/motion experiments
 /brag-output/
 /motion-lab/
+
+# Secrets (SMTP app password)
+.env
+.env*.local
