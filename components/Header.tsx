@@ -1,10 +1,9 @@
 import type { Dictionary } from "@/content/fr";
-import type { Locale } from "@/lib/i18n";
+import { locales, type Locale } from "@/lib/i18n";
 import LangLink from "./LangLink";
 import Logo from "./Logo";
 
 export default function Header({ t, lang }: { t: Dictionary; lang: Locale }) {
-  const other = lang === "fr" ? "en" : "fr";
   const links = [
     ["#units", t.nav.units],
     ["#included", t.nav.included],
@@ -39,14 +38,22 @@ export default function Header({ t, lang }: { t: Dictionary; lang: Locale }) {
         </nav>
 
         <div className="ml-auto flex items-center gap-2 lg:ml-0">
-          <LangLink
-            href={`/${other}/`}
-            hrefLang={other}
-            label={t.nav.otherLangLabel}
-            className="eyebrow grid h-10 min-w-10 place-items-center rounded-md px-2 text-ink transition-colors hover:bg-paper-2"
-          >
-            {t.nav.otherLang}
-          </LangLink>
+          <div role="group" aria-label={t.nav.langLabel} className="flex rounded-lg border border-line bg-white p-0.5">
+            {locales.map((l) => (
+              <LangLink
+                key={l}
+                href={`/${l}/`}
+                hrefLang={l}
+                label={t.nav.langNames[l]}
+                current={l === lang}
+                className={`eyebrow grid h-9 min-w-10 place-items-center rounded-md px-2 transition-colors ${
+                  l === lang ? "bg-slate text-mint" : "text-steel hover:bg-paper-2 hover:text-ink"
+                }`}
+              >
+                {l.toUpperCase()}
+              </LangLink>
+            ))}
+          </div>
           <a href="#contact" data-intent="prices" className="btn btn-primary hidden !min-h-10 !px-4 text-sm sm:inline-flex">
             {t.nav.cta}
           </a>

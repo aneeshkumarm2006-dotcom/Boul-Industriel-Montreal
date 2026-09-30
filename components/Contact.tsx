@@ -8,7 +8,7 @@ export default function Contact({ t, lang }: { t: Dictionary; lang: string }) {
   const c = t.contact;
   const units = forSale.map((u) => ({
     id: u.id,
-    label: `${u.civics.join(" + ")} · ${formatNumber(t.locale, u.sqft)} ${t.units.sqft}`,
+    label: u.sqft ? `${u.civics.join(" + ")} · ${formatNumber(t.locale, u.sqft)} ${t.units.sqft}` : u.civics.join(" + "),
   }));
 
   return (

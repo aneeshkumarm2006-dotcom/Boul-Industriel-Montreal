@@ -1,0 +1,105 @@
+<template id="s4-location-template">
+  <div id="root" data-composition-id="s4-location" data-width="1920" data-height="1080" data-duration="__DUR__">
+    <style>
+      /*COMMON_CSS*/
+      #root { background: #0f1d1e; }
+      #s4-cam { position: absolute; left: 0; top: 0; width: 2048px; height: 1245px; transform-origin: 0 0; }
+      #s4-photo { position: absolute; left: 0; top: 0; width: 2048px; height: 1245px; display: block; filter: brightness(0.96) contrast(1.16) saturate(1.06); }
+      #s4-scrim { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; background: linear-gradient(to left, rgba(29, 58, 60, 0.9) 0%, rgba(29, 58, 60, 0.84) 34%, rgba(29, 58, 60, 0.35) 58%, rgba(29, 58, 60, 0) 78%); }
+      #s4-vig { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; background: radial-gradient(ellipse 1300px 780px at 42% 55%, rgba(15, 29, 30, 0) 60%, rgba(15, 29, 30, 0.5) 100%); }
+      #s4-pin { position: absolute; left: 740px; top: 527px; width: 0; height: 0; }
+      #s4-pin .dot { position: absolute; left: -11px; top: -11px; width: 22px; height: 22px; border-radius: 50%; background: #d4f0c9; box-shadow: 0 0 0 8px rgba(15, 29, 30, 0.35); }
+      #s4-pin .stem { position: absolute; left: -1px; top: -189px; width: 2px; height: 189px; background: rgba(255, 255, 255, 0.92); transform-origin: 50% 100%; }
+      #s4-pin .card { position: absolute; right: 0; bottom: 92px; width: max-content; padding: 14px 22px 16px; border-radius: 14px; background: #f3f5f2; color: #0f1d1e; box-shadow: 0 18px 44px -14px rgba(15, 29, 30, 0.7); }
+      #s4-pin .card .c-title { display: block; font-variation-settings: "wdth" 108; font-weight: 680; font-size: 27px; line-height: 1.2; letter-spacing: -0.01em; white-space: nowrap; }
+      #s4-pin .card .c-detail { display: block; margin-top: 3px; font-size: 24px; letter-spacing: 0.06em; color: #56666a; }
+      #s4-col { position: absolute; left: 1032px; top: 108px; width: 696px; height: 780px; }
+      #s4-col .eb { position: absolute; left: 0; top: 0; font-size: 26px; color: rgba(212, 240, 201, 0.9); }
+      #s4-col .h { position: absolute; left: 0; top: 62px; font-size: 80px; color: #fff; }
+      #s4-sign { position: absolute; left: 0; top: 290px; width: 696px; height: 198px; overflow: hidden; padding: 40px 52px 34px; border-radius: 22px; background: #1d3a3c; outline: 2px solid rgba(255, 255, 255, 0.82); outline-offset: -14px; box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.7); }
+      #s4-sign .sh { display: block; font-size: 23px; letter-spacing: 0.05em; color: rgba(255, 255, 255, 0.78); }
+      #s4-sign .rows { position: relative; margin-top: 12px; }
+      #s4-sign .r { position: relative; display: flex; justify-content: space-between; align-items: baseline; height: 82px; padding-top: 24px; border-bottom: 1.5px solid rgba(255, 255, 255, 0.2); }
+      #s4-sign .r:last-child { border-bottom: 0; }
+      #s4-sign .r .n { font-variation-settings: "wdth" 94; font-weight: 600; font-size: 38px; color: #fff; letter-spacing: -0.005em; }
+      #s4-sign .r .m { font-family: "Overpass Mono", monospace; font-weight: 600; font-size: 46px; color: #d4f0c9; font-variant-numeric: tabular-nums; white-space: nowrap; }
+      #s4-sign .r .m small { font-weight: 400; font-size: 26px; color: rgba(255, 255, 255, 0.72); margin-left: 6px; }
+      #s4-hl { position: absolute; left: -16px; right: -16px; top: 6px; height: 70px; border-radius: 10px; background: rgba(212, 240, 201, 0.14); transform-origin: 0% 50%; }
+    </style>
+
+    <div id="s4-cam" data-layout-allow-overflow><img id="s4-photo" src="assets/img/aerial-outlined.jpg" alt="" /></div>
+    <div id="s4-scrim"></div>
+    <div id="s4-vig"></div>
+
+    <div id="s4-pin">
+      <div class="stem" id="s4-stem"></div>
+      <div class="dot" id="s4-dot"></div>
+      <div class="card" id="s4-card">
+        <span class="c-title">12650–12702, boulevard Industriel</span>
+        <span class="c-detail t-eyebrow">Pointe-aux-Trembles</span>
+      </div>
+    </div>
+
+    <div id="s4-col">
+      <div class="eb t-eyebrow" id="s4-eb">Emplacement</div>
+      <div class="h t-h2">
+        <span class="mask"><span class="ln" id="s4-h1" style="opacity:0" data-layout-allow-overflow>À 3 minutes de</span></span>
+        <span class="mask"><span class="ln" id="s4-h2" style="opacity:0" data-layout-allow-overflow>l’autoroute 40.</span></span>
+      </div>
+      <div id="s4-sign">
+        <span class="sh t-eyebrow" id="s4-sh">Temps de route depuis le bâtiment</span>
+        <div class="rows" data-layout-allow-overflow>
+          <div class="r" id="s4-r1"><div id="s4-hl"></div><span class="n" style="position:relative">Autoroute 40</span><span class="m" style="position:relative"><span id="s4-cnt">3</span><small>min</small></span></div>
+          <div class="r" id="s4-r2"><span class="n">Autoroute 25</span><span class="m">10<small>min</small></span></div>
+          <div class="r" id="s4-r3"><span class="n">Centre-ville de Montréal</span><span class="m">31<small>min</small></span></div>
+          <div class="r" id="s4-r4"><span class="n">Aéroport Montréal-Trudeau</span><span class="m">36<small>min</small></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bug" id="s4-bug">{{LOGO_GLYPH}}<span class="bug-word" data-layout-allow-overlap>Boul-Industriel</span></div>
+
+    <script>
+      (function () {
+        var TL_ = window.TL;
+        var H = TL_.hosts.location;
+        var T = function (abs) { return abs - H.start; };
+        var tl = gsap.timeline({ paused: true });
+
+        /* --- camera: a 7 % push toward the building, never above native pixels (source 2048 px shown at <= 1.0x) --- */
+        var S0 = 0.9375, S1 = 1.003, PX = 789, PY = 655, FX = 740, FY = 527;
+        tl.fromTo("#s4-cam",
+          { x: FX - PX * S0, y: FY - PY * S0, scale: S0 },
+          { x: FX - PX * S1, y: FY - PY * S1, scale: S1, duration: H.dur, ease: "sine.inOut" }, 0);
+
+        /* --- headline (job: the message of the scene). Starts as the wipe bar passes, so the right half is never an empty photo. --- */
+        ["#s4-h1", "#s4-h2"].forEach(function (id, i) {
+          tl.set(id, { opacity: 1 }, T(18.5 + i * 0.1));
+          tl.fromTo(id, { yPercent: 150 }, { yPercent: 0, duration: 0.7, ease: "power3.out" }, T(18.5 + i * 0.1));
+        });
+        tl.fromTo("#s4-eb", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, T(18.42));
+
+        /* --- origin pin on the building the client outlined (job: "from here") --- */
+        tl.fromTo("#s4-dot", { scale: 0 }, { scale: 1, duration: 0.3, ease: "power3.out" }, T(18.95));
+        tl.fromTo("#s4-stem", { scaleY: 0 }, { scaleY: 1, duration: 0.4, ease: "power3.out" }, T(19.0));
+        tl.fromTo("#s4-card", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, T(19.15));
+
+        /* --- the drive-time sign: the site's own component (job: proof of "3 minutes"). It grows one row at a time so it is never a box of empty rows. --- */
+        var ROW = 82, H1 = 198; /* CSS height of the sign with one row; each further row adds 82 px up to 444 px */
+        tl.fromTo("#s4-sign", { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, T(19.1));
+        tl.fromTo("#s4-sh", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, T(19.2));
+        ["#s4-r1", "#s4-r2", "#s4-r3", "#s4-r4"].forEach(function (id, i) {
+          var t = T(TL_.ev["location.row" + (i + 1)]);
+          tl.fromTo(id, { y: 22, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "power3.out" }, t);
+          if (i > 0) tl.fromTo("#s4-sign", { height: H1 + (i - 1) * ROW }, { height: H1 + i * ROW, duration: 0.35, ease: "power3.out", immediateRender: false }, t - 0.04);
+        });
+        tl.fromTo("#s4-hl", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power3.inOut" }, T(TL_.ev["location.row1"]) + 0.1);
+        var cnt = { v: 0 };
+        var cntEl = document.getElementById("s4-cnt");
+        tl.fromTo(cnt, { v: 0 }, { v: 3, duration: 0.7, ease: "power3.out", onUpdate: function () { cntEl.textContent = Math.round(cnt.v); } }, T(TL_.ev["location.row1"]) + 0.05);
+
+        window.__timelines["s4-location"] = tl;
+      })();
+    </script>
+  </div>
+</template>

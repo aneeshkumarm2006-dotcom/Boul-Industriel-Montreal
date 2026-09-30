@@ -6,7 +6,7 @@
 export interface UnitForSale {
   id: string; // civic number used as the unit id
   civics: readonly string[]; // more than one when units were combined
-  sqft: number;
+  sqft?: number; // leave out when the area isn't confirmed: the site shows "on request"
 }
 
 export interface PlanColumn {
@@ -30,7 +30,7 @@ export const project = {
   geo: { lat: 45.6548, lng: -73.51611 },
 
   building: {
-    sqft: 32_850,
+    sqft: 33_129,
     units: 24,
     lengthFt: 490,
     depthFt: 70,
@@ -47,14 +47,33 @@ export const project = {
     waterHeaterGallons: 15,
   },
 
-  availabilityAsOf: "2026-09-08",
+  availabilityAsOf: "2026-10-01",
+  // Every civic number not listed in `sold` is shown as available.
+  // Areas: LoopNet 35093549 where known; add the others as the client confirms them.
   forSale: [
-    { id: "12652", civics: ["12652", "12700"], sqft: 2509 },
+    { id: "12654", civics: ["12654"] },
     { id: "12656", civics: ["12656"], sqft: 1252 },
     { id: "12658", civics: ["12658"], sqft: 1780 },
     { id: "12660", civics: ["12660"], sqft: 1776 },
+    { id: "12664", civics: ["12664"] },
+    { id: "12668", civics: ["12668"] },
+    { id: "12670", civics: ["12670"] },
+    { id: "12672", civics: ["12672"] },
+    { id: "12680", civics: ["12680"] },
+    { id: "12682", civics: ["12682"] },
+    { id: "12686", civics: ["12686"] },
+    { id: "12688", civics: ["12688"] },
+    { id: "12690", civics: ["12690"] },
+    { id: "12694", civics: ["12694"] },
     { id: "12696", civics: ["12696"], sqft: 1259 },
-  ] satisfies readonly UnitForSale[],
+    { id: "12698", civics: ["12698"] },
+  ] as readonly UnitForSale[],
+
+  // Shown as "VENDU" on the plan (client, 2026-10-01)
+  sold: ["12650", "12652", "12662", "12666", "12684", "12692", "12700", "12702"],
+
+  // Range quoted in the hero and meta description (client-approved copy; units can be combined)
+  areaRange: [1252, 2509],
 
   // Left to right from the boulevard end. Row depth 35 ft (70 ft total).
   plan: [
@@ -85,11 +104,12 @@ export const project = {
   ],
 
   contact: {
-    phone: "+15147360511", // listing brokers' line (LoopNet 35093549)
-    phoneDisplay: "514 736-0511",
-    email: "", // optional: shown and used as the form fallback when set
-    // Formspree-compatible endpoint (JSON POST). Set NEXT_PUBLIC_FORM_ENDPOINT at build time.
-    formEndpoint: process.env.NEXT_PUBLIC_FORM_ENDPOINT ?? "",
+    phone: "+15142987050",
+    phoneDisplay: "514 298-7050",
+    email: "management@bayviewpartners.ca",
+    // JSON POST endpoint. Defaults to FormSubmit, which emails every submission to `email`
+    // (the first one sends an activation link to that inbox). Override with NEXT_PUBLIC_FORM_ENDPOINT.
+    formEndpoint: process.env.NEXT_PUBLIC_FORM_ENDPOINT || "https://formsubmit.co/ajax/management@bayviewpartners.ca",
   },
 
   images: {
@@ -97,11 +117,15 @@ export const project = {
     building: "aerial-outlined",
     map: "aerial-top",
     gallery: ["aerial-summer", "aerial-southwest", "aerial-top", "aerial-outlined", "building-end"],
+    // Interior photos, in display order. Drop the files in assets-src/ (e.g. interior-12656-shop.jpg),
+    // run `npm run images`, then list their names here. The section stays hidden while this is empty.
+    interior: [] as string[],
   },
 } as const;
 
 export const forSale = project.forSale;
-export const sqftRange = [Math.min(...forSale.map((u) => u.sqft)), Math.max(...forSale.map((u) => u.sqft))] as const;
+export const sqftRange = project.areaRange;
+export const soldCivics: ReadonlySet<string> = new Set(project.sold);
 
 /** "12652 + 12700" for combined units. */
 export function unitName(u: UnitForSale): string {

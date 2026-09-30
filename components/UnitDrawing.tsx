@@ -99,7 +99,6 @@ export default function UnitDrawing({ d, title }: { d: Dictionary["included"]["d
       {marker(2, 5.6, 29.6)}
       {marker(3, 2.9, 25.7)}
       {marker(4, 12.6, 1.9)}
-      {marker(5, 13, 31.4)}
     </svg>
   );
 }

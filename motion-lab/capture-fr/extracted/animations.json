@@ -1,0 +1,175 @@
+{
+  "summary": {
+    "webAnimations": 4,
+    "cssDeclarations": 76,
+    "scrollTargets": 1,
+    "cdpAnimations": 24,
+    "canvases": 0
+  },
+  "namedAnimations": [
+    "fade-in",
+    "outline-draw",
+    "pin-in"
+  ],
+  "scrollTriggeredElements": 1,
+  "representativeAnimations": [
+    {
+      "type": "CSSAnimation",
+      "playState": "finished",
+      "animationName": "fade-in",
+      "targetSelector": "path",
+      "targetRect": {
+        "x": 272.01373291015625,
+        "y": 447.15625,
+        "width": 1375.97265625,
+        "height": 524.9375,
+        "top": 447.15625,
+        "right": 1647.9863891601562,
+        "bottom": 972.09375,
+        "left": 272.01373291015625
+      },
+      "keyframes": [
+        {
+          "offset": 0,
+          "easing": "ease",
+          "composite": "replace",
+          "opacity": "0",
+          "computedOffset": 0
+        },
+        {
+          "offset": 1,
+          "easing": "ease",
+          "composite": "auto",
+          "opacity": "1",
+          "computedOffset": 1
+        }
+      ],
+      "timing": {
+        "duration": 1200,
+        "delay": 1200,
+        "iterations": 1,
+        "easing": "linear",
+        "direction": "normal"
+      }
+    },
+    {
+      "type": "CSSAnimation",
+      "playState": "finished",
+      "animationName": "fade-in",
+      "targetSelector": "polygon",
+      "targetRect": {
+        "x": 655.377197265625,
+        "y": 603.0467529296875,
+        "width": 610.041015625,
+        "height": 285.5341796875,
+        "top": 603.0467529296875,
+        "right": 1265.418212890625,
+        "bottom": 888.5809326171875,
+        "left": 655.377197265625
+      },
+      "keyframes": [
+        {
+          "offset": 0,
+          "easing": "ease",
+          "composite": "replace",
+          "opacity": "0",
+          "computedOffset": 0
+        },
+        {
+          "offset": 1,
+          "easing": "ease",
+          "composite": "auto",
+          "opacity": "1",
+          "computedOffset": 1
+        }
+      ],
+      "timing": {
+        "duration": 900,
+        "delay": 1500,
+        "iterations": 1,
+        "easing": "linear",
+        "direction": "normal"
+      }
+    },
+    {
+      "type": "CSSAnimation",
+      "playState": "finished",
+      "animationName": "outline-draw",
+      "targetSelector": "polygon",
+      "targetRect": {
+        "x": 655.377197265625,
+        "y": 603.0467529296875,
+        "width": 610.041015625,
+        "height": 285.5341796875,
+        "top": 603.0467529296875,
+        "right": 1265.418212890625,
+        "bottom": 888.5809326171875,
+        "left": 655.377197265625
+      },
+      "keyframes": [
+        {
+          "offset": 0,
+          "easing": "cubic-bezier(0.65, 0, 0.35, 1)",
+          "composite": "replace",
+          "strokeDashoffset": "1px",
+          "computedOffset": 0
+        },
+        {
+          "offset": 1,
+          "easing": "cubic-bezier(0.65, 0, 0.35, 1)",
+          "composite": "auto",
+          "strokeDashoffset": "0px",
+          "computedOffset": 1
+        }
+      ],
+      "timing": {
+        "duration": 1700,
+        "delay": 350,
+        "iterations": 1,
+        "easing": "linear",
+        "direction": "normal"
+      }
+    },
+    {
+      "type": "CSSAnimation",
+      "playState": "finished",
+      "animationName": "pin-in",
+      "targetSelector": "div.pin-in.absolute",
+      "targetRect": {
+        "x": 987.828125,
+        "y": 700.875,
+        "width": 0,
+        "height": 0,
+        "top": 700.875,
+        "right": 987.828125,
+        "bottom": 700.875,
+        "left": 987.828125
+      },
+      "keyframes": [
+        {
+          "offset": 0,
+          "easing": "cubic-bezier(0.65, 0, 0.35, 1)",
+          "composite": "replace",
+          "translate": "0px 8px",
+          "opacity": "0",
+          "computedOffset": 0
+        },
+        {
+          "offset": 1,
+          "easing": "cubic-bezier(0.65, 0, 0.35, 1)",
+          "composite": "auto",
+          "translate": "0px",
+          "opacity": "1",
+          "computedOffset": 1
+        }
+      ],
+      "timing": {
+        "duration": 700,
+        "delay": 1750,
+        "iterations": 1,
+        "easing": "linear",
+        "direction": "normal"
+      }
+    }
+  ]
+}

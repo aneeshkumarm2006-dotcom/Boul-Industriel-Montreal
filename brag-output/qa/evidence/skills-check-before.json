@@ -1,0 +1,136 @@
+{
+  "location": "C:\\Users\\anees\\.claude\\skills",
+  "agent": "claude-code",
+  "scope": "global",
+  "updateAvailable": true,
+  "summary": {
+    "current": 0,
+    "outdated": 10,
+    "missing": 11,
+    "coreMissing": 0,
+    "removed": 0
+  },
+  "skills": [
+    {
+      "name": "embedded-captions",
+      "status": "missing",
+      "latestHash": "7c6f147f722cc4c4"
+    },
+    {
+      "name": "faceless-explainer",
+      "status": "missing",
+      "latestHash": "7fda7a8bb75acabf"
+    },
+    {
+      "name": "figma",
+      "status": "missing",
+      "latestHash": "1639b96642ac26c6"
+    },
+    {
+      "name": "general-video",
+      "status": "missing",
+      "latestHash": "77938376e7cc61fc"
+    },
+    {
+      "name": "hyperframes",
+      "status": "outdated",
+      "installedHash": "05525e9c53582e4b",
+      "latestHash": "938e6e1a2141d6b7"
+    },
+    {
+      "name": "hyperframes-animation",
+      "status": "outdated",
+      "installedHash": "479c716293a26531",
+      "latestHash": "3055d5038b7fe96b"
+    },
+    {
+      "name": "hyperframes-audio",
+      "status": "outdated",
+      "installedHash": "b39bac771e873eae",
+      "latestHash": "ab4e6503ec360665"
+    },
+    {
+      "name": "hyperframes-cli",
+      "status": "outdated",
+      "installedHash": "986414090bf6442f",
+      "latestHash": "c1b0b3d02ad38edc"
+    },
+    {
+      "name": "hyperframes-core",
+      "status": "outdated",
+      "installedHash": "77ce4deba31148a2",
+      "latestHash": "b632d12d11eb54e8"
+    },
+    {
+      "name": "hyperframes-creative",
+      "status": "outdated",
+      "installedHash": "0803c90800fda4ce",
+      "latestHash": "922bce76a69b97d9"
+    },
+    {
+      "name": "hyperframes-keyframes",
+      "status": "outdated",
+      "installedHash": "6bc62531ecea9a52",
+      "latestHash": "b7f56329c9ffb81a"
+    },
+    {
+      "name": "hyperframes-registry",
+      "status": "outdated",
+      "installedHash": "51e6dba95a8dfb45",
+      "latestHash": "aecbf18ab080fbfb"
+    },
+    {
+      "name": "hyperframes-studio",
+      "status": "outdated",
+      "installedHash": "b063eaa9eb1e4b9b",
+      "latestHash": "0d9cbaa24ccc9d31"
+    },
+    {
+      "name": "media-use",
+      "status": "outdated",
+      "installedHash": "8f21655cd07a62ea",
+      "latestHash": "0744050e3114e60a"
+    },
+    {
+      "name": "motion-graphics",
+      "status": "missing",
+      "latestHash": "3d3a35ffbe8b7e3e"
+    },
+    {
+      "name": "music-to-video",
+      "status": "missing",
+      "latestHash": "3c982c2ddeac43f2"
+    },
+    {
+      "name": "pr-to-video",
+      "status": "missing",
+      "latestHash": "c62666bcc68d53e9"
+    },
+    {
+      "name": "product-launch-video",
+      "status": "missing",
+      "latestHash": "3e5d21d03a808538"
+    },
+    {
+      "name": "remotion-to-hyperframes",
+      "status": "missing",
+      "latestHash": "4fcef874801e58f7"
+    },
+    {
+      "name": "slideshow",
+      "status": "missing",
+      "latestHash": "365f19ebf1a562fc"
+    },
+    {
+      "name": "talking-head-recut",
+      "status": "missing",
+      "latestHash": "eac2082ea7096802"
+    }
+  ],
+  "lockMissing": false,
+  "_meta": {
+    "version": "0.8.97",
+    "latestVersion": "0.8.92",
+    "updateAvailable": false
+  }
+}

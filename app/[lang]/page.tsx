@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getDictionary, isLocale } from "@/lib/i18n";
+import { fill, getDictionary, isLocale } from "@/lib/i18n";
 import { forSale, project, sqftRange } from "@/content/project";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
@@ -35,7 +35,7 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
     amenityFeature: forSale.map((u) => ({
       "@type": "LocationFeatureSpecification",
       name: `${u.civics.join(" + ")}`,
-      value: `${u.sqft} sq ft`,
+      ...(u.sqft ? { value: `${u.sqft} sq ft` } : {}),
     })),
     floorSize: { "@type": "QuantitativeValue", minValue: sqftRange[0], maxValue: sqftRange[1], unitCode: "FTK" },
   };
@@ -47,9 +47,30 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
         <Hero t={t} />
         <Units t={t} />
         <Included t={t} />
+        {project.images.interior.length > 0 && (
+          <Gallery
+            id="interior"
+            group="interior"
+            eyebrow={t.interior.eyebrow}
+            title={t.interior.title}
+            names={project.images.interior}
+            alt={(name, i) => t.gallery.alts[name] ?? fill(t.interior.alt, { i: i + 1 })}
+            t={t}
+            className="pb-20 sm:pb-28"
+          />
+        )}
         <WhyOwn t={t} />
         <Building t={t} />
-        <Gallery t={t} />
+        <Gallery
+          id="photos"
+          group="exterior"
+          eyebrow={t.gallery.eyebrow}
+          title={t.gallery.title}
+          names={project.images.gallery}
+          alt={(name) => t.gallery.alts[name] ?? ""}
+          t={t}
+          className="pb-20 sm:pb-28"
+        />
         <Location t={t} />
         <Contact t={t} lang={lang} />
       </main>

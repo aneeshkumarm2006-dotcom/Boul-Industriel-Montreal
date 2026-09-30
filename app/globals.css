@@ -292,17 +292,24 @@
   scrollbar-color: var(--color-slate-3) transparent;
 }
 
-/* The count in the hero headline, set as a unit cell from the plan */
-.hero-count {
-  display: inline-block;
-  min-width: 0.84em;
-  padding: 0.07em 0.13em 0.03em;
-  margin-right: 0.02em;
-  border-radius: 0.1em;
-  background: var(--color-slate);
-  color: var(--color-mint);
-  font-variation-settings: "wdth" 125;
-  font-weight: 800;
-  line-height: 0.9;
-  text-align: center;
+
+/* Civic plates under the hero: sideways scroller, scrollbar hidden (arrows + swipe) */
+.plate-scroll {
+  scrollbar-width: none;
+}
+.plate-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* "VENDU" stamp on sold plan cells */
+.pl-sold {
+  font-size: 4.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+/* Units-for-sale directory: scrolls inside its own box */
+.unit-list {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-slate-3) transparent;
 }

@@ -40,3 +40,11 @@ export function Expand({ className = "h-4 w-4" }: { className?: string }) {
     </svg>
   );
 }
+
+export function Check({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 16 16" aria-hidden className={className} {...base} strokeWidth={2.25}>
+      <path d="m3 8.5 3.25 3.25L13 5" />
+    </svg>
+  );
+}

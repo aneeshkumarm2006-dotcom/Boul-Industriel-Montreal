@@ -83,6 +83,11 @@ export default function ContactForm({
       message: String(data.get("message") ?? "").trim(),
       language: lang,
       page: window.location.href,
+      // FormSubmit options (ignored by other endpoints)
+      _subject: `${s.mailSubject} · ${String(data.get("name")).trim()}`,
+      _replyto: String(data.get("email")).trim(),
+      _template: "table",
+      _captcha: "false",
     };
     setFirstName(payload.name.split(/\s+/)[0]);
 

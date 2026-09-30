@@ -1,0 +1,133 @@
+<template id="s1-hook-template">
+  <div id="root" data-composition-id="s1-hook" data-width="1920" data-height="1080" data-duration="__DUR__">
+    <style>
+      /*COMMON_CSS*/
+      #root { background: #1d3a3c; }
+      #s1-glow { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; background: radial-gradient(ellipse 1100px 620px at 62% 78%, #26484a 0%, rgba(38, 72, 74, 0) 100%); }
+      #s1-band { position: absolute; left: 0; top: 334px; width: 1920px; height: 746px; overflow: hidden; -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.38) 13%, #000 36%); mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.38) 13%, #000 36%); }
+      #s1-cam { position: absolute; left: 0; top: 0; width: 1730px; height: 660px; transform-origin: 0 0; }
+      #s1-photo { position: absolute; left: 0; top: 0; width: 1730px; height: 660px; display: block; filter: contrast(1.05) saturate(0.95) brightness(1.02); }
+      #s1-ol { position: absolute; left: 0; top: 0; width: 1730px; height: 660px; overflow: visible; }
+      #s1-vig { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; background: radial-gradient(ellipse 1250px 760px at 50% 62%, rgba(15,29,30,0) 62%, rgba(15,29,30,0.42) 100%); }
+      #s1-pin { position: absolute; left: 999px; top: 698px; width: 0; height: 0; }
+      #s1-pin .dot { position: absolute; left: -11px; top: -11px; width: 22px; height: 22px; border-radius: 50%; background: #d4f0c9; box-shadow: 0 0 0 8px rgba(15, 29, 30, 0.3); }
+      #s1-pin .stem { position: absolute; left: -1px; top: -178px; width: 2px; height: 178px; background: rgba(255, 255, 255, 0.92); transform-origin: 50% 100%; }
+      #s1-pin .card { position: absolute; left: -489px; bottom: 74px; width: 488px; padding: 16px 22px 18px; border-radius: 14px; background: #f3f5f2; color: #0f1d1e; box-shadow: 0 18px 44px -14px rgba(15, 29, 30, 0.65); }
+      #s1-pin .card .c-title { display: block; font-variation-settings: "wdth" 108; font-weight: 680; font-size: 30px; line-height: 1.15; letter-spacing: -0.01em; white-space: nowrap; }
+      #s1-pin .card .c-detail { display: block; margin-top: 4px; font-size: 24px; letter-spacing: 0.08em; color: #56666a; }
+      #s1-type { position: absolute; left: 192px; top: 108px; width: 1536px; height: 380px; }
+      #s1-type .eb { position: absolute; left: 0; top: 0; font-size: 26px; color: rgba(212, 240, 201, 0.85); }
+      #s1-type .hl { position: absolute; left: 0; top: 74px; width: 1536px; font-size: 112px; color: #ffffff; }
+      #s1-type .gloss { position: absolute; left: 0; top: 326px; font-size: 40px; line-height: 1.2; font-weight: 400; font-variation-settings: "wdth" 100; letter-spacing: -0.005em; color: rgba(255, 255, 255, 0.74); white-space: nowrap; }
+      #s1-type .cell { display: inline-block; min-width: 0.84em; padding: 0.07em 0.13em 0.03em; margin-right: 0.1em; border-radius: 0.1em; background: #d4f0c9; color: #1d3a3c; font-variation-settings: "wdth" 125; font-weight: 800; line-height: 0.9; text-align: center; transform-origin: 0% 60%; }
+      #s1-ink { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; background: #0f1d1e; }
+    </style>
+
+    <div id="s1-glow"></div>
+    <div id="s1-band">
+      <div id="s1-cam" data-layout-allow-overflow>
+        <img id="s1-photo" src="assets/img/hero-aerial.jpg" alt="" />
+        <svg id="s1-ol" viewBox="0 0 1730 660" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path id="s1-shade" d="M0 0H1730V660H0Z M489 485 L714 555 L809 505 L809 477 L1247 257 L1249 214 L1107 196 L598 389 L584 385 L482 422Z" fill-rule="evenodd" fill="#0f1d1e" fill-opacity="0" />
+          <polygon id="s1-fill" points="489,485 714,555 809,505 809,477 1247,257 1249,214 1107,196 598,389 584,385 482,422" fill="#d4f0c9" fill-opacity="0" />
+          <polygon id="s1-stroke" points="489,485 714,555 809,505 809,477 1247,257 1249,214 1107,196 598,389 584,385 482,422" pathLength="1" fill="none" stroke="#ffffff" stroke-width="6" stroke-linejoin="round" stroke-dasharray="1 1" stroke-dashoffset="1" />
+          <polygon id="s1-glint" points="489,485 714,555 809,505 809,477 1247,257 1249,214 1107,196 598,389 584,385 482,422" pathLength="1" fill="none" stroke="#ffffff" stroke-width="9" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="0.07 0.93" stroke-dashoffset="0" opacity="0" />
+        </svg>
+      </div>
+    </div>
+    <div id="s1-vig"></div>
+
+    <div id="s1-pin">
+      <div class="stem" id="s1-stem"></div>
+      <div class="dot" id="s1-dot"></div>
+      <div class="card" id="s1-card">
+        <span class="c-title">12650–12702, boul. Industriel</span>
+        <span class="c-detail t-eyebrow">24 unités · 5 à vendre</span>
+      </div>
+    </div>
+
+    <div id="s1-type">
+      <div class="eb t-eyebrow" id="s1-eb-a">Acheter plutôt que louer</div>
+      <div class="eb t-eyebrow" id="s1-eb-b">Condos industriels à vendre · Pointe-aux-Trembles, Montréal</div>
+
+      <div class="hl t-display" id="s1-ha">
+        <span class="mask"><span class="ln" id="s1-a1" style="opacity:0" data-layout-allow-overlap data-layout-allow-overflow>Arrêtez de payer le loyer</span></span>
+        <span class="mask"><span class="ln" id="s1-a2" style="opacity:0" data-layout-allow-overlap data-layout-allow-overflow>de quelqu’un d’autre.</span></span>
+      </div>
+      <div class="hl t-display" id="s1-hb">
+        <span class="mask"><span class="ln" id="s1-b1" style="opacity:0" data-layout-allow-overlap data-layout-allow-overflow><span class="cell" id="s1-cell" data-layout-allow-overlap>5</span>unités à vendre</span></span>
+        <span class="mask"><span class="ln" id="s1-b2" style="opacity:0" data-layout-allow-overlap data-layout-allow-overflow>sur le boulevard Industriel.</span></span>
+      </div>
+
+      <div class="gloss" id="s1-ga">Stop paying someone else’s rent.</div>
+      <div class="gloss" id="s1-gb">5 units for sale on Boulevard Industriel.</div>
+    </div>
+
+    <div class="bug" id="s1-bug">{{LOGO_GLYPH}}<span class="bug-word" data-layout-allow-overlap>Boul-Industriel</span></div>
+    <div id="s1-ink"></div>
+
+    <script>
+      (function () {
+        var TL_ = window.TL;
+        var H = TL_.hosts.hook;
+        var T = function (abs) { return abs - H.start; };
+        var tl = gsap.timeline({ paused: true });
+
+        /* --- camera: one continuous push toward the pin, locked to the pin so the callout never drifts (job: continuity) --- */
+        var S0 = 1.12, S1 = 1.16, PX = 900, PY = 319, FX = 999.2, FY = 364.08, DX = -22;
+        tl.fromTo("#s1-cam",
+          { x: FX - PX * S0, y: FY - PY * S0, scale: S0 },
+          { x: FX - PX * S1 + DX, y: FY - PY * S1, scale: S1, duration: H.dur, ease: "sine.inOut" }, 0);
+
+        /* --- fade up from ink, never from black: frame 0 already shows the building (job: open cleanly, honest thumbnail) --- */
+        tl.fromTo("#s1-ink", { opacity: 0.6 }, { opacity: 0, duration: 0.5, ease: "power2.out" }, 0);
+
+        /* masked lines are invisible (opacity 0) until their rise starts, and again after they leave: no hidden text lurks under other layers */
+        function on(id, t) { tl.set(id, { opacity: 1 }, t); }
+        function off(id, t) { tl.set(id, { opacity: 0 }, t); }
+
+        /* --- state 1: the outcome hook (job: value first) --- */
+        tl.fromTo("#s1-eb-a", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.3);
+        on("#s1-a1", TL_.ev["hook.headline"]); on("#s1-a2", TL_.ev["hook.headline"] + 0.12);
+        tl.fromTo("#s1-a1", { yPercent: 150 }, { yPercent: 0, duration: 0.75, ease: "power3.out" }, TL_.ev["hook.headline"]);
+        tl.fromTo("#s1-a2", { yPercent: 150 }, { yPercent: 0, duration: 0.75, ease: "power3.out" }, TL_.ev["hook.headline"] + 0.12);
+        tl.fromTo("#s1-ga", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 1.7);
+
+        /* --- the building draws itself: the site's own signature (job: show the real thing) --- */
+        var t0 = TL_.ev["hook.outline"];
+        tl.fromTo("#s1-stroke", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.7, ease: "power3.inOut" }, t0);
+        tl.fromTo("#s1-shade", { fillOpacity: 0 }, { fillOpacity: 0.42, duration: 1.0, ease: "power2.out" }, t0 + 0.5);
+        tl.fromTo("#s1-fill", { fillOpacity: 0 }, { fillOpacity: 0.16, duration: 0.8, ease: "power2.out" }, t0 + 1.2);
+
+        /* --- the swap: hero hit 1 on beat 6 (job: change of register, from outcome to product) --- */
+        var Ts = TL_.ev["hook.swap"];
+        /* the old lines are completely out (0.32 s) before the new lines start rising, so two headlines never cross */
+        tl.to("#s1-eb-a", { opacity: 0, y: -14, duration: 0.3, ease: "power3.in" }, Ts - 0.36);
+        tl.to("#s1-ga", { opacity: 0, y: -10, duration: 0.3, ease: "power3.in" }, Ts - 0.36);
+        tl.to("#s1-a1", { yPercent: -150, duration: 0.32, ease: "power3.in" }, Ts - 0.36);
+        tl.to("#s1-a2", { yPercent: -150, duration: 0.3, ease: "power3.in" }, Ts - 0.34);
+        off("#s1-a1", Ts - 0.03); off("#s1-a2", Ts - 0.03);
+        on("#s1-b1", Ts); on("#s1-b2", Ts + 0.1);
+        tl.fromTo("#s1-eb-b", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, Ts + 0.1);
+        tl.fromTo("#s1-b1", { yPercent: 150 }, { yPercent: 0, duration: 0.7, ease: "expo.out" }, Ts);
+        tl.fromTo("#s1-b2", { yPercent: 150 }, { yPercent: 0, duration: 0.7, ease: "expo.out" }, Ts + 0.1);
+        tl.fromTo("#s1-cell", { scale: 0.82 }, { scale: 1, duration: 0.55, ease: "power3.out" }, Ts + 0.08);
+        tl.fromTo("#s1-fill", { fillOpacity: 0.16 }, { fillOpacity: 0.36, duration: 0.18, ease: "power2.out", immediateRender: false }, Ts);
+        tl.to("#s1-fill", { fillOpacity: 0.24, duration: 0.7, ease: "power2.out" }, Ts + 0.18);
+        tl.fromTo("#s1-gb", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, Ts + 0.75);
+
+        /* --- pin and address card on the downbeat (job: name the place) --- */
+        var Tp = TL_.ev["hook.pin"];
+        tl.fromTo("#s1-dot", { scale: 0 }, { scale: 1, duration: 0.3, ease: "power3.out" }, Tp);
+        tl.fromTo("#s1-stem", { scaleY: 0 }, { scaleY: 1, duration: 0.35, ease: "power3.out" }, Tp + 0.05);
+        tl.fromTo("#s1-card", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, Tp + 0.18);
+
+        /* --- one glint travels the outline through the hold (job: keep the picture alive) --- */
+        tl.fromTo("#s1-glint", { opacity: 1, strokeDashoffset: 0 }, { strokeDashoffset: -1, duration: 1.5, ease: "power1.inOut", immediateRender: false }, Tp + 0.55);
+        tl.to("#s1-glint", { opacity: 0, duration: 0.15 }, Tp + 0.55 + 1.5);
+
+        window.__timelines["s1-hook"] = tl;
+      })();
+    </script>
+  </div>
+</template>

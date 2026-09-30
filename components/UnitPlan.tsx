@@ -2,10 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Dictionary } from "@/content/fr";
-import { forSale, project, saleByCivic, type PlanColumn, type UnitForSale } from "@/content/project";
+import { forSale, project, saleByCivic, soldCivics, type PlanColumn, type UnitForSale } from "@/content/project";
 import { fill, formatDate, formatNumber } from "@/lib/i18n";
 import { requestUnit } from "@/lib/unit-events";
-import { Arrow } from "./icons";
+import { Arrow, ArrowDown } from "./icons";
 
 type Strings = Dictionary["plan"];
 
@@ -24,6 +24,7 @@ interface Cell {
   h: number;
   walls: Side[];
   sale?: UnitForSale;
+  sold?: boolean;
 }
 interface Seg {
   x1: number;
@@ -49,10 +50,11 @@ function buildPlan() {
     if (c.service) {
       services.push({ x, w: c.w });
     } else if (c.through) {
-      cells.push({ civics: [c.top!, c.bottom!], x, y: top, w: c.w, h: bottom - top, walls: ["top", "bottom"], sale: saleByCivic[c.top!] ?? saleByCivic[c.bottom!] });
+      const sale = saleByCivic[c.top!] ?? saleByCivic[c.bottom!];
+      cells.push({ civics: [c.top!, c.bottom!], x, y: top, w: c.w, h: bottom - top, walls: ["top", "bottom"], sale, sold: !sale && soldCivics.has(c.top!) });
     } else {
-      cells.push({ civics: [c.top!], x, y: top, w: c.w, h: ROW - top, walls: ["top"], sale: saleByCivic[c.top!] });
-      cells.push({ civics: [c.bottom!], x, y: ROW, w: c.w, h: bottom - ROW, walls: ["bottom"], sale: saleByCivic[c.bottom!] });
+      cells.push({ civics: [c.top!], x, y: top, w: c.w, h: ROW - top, walls: ["top"], sale: saleByCivic[c.top!], sold: soldCivics.has(c.top!) });
+      cells.push({ civics: [c.bottom!], x, y: ROW, w: c.w, h: bottom - ROW, walls: ["bottom"], sale: saleByCivic[c.bottom!], sold: soldCivics.has(c.bottom!) });
       demising.push({ x1: x, y1: ROW, x2: x + c.w, y2: ROW });
     }
 
@@ -102,7 +104,17 @@ export default function UnitPlan({ s, locale, sqft }: { s: Strings; locale: stri
   const [lit, setLit] = useState(false);
   const planRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
   const active = hover ?? selected;
+
+  // A unit picked on the plan or in the hero is brought into view inside the scrolling list
+  useEffect(() => {
+    const list = listRef.current;
+    const row = selected ? list?.querySelector<HTMLElement>(`[data-row="${selected}"]`) : null;
+    if (!list || !row) return;
+    const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    list.scrollTo({ top: row.offsetTop - list.clientHeight / 2 + row.offsetHeight / 2, behavior: smooth ? "smooth" : "auto" });
+  }, [selected]);
 
   // Units for sale switch on, one after another, the first time the plan scrolls into view
   useEffect(() => {
@@ -147,6 +159,7 @@ export default function UnitPlan({ s, locale, sqft }: { s: Strings; locale: stri
   }, []);
 
   const list = forSale.map((u) => u.civics.join(" + ")).join(", ");
+  const soldList = project.sold.join(", ");
 
   return (
     <div>
@@ -163,10 +176,14 @@ export default function UnitPlan({ s, locale, sqft }: { s: Strings; locale: stri
           <svg
             viewBox={`${VB.x} ${VB.y} ${VB.w} ${VB.h}`}
             role="img"
-            aria-label={fill(s.aria, { list })}
+            aria-label={fill(s.aria, { list, sold: soldList })}
             className="block w-full min-w-[860px] select-none lg:min-w-0"
           >
             <defs>
+              <pattern id="sold" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+                <rect width="3" height="3" fill="#0f1d1e" fillOpacity=".35" />
+                <line x1="0" y1="0" x2="0" y2="3" stroke="#d4f0c9" strokeOpacity=".08" strokeWidth=".6" />
+              </pattern>
               <pattern id="hatch" width="2.2" height="2.2" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
                 <line x1="0" y1="0" x2="0" y2="2.2" stroke="#d4f0c9" strokeOpacity=".4" strokeWidth=".5" />
               </pattern>
@@ -203,6 +220,11 @@ export default function UnitPlan({ s, locale, sqft }: { s: Strings; locale: stri
             <text x={L + 13} y={ROW} transform={`rotate(90 ${L + 13} ${ROW})`} textAnchor="middle" dominantBaseline="central" className="pl-anno mono" fill="#d4f0c9" fillOpacity=".8">
               {s.depth}
             </text>
+
+            {/* Sold units */}
+            {PLAN.cells.map((c) =>
+              c.sold ? <rect key={`s-${c.civics[0]}`} x={c.x} y={c.y} width={c.w} height={c.h} fill="url(#sold)" /> : null,
+            )}
 
             {/* Units for sale */}
             {PLAN.cells.map((c) => {
@@ -277,6 +299,38 @@ export default function UnitPlan({ s, locale, sqft }: { s: Strings; locale: stri
             {/* Labels */}
             {PLAN.cells.map((c) => {
               const cx = c.x + c.w / 2;
+              if (c.sold) {
+                const stamp = (y: number) => (
+                  <>
+                    <rect x={cx - 12.5} y={y - 4.3} width={25} height={8.6} rx={1.2} fill="#0f1d1e" fillOpacity=".5" stroke="#d4f0c9" strokeOpacity=".8" strokeWidth={1.5} vectorEffect="non-scaling-stroke" />
+                    <text x={cx} y={y + 0.2} textAnchor="middle" dominantBaseline="central" className="pl-sold mono" fill="#d4f0c9">
+                      {s.sold}
+                    </text>
+                  </>
+                );
+                const civic = (y: number, v: string) => (
+                  <text x={cx} y={y} textAnchor="middle" dominantBaseline="central" className="pl-code mono" fill="#d4f0c9" fillOpacity=".45">
+                    {v}
+                  </text>
+                );
+                const cy = c.y + c.h / 2;
+                return (
+                  <g key={`l-${c.civics[0]}`} pointerEvents="none">
+                    {c.civics.length > 1 ? (
+                      <>
+                        {civic(ROW / 2 - 2, c.civics[0])}
+                        {stamp(ROW)}
+                        {civic(ROW + ROW / 2 + 2, c.civics[1])}
+                      </>
+                    ) : (
+                      <>
+                        {civic(cy - 7, c.civics[0])}
+                        {stamp(cy + 2.5)}
+                      </>
+                    )}
+                  </g>
+                );
+              }
               if (!c.sale) {
                 return (
                   <text key={`l-${c.civics[0]}`} x={cx} y={c.y + c.h / 2} textAnchor="middle" dominantBaseline="central" className="pl-code mono" fill="#d4f0c9" fillOpacity=".5" pointerEvents="none">
@@ -284,7 +338,7 @@ export default function UnitPlan({ s, locale, sqft }: { s: Strings; locale: stri
                   </text>
                 );
               }
-              const area = `${n(c.sale.sqft)} ${sqft}`;
+              const area = c.sale.sqft ? `${n(c.sale.sqft)} ${sqft}` : "";
               if (c.civics.length > 1) {
                 return (
                   <g key={`l-${c.civics[0]}`} className="sale-label" pointerEvents="none" fill="#1d3a3c">
@@ -303,12 +357,14 @@ export default function UnitPlan({ s, locale, sqft }: { s: Strings; locale: stri
               const cy = c.y + c.h / 2;
               return (
                 <g key={`l-${c.civics[0]}`} className="sale-label" pointerEvents="none" fill="#1d3a3c">
-                  <text x={cx} y={cy - 3} textAnchor="middle" dominantBaseline="central" className="pl-civic civic">
+                  <text x={cx} y={area ? cy - 3 : cy} textAnchor="middle" dominantBaseline="central" className="pl-civic civic">
                     {c.civics[0]}
                   </text>
-                  <text x={cx} y={cy + 4.6} textAnchor="middle" dominantBaseline="central" className="pl-area mono" fillOpacity=".75">
-                    {area}
-                  </text>
+                  {area && (
+                    <text x={cx} y={cy + 4.6} textAnchor="middle" dominantBaseline="central" className="pl-area mono" fillOpacity=".75">
+                      {area}
+                    </text>
+                  )}
                 </g>
               );
             })}
@@ -321,8 +377,10 @@ export default function UnitPlan({ s, locale, sqft }: { s: Strings; locale: stri
             {s.legendSale}
           </li>
           <li className="flex items-center gap-2.5">
-            <span aria-hidden className="h-3.5 w-5 rounded-[2px] border border-mint/60" />
-            {s.legendOther}
+            <span aria-hidden className="grid h-3.5 place-items-center rounded-[2px] border border-mint/55 bg-ink/35 px-1 font-mono text-[0.5rem] leading-none tracking-wider text-mint/85">
+              {s.sold}
+            </span>
+            {s.legendSold}
           </li>
           <li className="flex items-center gap-2.5">
             <span aria-hidden className="h-3.5 w-5 rounded-[2px] border border-mint/40 bg-[repeating-linear-gradient(45deg,rgb(212_240_201/.45)_0_1px,transparent_1px_4px)]" />
@@ -338,14 +396,26 @@ export default function UnitPlan({ s, locale, sqft }: { s: Strings; locale: stri
           <p className="mt-3 max-w-sm text-[0.9375rem] leading-relaxed text-white/60">
             {fill(s.note, { date: formatDate(locale, project.availabilityAsOf) })}
           </p>
+          <p className="eyebrow mt-5 flex items-center gap-2 text-mint/70">
+            <ArrowDown className="h-3.5 w-3.5" />
+            {s.listHint}
+          </p>
         </div>
-        <ul className="border-t border-white/15 lg:col-span-8" onMouseLeave={() => setHover(null)}>
+        <div className="relative lg:col-span-8">
+          <ul
+            ref={listRef}
+            tabIndex={0}
+            aria-label={s.listTitle}
+            className="unit-list max-h-[27rem] overflow-y-auto overscroll-contain border-y border-white/15 pb-8 sm:max-h-[23.5rem]"
+            onMouseLeave={() => setHover(null)}
+          >
           {forSale.map((u) => {
             const on = active === u.id;
             const name = u.civics.join(" + ");
             return (
               <li
                 key={u.id}
+                data-row={u.id}
                 onMouseEnter={() => setHover(u.id)}
                 onFocus={() => setHover(u.id)}
                 onBlur={() => setHover(null)}
@@ -358,7 +428,13 @@ export default function UnitPlan({ s, locale, sqft }: { s: Strings; locale: stri
                   {u.civics.length > 1 && <span className="mono text-sm text-mint/70">+{u.civics[1]}</span>}
                 </p>
                 <p className="mono whitespace-nowrap text-right text-lg text-white sm:text-left">
-                  {n(u.sqft)} <span className="text-white/60">{sqft}</span>
+                  {u.sqft ? (
+                    <>
+                      {n(u.sqft)} <span className="text-white/60">{sqft}</span>
+                    </>
+                  ) : (
+                    <span className="text-[0.9375rem] text-white/60">{s.areaOnRequest}</span>
+                  )}
                 </p>
                 <p className="col-span-2 text-sm text-white/65 sm:col-span-1">{u.civics.length > 1 ? s.through : s.standard}</p>
                 <button
@@ -373,7 +449,9 @@ export default function UnitPlan({ s, locale, sqft }: { s: Strings; locale: stri
               </li>
             );
           })}
-        </ul>
+          </ul>
+          <span aria-hidden className="pointer-events-none absolute inset-x-0 bottom-px h-12 bg-gradient-to-t from-slate to-slate/0" />
+        </div>
       </div>
     </div>
   );

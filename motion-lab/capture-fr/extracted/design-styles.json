@@ -1,0 +1,256 @@
+{
+  "typography": [
+    {
+      "role": "display",
+      "fontFamily": "Archivo",
+      "fontSize": "81.6px",
+      "fontWeight": "720",
+      "lineHeight": "79.968px",
+      "letterSpacing": "-2.856px",
+      "color": "#0F1D1E",
+      "sampleText": "5 unités à vendre sur le boulevard Industriel."
+    },
+    {
+      "role": "heading",
+      "fontFamily": "Archivo",
+      "fontSize": "52px",
+      "fontWeight": "700",
+      "lineHeight": "53.04px",
+      "letterSpacing": "-1.56px",
+      "color": "#FFFFFF",
+      "sampleText": "Choisissez votre unité."
+    },
+    {
+      "role": "heading-3",
+      "fontFamily": "Archivo",
+      "fontSize": "24px",
+      "fontWeight": "650",
+      "lineHeight": "32px",
+      "letterSpacing": "-0.288px",
+      "color": "#FFFFFF",
+      "sampleText": "Unités à vendre"
+    },
+    {
+      "role": "body",
+      "fontFamily": "Archivo",
+      "fontSize": "19px",
+      "fontWeight": "400",
+      "lineHeight": "30.4px",
+      "letterSpacing": "normal",
+      "color": "#56666A",
+      "sampleText": "Des locaux de 1 252 à 2 509 pi², chacun avec sa porte de gar"
+    },
+    {
+      "role": "heading-2",
+      "fontFamily": "Archivo",
+      "fontSize": "17px",
+      "fontWeight": "400",
+      "lineHeight": "27.2px",
+      "letterSpacing": "normal",
+      "color": "#0F1D1E",
+      "sampleText": "Unités à vendre"
+    },
+    {
+      "role": "heading-3",
+      "fontFamily": "Archivo",
+      "fontSize": "17px",
+      "fontWeight": "650",
+      "lineHeight": "21.25px",
+      "letterSpacing": "-0.204px",
+      "color": "#0F1D1E",
+      "sampleText": "Porte de garage 10' × 12'"
+    },
+    {
+      "role": "code",
+      "fontFamily": "Archivo",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "lineHeight": "24px",
+      "letterSpacing": "normal",
+      "color": "#000000",
+      "sampleText": "Condos industriels à vendre à Pointe-aux-Trembles | Boul-Ind"
+    },
+    {
+      "role": "link",
+      "fontFamily": "Archivo",
+      "fontSize": "15px",
+      "fontWeight": "500",
+      "lineHeight": "24px",
+      "letterSpacing": "normal",
+      "color": "oklab(0.218465 -0.0181083 -0.00715753 / 0.7)",
+      "sampleText": "Unités"
+    }
+  ],
+  "spacing": {
+    "observed": [
+      1,
+      4,
+      6,
+      8,
+      10,
+      12,
+      16,
+      20,
+      22,
+      24,
+      28,
+      32,
+      40,
+      48,
+      56
+    ],
+    "baseUnit": 8
+  },
+  "radius": [
+    "6px",
+    "8px"
+  ],
+  "shadows": [
+    {
+      "value": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px inset",
+      "count": 5
+    },
+    {
+      "value": "rgb(15, 29, 30) 0px 0px 0px 1.5px inset",
+      "count": 1
+    },
+    {
+      "value": "rgb(255, 255, 255) 0px 0px 0px 1.5px inset",
+      "count": 1
+    }
+  ],
+  "buttons": [
+    {
+      "label": "Recevoir les prix",
+      "background": "#1D3A3C",
+      "backgroundImage": "",
+      "backdropFilter": "",
+      "color": "#FFFFFF",
+      "padding": "0px 16px",
+      "borderRadius": "8px",
+      "border": "0px solid rgb(255, 255, 255)",
+      "boxShadow": "none",
+      "fontSize": "14px",
+      "fontWeight": "650",
+      "height": "40px"
+    },
+    {
+      "label": "Recevoir les prix",
+      "background": "transparent",
+      "backgroundImage": "",
+      "backdropFilter": "",
+      "color": "#0F1D1E",
+      "padding": "0px 21.6px",
+      "borderRadius": "8px",
+      "border": "0px solid rgb(15, 29, 30)",
+      "boxShadow": "rgb(15, 29, 30) 0px 0px 0px 1.5px inset",
+      "fontSize": "15.6px",
+      "fontWeight": "650",
+      "height": "48px"
+    },
+    {
+      "label": "Demander le prix",
+      "background": "#D4F0C9",
+      "backgroundImage": "",
+      "backdropFilter": "",
+      "color": "#1D3A3C",
+      "padding": "0px 21.6px",
+      "borderRadius": "8px",
+      "border": "0px solid rgb(29, 58, 60)",
+      "boxShadow": "none",
+      "fontSize": "14px",
+      "fontWeight": "650",
+      "height": "44px"
+    },
+    {
+      "label": "button",
+      "background": "transparent",
+      "backgroundImage": "",
+      "backdropFilter": "",
+      "color": "#0F1D1E",
+      "padding": "0px",
+      "borderRadius": "0px",
+      "border": "0px solid rgb(15, 29, 30)",
+      "boxShadow": "none",
+      "fontSize": "17px",
+      "fontWeight": "400",
+      "height": "600px"
+    },
+    {
+      "label": "Ouvrir dans Google Maps",
+      "background": "transparent",
+      "backgroundImage": "",
+      "backdropFilter": "",
+      "color": "#FFFFFF",
+      "padding": "0px 21.6px",
+      "borderRadius": "8px",
+      "border": "0px solid rgb(255, 255, 255)",
+      "boxShadow": "rgb(255, 255, 255) 0px 0px 0px 1.5px inset",
+      "fontSize": "15.6px",
+      "fontWeight": "650",
+      "height": "48px"
+    }
+  ],
+  "cards": [
+    {
+      "label": "card",
+      "background": "#FFFFFF",
+      "backgroundImage": "",
+      "backdropFilter": "",
+      "color": "#0F1D1E",
+      "padding": "12px 14px",
+      "borderRadius": "8px",
+      "border": "1px solid rgb(203, 213, 209)",
+      "boxShadow": "none",
+      "fontSize": "16px",
+      "fontWeight": "600",
+      "height": "98px"
+    }
+  ],
+  "nav": {
+    "label": "navigation",
+    "background": "oklab(0.967788 -0.00312081 0.00320095 / 0.85)",
+    "backgroundImage": "",
+    "backdropFilter": "blur(12px)",
+    "color": "#0F1D1E",
+    "padding": "0px",
+    "borderRadius": "0px",
+    "border": "",
+    "boxShadow": "none",
+    "fontSize": "17px",
+    "fontWeight": "400",
+    "height": "73px"
+  },
+  "chips": [
+    {
+      "label": "1",
+      "background": "#1D3A3C",
+      "color": "#D4F0C9",
+      "padding": "0px",
+      "borderRadius": "3.35544e+07px",
+      "border": "0px solid rgb(212, 240, 201)",
+      "boxShadow": "none",
+      "fontSize": "14px",
+      "fontWeight": "700",
+      "height": "32px"
+    }
+  ],
+  "statCells": [],
+  "tabs": [],
+  "backgrounds": [
+    {
+      "value": "linear-gradient(rgba(15, 29, 30, 0) 25%, rgba(15, 29, 30, 0.62) 58%, rgba(15, 29, 30, 0.9) 100%)",
+      "area": 535087
+    }
+  ],
+  "glass": [
+    {
+      "backdropFilter": "blur(12px)",
+      "background": "oklab(0.967788 -0.00312081 0.00320095 / 0.85)",
+      "border": "",
+      "borderRadius": "0px",
+      "boxShadow": "",
+      "area": 140160
+    }
+  ]
+}

@@ -3,11 +3,11 @@ import { forSale, project, sqftRange } from "@/content/project";
 import hero from "@/content/hero.json";
 import { fill, formatNumber } from "@/lib/i18n";
 import Picture from "./Picture";
+import PlateStrip from "./PlateStrip";
 import { Arrow } from "./icons";
 
 export default function Hero({ t }: { t: Dictionary }) {
   const n = (v: number) => formatNumber(t.locale, v);
-  const count = forSale.length;
   const a40 = project.driveTimes.find((d) => d.key === "a40")!.min;
 
   return (
@@ -16,8 +16,7 @@ export default function Hero({ t }: { t: Dictionary }) {
         <p className="eyebrow text-steel">{t.hero.eyebrow}</p>
         <div className="mt-5 grid gap-7 lg:grid-cols-12 lg:items-end lg:gap-12">
           <h1 id="hero-title" className="display text-[2.55rem] sm:text-[3.7rem] lg:col-span-8 lg:text-[4.75rem] xl:text-[5.1rem]">
-            <span className="hero-count">{count}</span> {count === 1 ? t.hero.count.one : t.hero.count.other}{" "}
-            {t.hero.rest}
+            {t.hero.title}
           </h1>
           <div className="lg:col-span-4 lg:pb-1.5">
             <p className="lead text-steel">
@@ -37,7 +36,7 @@ export default function Hero({ t }: { t: Dictionary }) {
       </div>
 
       <div className="mx-auto mt-10 max-w-[90rem] sm:mt-12 sm:px-6 lg:px-8">
-        <HeroAerial t={t} count={count} />
+        <HeroAerial t={t} />
         <Plates t={t} />
       </div>
     </section>
@@ -48,7 +47,7 @@ export default function Hero({ t }: { t: Dictionary }) {
  * The aerial is cropped with object-fit: cover semantics, but done by hand: the inner frame always keeps
  * the photo's exact aspect ratio, so the SVG outline and the pin stay locked to the building at every width.
  */
-function HeroAerial({ t, count }: { t: Dictionary; count: number }) {
+function HeroAerial({ t }: { t: Dictionary }) {
   const { width: W, height: H, outline, pin } = hero;
   const points = outline.map((p) => p.join(",")).join(" ");
   const shade = `M0 0H${W}V${H}H0Z M${outline.map((p) => p.join(" ")).join(" L")}Z`;
@@ -87,7 +86,7 @@ function HeroAerial({ t, count }: { t: Dictionary; count: number }) {
               {t.hero.pinTitle}
             </span>
             <span className="eyebrow mt-0.5 block !text-[0.625rem] text-steel sm:!text-[0.6875rem]">
-              {fill(t.hero.pinDetail, { n: count })}
+              {t.hero.pinDetail}
             </span>
           </span>
         </div>
@@ -96,19 +95,33 @@ function HeroAerial({ t, count }: { t: Dictionary; count: number }) {
   );
 }
 
-/** Civic-number plates: the five addresses for sale, set like the numbers painted over each door. */
+/** Civic-number plates: every address for sale, set like the numbers painted over each door. */
 function Plates({ t }: { t: Dictionary }) {
   const n = (v: number) => formatNumber(t.locale, v);
   return (
-    <div className="relative z-10 mx-4 -mt-8 sm:mx-8 sm:-mt-14 lg:mx-14">
-      <h2 className="sr-only">{t.hero.platesLabel}</h2>
-      <ul className="grid grid-cols-2 gap-px overflow-hidden rounded-xl bg-white/12 shadow-[0_28px_60px_-28px_rgba(15,29,30,.7)] sm:grid-cols-3 lg:grid-cols-[repeat(5,1fr)_1.2fr]">
-        {forSale.map((u) => (
-          <li key={u.id} className="bg-slate">
+    <PlateStrip label={t.hero.platesLabel} hint={t.hero.platesHint} prev={t.gallery.prev} next={t.gallery.next}
+      price={
+        <a
+          href="#contact"
+          data-intent="prices"
+          className="flex h-full items-center justify-between gap-4 bg-mint p-4 text-slate transition-colors hover:bg-white sm:flex-col sm:items-start sm:gap-6 sm:p-5"
+        >
+          <span className="eyebrow">{t.hero.price}</span>
+          <span className="h3 flex items-center gap-2 text-[1.05rem]">
+            {t.hero.priceCta}
+            <Arrow />
+          </span>
+        </a>
+      }
+    >
+      {forSale.map((u) => {
+        const area = u.sqft ? `${n(u.sqft)} ${t.units.sqft}` : t.hero.areaOnRequest;
+        return (
+          <li key={u.id} className="w-[44%] shrink-0 snap-start bg-slate sm:w-[31%] lg:w-[20%]">
             <a
               href="#units"
               data-unit={u.id}
-              aria-label={fill(t.hero.plateAria, { unit: u.civics.join(" + "), sqft: n(u.sqft) })}
+              aria-label={fill(t.hero.plateAria, { unit: u.civics.join(" + "), sqft: area })}
               className="group flex h-full flex-col justify-between gap-6 p-4 transition-colors hover:bg-slate-2 sm:p-5"
             >
               <span className="flex items-baseline gap-1.5">
@@ -116,30 +129,15 @@ function Plates({ t }: { t: Dictionary }) {
                 {u.civics.length > 1 && <span className="mono text-xs text-mint/70">+{u.civics[1]}</span>}
               </span>
               <span className="flex items-center justify-between gap-2">
-                <span className="mono text-sm text-white/75">
-                  {n(u.sqft)} {t.units.sqft}
-                </span>
+                <span className="mono text-sm text-white/75">{area}</span>
                 <span aria-hidden className="text-mint/0 transition-colors group-hover:text-mint">
                   <Arrow className="h-3.5 w-3.5 rotate-90" />
                 </span>
               </span>
             </a>
           </li>
-        ))}
-        <li className="bg-mint">
-          <a
-            href="#contact"
-            data-intent="prices"
-            className="flex h-full flex-col justify-between gap-6 p-4 text-slate transition-colors hover:bg-white sm:p-5"
-          >
-            <span className="eyebrow">{t.hero.price}</span>
-            <span className="h3 flex items-center gap-2 text-[1.05rem]">
-              {t.hero.priceCta}
-              <Arrow />
-            </span>
-          </a>
-        </li>
-      </ul>
-    </div>
+        );
+      })}
+    </PlateStrip>
   );
 }

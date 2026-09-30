@@ -1,0 +1,207 @@
+[a] Aller au contenu
+[span] Boul-Industriel
+[span] Montreal
+[a] Bâtiment
+[a] Emplacement
+[a] Recevoir les prix
+[p] Condos industriels à vendre · Pointe-aux-Trembles, Montréal
+[h1] unités à vendre
+[h1] sur le boulevard Industriel.
+[p] Des locaux de 1 252 à 2 509 pi², chacun avec sa porte de garage 10' × 12', sa propre entrée électrique et sa salle de bain. À 3 minutes de l'autoroute 40.
+[a] Voir les unités
+[a] Recevoir les prix
+[span] 12650–12702, boul. Industriel
+[span] 24 unités · 5 à vendre
+[h2] Unités à vendre
+[span] 12652
+[span] 12700
+[span] 2 509
+[span] pi²
+[span] 12656
+[span] 1 252
+[span] pi²
+[span] 12658
+[span] 1 780
+[span] pi²
+[span] 12660
+[span] 1 776
+[span] pi²
+[span] 12696
+[span] 1 259
+[span] pi²
+[span] Prix sur demande
+[span] Demander les prix
+[p] Plan du bâtiment
+[h2] Choisissez votre unité.
+[p] Le bâtiment compte 24 unités, dos à dos sur un seul niveau. Les unités en surbrillance sont à vendre : survolez-en ou touchez-en une pour la retrouver dans la liste.
+[text] Boulevard Industriel
+[text] ≈ 490 pi
+[text] 70 pi
+[text] 12680
+[text] 12672
+[text] 12682
+[text] 12670
+[text] 12684
+[text] 12668
+[text] 12686
+[text] 12666
+[text] 12688
+[text] 12664
+[text] 12690
+[text] 12662
+[text] 12692
+[text] 12660
+[text] 1 776 pi²
+[text] 12694
+[text] 12658
+[text] 1 780 pi²
+[text] 12696
+[text] 1 259 pi²
+[text] 12656
+[text] 1 252 pi²
+[text] 12698
+[text] 12654
+[text] 12700
+[text] 2 509 pi²
+[text] 12652
+[text] 12702
+[text] 12650
+[li] À vendre
+[li] Non disponible
+[li] Salle électrique
+[h3] Unités à vendre
+[p] Plan schématique, à l'échelle approximative. Disponibilités au 8 septembre 2026.
+[span] 12652
+[span] 12700
+[p] 2 509
+[span] pi²
+[p] Unité traversante : portes des deux côtés
+[button] Demander le prix
+[span] 12656
+[p] 1 252
+[span] pi²
+[p] Porte de garage 10' × 12' et porte piétonne
+[button] Demander le prix
+[span] 12658
+[p] 1 780
+[span] pi²
+[p] Porte de garage 10' × 12' et porte piétonne
+[button] Demander le prix
+[span] 12660
+[p] 1 776
+[span] pi²
+[p] Porte de garage 10' × 12' et porte piétonne
+[button] Demander le prix
+[span] 12696
+[p] 1 259
+[span] pi²
+[p] Porte de garage 10' × 12' et porte piétonne
+[button] Demander le prix
+[p] Dans chaque unité
+[h2] Un atelier complet, pas une coquille vide.
+[p] Le bâtiment existe déjà : pas d'attente de construction. Chaque unité a son entrée, ses services et sa salle de bain.
+[h3] Porte de garage 10' × 12'
+[p] Assez grande pour faire entrer un camion cube directement dans l'atelier.
+[h3] Porte piétonne indépendante
+[p] Clients et employés entrent sans ouvrir la porte de garage.
+[h3] Entrée électrique indépendante
+[p] 110 V, 220 V et 550 V, pour l'outillage comme pour l'éclairage.
+[h3] Salle de bain et chauffe‑eau
+[p] Une salle de bain privée et un chauffe-eau de 15 gallons dans chaque unité.
+[h3] Aire ouverte, lumière naturelle
+[p] Un plancher dégagé et des fenêtres en façade.
+[text] Aire ouverte
+[text] 10 pi
+[span] Unité type, vue en plan
+[span] Schéma indicatif. L'aménagement varie d'une unité à l'autre.
+[p] Acheter plutôt que louer
+[h2] Arrêtez de payer le loyer de quelqu'un d'autre.
+[h3] Vos paiements bâtissent votre avoir
+[p] Chaque versement hypothécaire ajoute de la valeur au bilan de votre entreprise au lieu d'enrichir un propriétaire.
+[h3] Vos coûts restent prévisibles
+[p] Plus de hausse imposée au renouvellement du bail. Vous planifiez sur 10 ou 20 ans, pas sur 3.
+[h3] Vous aménagez à votre façon
+[p] Établis, rayonnages, mezzanine, bureau : vous décidez sans demander la permission.
+[h3] Un actif rare sur l'île
+[p] Les petits locaux industriels à vendre se font rares à Montréal. Une unité bien située se revend ou se loue facilement.
+[p] Le bâtiment
+[h2] 24 unités sur un seul niveau.
+[p] Un bâtiment industriel de 32 850 pi² construit en 1989 sur un terrain de 2,2 acres, avec du stationnement tout autour.
+[dt] Superficie du bâtiment
+[dd] 32 850 pi²
+[dt] Unités
+[dd] 24, sur un seul niveau
+[dt] Dimensions
+[dd] ≈ 490 × 70 pi
+[dt] Construction
+[dd] 1989
+[dt] Terrain
+[dd] 2,2 acres
+[dt] Stationnement
+[dd] 3,41 cases / 1 000 pi²
+[dt] Zonage
+[dd] I269
+[dt] Transport en commun
+[dd] Ligne d'autobus à proximité
+[p] Photos
+[h2] Le bâtiment et son secteur.
+[p] Emplacement
+[h2] À 3 minutes de l'autoroute 40.
+[p] Le bâtiment est dans le secteur industriel de Pointe-aux-Trembles, dans l'est de Montréal : accès rapide aux autoroutes 40 et 25, commerces et services à proximité, et une main-d'œuvre qui habite le quartier.
+[h3] Temps de route depuis le bâtiment
+[span] Autoroute 40
+[span] min
+[span] Autoroute 25 (échangeur Anjou)
+[span] min
+[span] Repentigny
+[span] min
+[span] Rive-Sud, par le tunnel
+[span] min
+[span] Laval
+[span] min
+[span] Centre-ville de Montréal
+[span] min
+[span] Aéroport Montréal-Trudeau
+[span] min
+[p] Temps approximatifs, hors heures de pointe.
+[span] 12650–12702, boulevard Industriel
+Pointe-aux-Trembles, Montréal (Québec) H1A 3V2
+[button] Afficher la carte
+[a] Ouvrir dans Google Maps
+[p] Contact
+[h2] Recevez les prix et visitez les unités.
+[p] Laissez vos coordonnées : on vous envoie les prix et les détails des unités qui vous intéressent, puis on planifie une visite.
+[p] Par téléphone
+[span] 514 736-0511
+[p] Équipe des ventes
+[label] Nom complet
+[label] Entreprise (facultatif)
+[label] Courriel
+[label] Téléphone
+[label] Unité qui vous intéresse
+[option] Pas encore décidé
+[option] 12652 + 12700 · 2 509 pi²
+[option] 12656 · 1 252 pi²
+[option] 12658 · 1 780 pi²
+[option] 12660 · 1 776 pi²
+[option] 12696 · 1 259 pi²
+[legend] Vous souhaitez
+[label] Recevoir les prix
+[label] Visiter
+[label] Poser une question
+[label] Message (facultatif)
+[label] Website
+[p] En envoyant ce formulaire, vous acceptez d'être contacté au sujet de ces unités.
+[button] Envoyer ma demande
+[span] Boul-Industriel
+[span] Montreal
+[p] 12650–12702
+[p] boulevard Industriel
+[p] Pointe-aux-Trembles
+[p] Montréal
+[p] Superficies, plans et disponibilités sont fournis à titre indicatif et peuvent changer sans préavis. Ce site ne constitue pas une offre de vente.
+[span] Boul-Industriel-Montreal
+[span] Tous droits réservés.
+[span] Site par Davnoot
+[a] Appeler
+[a] Recevoir les prix

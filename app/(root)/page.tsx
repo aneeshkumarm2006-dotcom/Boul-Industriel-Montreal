@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   alternates: { languages: { "fr-CA": "/fr/", "en-CA": "/en/" } },
 };
 
-// Static export can't redirect on the server: send French browsers to /fr/, everyone else to /en/.
-const pickLanguage = `(function(){var l=(navigator.languages&&navigator.languages[0])||navigator.language||"fr";location.replace(/^fr/i.test(l)?"/fr/":"/en/")})();`;
+// Static export can't redirect on the server. The site opens in French; the FR / EN toggle switches to English.
+const pickLanguage = `location.replace("/fr/"+location.hash);`;
 
 export default function RootPage() {
   return (

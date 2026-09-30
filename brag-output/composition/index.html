@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <title>Boul-Industriel-Montreal — brag</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <script src="assets/audio-rms.js"></script>
+    <style>
+      @font-face {
+        font-family: "Archivo";
+        font-style: normal;
+        font-weight: 100 900;
+        font-stretch: 62% 125%;
+        font-display: block;
+        src: url(assets/fonts/k3kQo8UDI-1M0wlSfdnoLg.woff2) format("woff2");
+      }
+      @font-face {
+        font-family: "Overpass Mono";
+        font-style: normal;
+        font-weight: 300 700;
+        font-display: block;
+        src: url(assets/fonts/_Xmq-H86tzKDdAPa-KPQZ-AC1i-0tg.woff2) format("woff2");
+      }
+      :root {
+        --paper: #f3f5f2;
+        --paper-2: #e7ece8;
+        --ink: #0f1d1e;
+        --slate: #1d3a3c;
+        --slate-2: #26484a;
+        --slate-3: #315759;
+        --teal: #557a7c;
+        --mint: #d4f0c9;
+        --mint-2: #bfe6b1;
+        --steel: #56666a;
+        --line: #cbd5d1;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--slate); }
+      body { font-family: "Archivo", ui-sans-serif, system-ui, sans-serif; color: #fff; -webkit-font-smoothing: antialiased; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--slate); }
+      .clip { position: absolute; inset: 0; }
+      .inner { position: absolute; inset: 0; }
+      .abs { position: absolute; }
+      .mono { font-family: "Overpass Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+      .eyebrow { font-family: "Overpass Mono", ui-monospace, monospace; font-size: 24px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+      .display { font-variation-settings: "wdth" 116; font-weight: 720; letter-spacing: -0.035em; line-height: 0.98; }
+      .civic { font-variation-settings: "wdth" 125; font-weight: 800; letter-spacing: -0.01em; font-variant-numeric: tabular-nums lining-nums; line-height: 1; }
+      .h2 { font-variation-settings: "wdth" 112; font-weight: 700; letter-spacing: -0.03em; line-height: 1.02; }
+
+      /* ---------- background layers (S2-S4) ---------- */
+      #bg-grid { position: absolute; left: 0; top: 0; width: 2016px; height: 1080px; }
+      #bg-glow { position: absolute; left: 400px; top: -160px; width: 1800px; height: 1800px; border-radius: 50%; background: radial-gradient(closest-side, rgba(212,240,201,0.22), rgba(212,240,201,0) 100%); opacity: 0.4; }
+
+      /* ---------- S1 ---------- */
+      #photo { position: absolute; left: -350px; top: 146px; width: 2595px; height: 990px; transform-origin: 1350px 478px; }
+      #photo-img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; }
+      #outline-svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+      #pin { position: absolute; left: 1350px; top: 478px; width: 0; height: 0; }
+      #pin-dot { position: absolute; left: -15px; top: -15px; width: 30px; height: 30px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 0 9px rgba(15, 29, 30, 0.28); }
+      #pin-line { position: absolute; left: -1px; top: -112px; width: 2px; height: 112px; background: rgba(255, 255, 255, 0.92); transform-origin: 50% 100%; }
+      #pin-card { position: absolute; left: 0; top: -228px; width: 540px; height: 118px; background: var(--paper); border-radius: 12px; padding: 20px 26px; color: var(--ink); box-shadow: 0 24px 56px -22px rgba(15, 29, 30, 0.7); }
+      #pin-card .t { display: block; font-size: 32px; line-height: 1.15; font-weight: 680; font-variation-settings: "wdth" 108; white-space: nowrap; }
+      #pin-card .d { display: block; margin-top: 8px; font-family: "Overpass Mono", monospace; font-size: 22px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--steel); white-space: nowrap; }
+      #band { position: absolute; left: 0; top: 0; width: 1920px; height: 360px; background: var(--paper); }
+      #band-eyebrow { left: 96px; top: 50px; color: var(--steel); }
+      #h1 { position: absolute; left: 96px; top: 96px; color: var(--ink); font-size: 108px; }
+      #h1 .ln { display: block; white-space: nowrap; }
+      #h1-words { display: inline-block; margin-left: 0.2em; }
+      #h1-l1 { height: 106px; }
+      #tile { display: inline-block; min-width: 0.84em; padding: 0.07em 0.13em 0.03em; margin-right: 0.06em; border-radius: 0.1em; background: var(--slate); color: var(--mint); font-variation-settings: "wdth" 125; font-weight: 800; line-height: 0.9; text-align: center; vertical-align: baseline; }
+      #band-logo { position: absolute; right: 96px; top: 44px; display: flex; align-items: center; gap: 16px; }
+      .logo-word { display: flex; flex-direction: column; line-height: 1; }
+      .logo-word .a { font-size: 34px; font-weight: 760; letter-spacing: -0.02em; font-variation-settings: "wdth" 112; }
+      .logo-word .b { margin-top: 8px; font-family: "Overpass Mono", monospace; font-size: 15px; letter-spacing: 0.3em; text-transform: uppercase; }
+
+      /* ---------- S2 ---------- */
+      #s2-eyebrow { left: 96px; top: 58px; color: rgba(212, 240, 201, 0.82); }
+      #s2-title { position: absolute; left: 96px; top: 96px; font-size: 100px; color: #fff; white-space: nowrap; }
+      #s2-logo { position: absolute; right: 96px; top: 60px; display: flex; align-items: center; gap: 14px; }
+      #plan-wrap { position: absolute; left: 96px; top: 236px; width: 1728px; height: 434px; }
+      .pl-civic { font-family: "Archivo", sans-serif; font-variation-settings: "wdth" 125; font-weight: 800; font-size: 9px; letter-spacing: -0.01em; font-variant-numeric: tabular-nums lining-nums; }
+      .pl-area { font-family: "Overpass Mono", monospace; font-weight: 600; font-size: 6px; font-variant-numeric: tabular-nums; }
+      .pl-code { font-family: "Overpass Mono", monospace; font-weight: 500; font-size: 5.2px; }
+      .pl-anno { font-family: "Overpass Mono", monospace; font-weight: 500; font-size: 6.2px; letter-spacing: 0.1em; }
+      #plan-legend { position: absolute; left: 96px; top: 692px; width: 1728px; height: 34px; display: flex; align-items: center; justify-content: space-between; font-family: "Overpass Mono", monospace; font-size: 21px; letter-spacing: 0.04em; color: rgba(255, 255, 255, 0.72); }
+      #plan-legend .k { display: inline-flex; align-items: center; gap: 12px; margin-right: 34px; }
+      #plan-legend .sw { display: inline-block; width: 26px; height: 16px; border-radius: 2px; }
+      #dir { position: absolute; left: 96px; top: 772px; width: 1728px; border-top: 1.5px solid rgba(255, 255, 255, 0.16); }
+      .row { position: relative; display: grid; grid-template-columns: 290px 250px 1fr 300px; align-items: center; height: 50px; padding-left: 22px; border-bottom: 1.5px solid rgba(255, 255, 255, 0.16); }
+      .row .bar { position: absolute; left: 0; top: 0; width: 6px; height: 100%; background: var(--mint); transform-origin: 50% 50%; opacity: 0; }
+      .row .n { font-size: 34px; color: var(--mint); display: flex; align-items: baseline; gap: 10px; }
+      .row .n .p { font-family: "Overpass Mono", monospace; font-size: 22px; font-weight: 500; color: rgba(212, 240, 201, 0.8); }
+      .row .a { font-family: "Overpass Mono", monospace; font-size: 27px; font-weight: 500; color: #fff; }
+      .row .acc { font-size: 23px; font-weight: 450; color: rgba(255, 255, 255, 0.66); white-space: nowrap; }
+      .row .btn { justify-self: end; display: inline-flex; align-items: center; gap: 12px; height: 40px; padding: 0 20px; border-radius: 8px; background: var(--mint); color: var(--slate); font-size: 22px; font-weight: 650; font-variation-settings: "wdth" 104; white-space: nowrap; }
+      .row .btn svg { width: 20px; height: 20px; }
+      #s2-note { position: absolute; right: 96px; top: 693px; font-family: "Overpass Mono", monospace; font-size: 20px; letter-spacing: 0.02em; color: rgba(255, 255, 255, 0.66); white-space: nowrap; }
+
+      /* ---------- S3 ---------- */
+      #s3-eyebrow { left: 96px; top: 176px; color: rgba(212, 240, 201, 0.82); }
+      #s3-title { position: absolute; left: 96px; top: 222px; width: 740px; font-size: 88px; color: #fff; }
+      #s3-title .ln { display: block; white-space: nowrap; }
+      #s3-lead { position: absolute; left: 96px; top: 560px; width: 660px; font-size: 29px; line-height: 1.5; color: rgba(255, 255, 255, 0.78); }
+      #s3-logo { position: absolute; right: 96px; top: 58px; display: flex; align-items: center; gap: 14px; }
+      #card { position: absolute; left: 880px; top: 140px; width: 944px; height: 800px; background: var(--paper); border-radius: 20px; color: var(--ink); box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.55); }
+      .f-label { position: absolute; font-size: 22px; font-weight: 600; color: var(--ink); white-space: nowrap; }
+      .f-box { position: absolute; height: 64px; border: 1.5px solid var(--line); border-radius: 10px; background: #fff; }
+      #sel-box { position: absolute; left: 48px; top: 320px; width: 848px; height: 64px; border: 1.5px solid var(--line); border-radius: 10px; background: #fff; }
+      #sel-old, #sel-new { position: absolute; left: 20px; top: 0; height: 100%; display: flex; align-items: center; font-size: 27px; white-space: nowrap; }
+      #sel-old { color: var(--ink); }
+      #sel-new { color: var(--ink); font-weight: 600; opacity: 0; }
+      #sel-chev { position: absolute; right: 18px; top: 22px; width: 22px; height: 22px; }
+      #seg { position: absolute; left: 48px; top: 440px; width: 848px; height: 64px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; border: 1.5px solid var(--line); border-radius: 10px; background: #fff; }
+      #seg .o { display: grid; place-items: center; border-radius: 7px; font-size: 24px; font-weight: 600; color: var(--steel); }
+      #seg .o.on { background: var(--slate); color: #fff; }
+      #consent { position: absolute; left: 48px; top: 692px; width: 500px; font-size: 19px; line-height: 1.4; color: var(--steel); }
+      #submit { position: absolute; left: 596px; top: 690px; width: 300px; height: 60px; display: grid; place-items: center; border-radius: 8px; background: var(--slate); color: #fff; font-size: 24px; font-weight: 650; font-variation-settings: "wdth" 104; }
+
+      /* ---------- S4 ---------- */
+      #s4-line { position: absolute; left: 96px; top: 340px; width: 1728px; font-size: 136px; color: #fff; }
+      #s4-line .ln { display: block; white-space: nowrap; }
+      #lockup { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+      #lock-row { position: absolute; left: 0; top: 330px; width: 1920px; display: flex; align-items: center; justify-content: center; gap: 44px; }
+      #lock-word { display: flex; flex-direction: column; line-height: 1; }
+      #lock-word .a { font-size: 132px; font-weight: 760; letter-spacing: -0.03em; font-variation-settings: "wdth" 112; color: #fff; }
+      #lock-word .b { margin-top: 18px; font-family: "Overpass Mono", monospace; font-size: 34px; letter-spacing: 0.42em; text-transform: uppercase; color: rgba(255, 255, 255, 0.72); }
+      #lock-rule { position: absolute; left: 360px; top: 640px; width: 1200px; height: 3px; background: var(--mint); transform-origin: 0 50%; }
+      #lock-sub { position: absolute; left: 0; top: 676px; width: 1920px; text-align: center; font-family: "Overpass Mono", monospace; font-size: 30px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(212, 240, 201, 0.9); white-space: nowrap; }
+      #lock-glow { position: absolute; left: 460px; top: 190px; width: 1000px; height: 700px; border-radius: 50%; background: radial-gradient(closest-side, rgba(212,240,201,0.20), rgba(212,240,201,0) 100%); opacity: 0.3; }
+
+      /* ---------- cursor ---------- */
+      #cursor { position: absolute; left: 0; top: 0; width: 46px; height: 46px; opacity: 0; z-index: 60; filter: drop-shadow(0 4px 6px rgba(0,0,0,.35)); transform-origin: 9px 5px; }
+      #ripple { position: absolute; left: -40px; top: -40px; width: 80px; height: 80px; border-radius: 50%; border: 4px solid var(--mint); opacity: 0; z-index: 59; }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-wx9m" id="root" data-composition-id="main" data-start="0" data-duration="22" data-width="1920" data-height="1080">
+
+      <!-- Persistent background (not a clip): drafting grid + audio-reactive glow -->
+      <div data-hf-id="hf-qhj9" id="bg-layer" class="abs" style="left:0;top:0;width:1920px;height:1080px;overflow:hidden">
+        <div data-hf-id="hf-k3n9" id="bg-glow" data-layout-allow-overflow=""></div>
+        <svg data-hf-id="hf-rgdk" id="bg-grid" data-layout-allow-overflow="" viewBox="0 0 2016 1080" xmlns="http://www.w3.org/2000/svg">
+          <defs data-hf-id="hf-mh0t"><pattern data-hf-id="hf-xfyo" id="gridp" width="96" height="96" patternUnits="userSpaceOnUse"><path data-hf-id="hf-qoc3" d="M96 0H0V96" fill="none" stroke="#d4f0c9" stroke-opacity="0.10" stroke-width="1.5" /></pattern></defs>
+          <rect data-hf-id="hf-50uc" width="2016" height="1080" fill="url(#gridp)" />
+        </svg>
+      </div>
+
+      <!-- ============ SCENE 1: le batiment se dessine ============ -->
+      <section data-hf-id="hf-xabg" id="s1" class="clip" data-start="0" data-duration="5" data-track-index="1">
+        <div data-hf-id="hf-efo9" id="s1-inner" class="inner">
+          <div data-hf-id="hf-l0z7" id="photo">
+            <img data-hf-id="hf-ozi8" id="photo-img" src="assets/img/hero-aerial-1.5x.jpg" alt="Vue aérienne du bâtiment au 12650–12702, boulevard Industriel, encadré en blanc au centre de la photo.">
+            <svg data-hf-id="hf-798g" id="outline-svg" viewBox="0 0 1730 660" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs data-hf-id="hf-vl9d"><filter data-hf-id="hf-61dz" id="blur8" x="-6%" y="-10%" width="112%" height="120%"><fegaussianblur data-hf-id="hf-5pp5" stdDeviation="7" /></filter></defs>
+              <path data-hf-id="hf-vc8o" id="shade" d="M0 0H1730V660H0Z M1107 196 L1249 214 L1247 257 L809 477 L809 505 L714 555 L489 485 L482 422 L584 385 L598 389Z" fill-rule="evenodd" fill="#0f1d1e" fill-opacity="0.44" />
+              <polygon data-hf-id="hf-n4fq" id="fill-poly" points="1107,196 1249,214 1247,257 809,477 809,505 714,555 489,485 482,422 584,385 598,389" fill="#d4f0c9" fill-opacity="0.18" />
+              <polygon data-hf-id="hf-v1eo" id="glow-poly" points="1107,196 1249,214 1247,257 809,477 809,505 714,555 489,485 482,422 584,385 598,389" fill="none" stroke="#d4f0c9" stroke-width="12" stroke-linejoin="round" filter="url(#blur8)" opacity="0" />
+              <polygon data-hf-id="hf-0zt5" id="draw-poly" points="1107,196 1249,214 1247,257 809,477 809,505 714,555 489,485 482,422 584,385 598,389" fill="none" stroke="#ffffff" stroke-width="4.6" stroke-linejoin="round" />
+            </svg>
+            <div data-hf-id="hf-z69u" id="pin">
+              <div data-hf-id="hf-a2sh" id="pin-line"></div>
+              <div data-hf-id="hf-v5pw" id="pin-dot"></div>
+              <div data-hf-id="hf-4rqx" id="pin-card"><span data-hf-id="hf-qsht" class="t">12650–12702, boul. Industriel</span><span data-hf-id="hf-2z77" class="d">24 unités · 5 à vendre</span></div>
+            </div>
+          </div>
+
+          <div data-hf-id="hf-36fc" id="band">
+            <div data-hf-id="hf-gfos" id="band-eyebrow" class="abs eyebrow">Condos industriels à vendre · Pointe-aux-Trembles, Montréal</div>
+            <div data-hf-id="hf-wfy8" id="band-logo">
+              <svg data-hf-id="hf-nj0r" viewBox="0 0 32 32" width="60" height="60" aria-hidden="true"><rect data-hf-id="hf-qb8f" width="32" height="32" rx="7" fill="#1d3a3c" /><path data-hf-id="hf-aaqi" d="M6 10.5h20v11H6z" fill="none" stroke="#d4f0c9" stroke-width="1.6" /><path data-hf-id="hf-i6yl" d="M6 16h20M11 10.5v11M16 10.5v11M21 10.5v11" stroke="#d4f0c9" stroke-width="1" stroke-opacity=".55" /><path data-hf-id="hf-0v5p" d="M16 16h5v5.5h-5z" fill="#d4f0c9" /></svg>
+              <div data-hf-id="hf-8myh" class="logo-word" style="color:var(--ink)"><span data-hf-id="hf-bdyk" class="a">Boul-Industriel</span><span data-hf-id="hf-0e8t" class="b" style="color:var(--steel)">Montreal</span></div>
+            </div>
+            <h1 data-hf-id="hf-l1kf" id="h1" class="display">
+              <span data-hf-id="hf-2hyo" id="h1-l1" class="ln"><span data-hf-id="hf-5945" id="tile">5</span><span data-hf-id="hf-jhl1" id="h1-words">unités à vendre</span></span>
+              <span data-hf-id="hf-imbf" id="h1-l2" class="ln">sur le boulevard Industriel.</span>
+            </h1>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SCENE 2: choisissez votre unite ============ -->
+      <section data-hf-id="hf-l6eg" id="s2" class="clip" data-start="4.39" data-duration="7.86" data-track-index="2">
+        <div data-hf-id="hf-0mm6" id="s2-inner" class="inner">
+          <div data-hf-id="hf-1z6v" id="s2-eyebrow" class="abs eyebrow">Plan du bâtiment</div>
+          <h2 data-hf-id="hf-srd8" id="s2-title" class="h2">Choisissez votre unité.</h2>
+          <div data-hf-id="hf-idpq" id="s2-logo">
+            <svg data-hf-id="hf-z8nh" viewBox="0 0 32 32" width="52" height="52" aria-hidden="true"><rect data-hf-id="hf-6bhb" width="32" height="32" rx="7" fill="#26484a" /><path data-hf-id="hf-igvy" d="M6 10.5h20v11H6z" fill="none" stroke="#d4f0c9" stroke-width="1.6" /><path data-hf-id="hf-ohqp" d="M6 16h20M11 10.5v11M16 10.5v11M21 10.5v11" stroke="#d4f0c9" stroke-width="1" stroke-opacity=".55" /><path data-hf-id="hf-9kgh" d="M16 16h5v5.5h-5z" fill="#d4f0c9" /></svg>
+            <div data-hf-id="hf-6o06" class="logo-word"><span data-hf-id="hf-dg4i" class="a" style="font-size:30px">Boul-Industriel</span><span data-hf-id="hf-xvus" class="b" style="color:rgba(255,255,255,.72)">Montreal</span></div>
+          </div>
+
+          <div data-hf-id="hf-c4v1" id="plan-wrap">
+<svg data-hf-id="hf-j4pn" id="plan" xmlns="http://www.w3.org/2000/svg" viewBox="-34 -38 549.5 138" width="1728" height="433.97" style="position:absolute;left:0;top:0;overflow:visible"><defs data-hf-id="hf-ws6g"><pattern data-hf-id="hf-qm9c" id="hatch" width="2.2" height="2.2" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line data-hf-id="hf-k7sd" x1="0" y1="0" x2="0" y2="2.2" stroke="#d4f0c9" stroke-opacity=".45" stroke-width=".5" /></pattern></defs><g data-hf-id="hf-fv8f" id="plan-anno"><line data-hf-id="hf-bbpt" x1="-17" y1="-30" x2="-17" y2="86" stroke="#d4f0c9" stroke-opacity=".45" stroke-dasharray="6 5" stroke-width="1.8" vector-effect="non-scaling-stroke" /><text data-hf-id="hf-x4sc" x="-25.5" y="35" transform="rotate(-90 -25.5 35)" text-anchor="middle" dominant-baseline="middle" class="pl-anno" fill="#d4f0c9" fill-opacity=".8">BOULEVARD INDUSTRIEL</text><g data-hf-id="hf-8pv3" stroke="#d4f0c9" stroke-opacity=".6" stroke-width="1.8" vector-effect="non-scaling-stroke"><line data-hf-id="hf-36tw" x1="0" y1="-14" x2="0" y2="-29" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-l7m6" x1="489.5" y1="-3" x2="489.5" y2="-29" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-n8nu" x1="0" y1="-25" x2="489.5" y2="-25" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-jjrk" x1="-1.6" y1="-23.4" x2="1.6" y2="-26.6" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-bzny" x1="487.9" y1="-23.4" x2="491.1" y2="-26.6" vector-effect="non-scaling-stroke" /></g><rect data-hf-id="hf-5y6u" x="227.75" y="-29.5" width="34" height="9" fill="#1d3a3c" /><text data-hf-id="hf-cxsn" x="244.75" y="-25" text-anchor="middle" dominant-baseline="central" class="pl-anno" fill="#d4f0c9" fill-opacity=".9">~ 490 PI</text><g data-hf-id="hf-rpcf" stroke="#d4f0c9" stroke-opacity=".6" stroke-width="1.8" vector-effect="non-scaling-stroke"><line data-hf-id="hf-oiei" x1="492.5" y1="0" x2="506.5" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-mt3m" x1="492.5" y1="70" x2="506.5" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-i9mt" x1="502.5" y1="0" x2="502.5" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-3g7n" x1="500.9" y1="1.6" x2="504.1" y2="-1.6" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-3ukk" x1="500.9" y1="71.6" x2="504.1" y2="68.4" vector-effect="non-scaling-stroke" /></g><rect data-hf-id="hf-lno5" x="497.5" y="23" width="10" height="24" fill="#1d3a3c" /><text data-hf-id="hf-rpbt" x="502.5" y="35" transform="rotate(90 502.5 35)" text-anchor="middle" dominant-baseline="central" class="pl-anno" fill="#d4f0c9" fill-opacity=".9">70 PI</text></g><g data-hf-id="hf-u4xj" id="plan-sale-fills"><rect data-hf-id="hf-vas5" id="u-12660" class="sale-fill" x="230.6" y="35" width="56.5" height="35" fill="#d4f0c9" fill-opacity="0" /><rect data-hf-id="hf-hv0z" id="u-12658" class="sale-fill" x="291.8" y="35" width="56.5" height="35" fill="#d4f0c9" fill-opacity="0" /><rect data-hf-id="hf-pbn2" id="u-12696" class="sale-fill" x="348.3" y="0" width="38.4" height="35" fill="#d4f0c9" fill-opacity="0" /><rect data-hf-id="hf-pgk6" id="u-12656" class="sale-fill" x="348.3" y="35" width="38.4" height="35" fill="#d4f0c9" fill-opacity="0" /><rect data-hf-id="hf-5l34" id="u-12652" class="sale-fill" x="423.7" y="0" width="37" height="70" fill="#d4f0c9" fill-opacity="0" /></g><g data-hf-id="hf-j3o3" id="plan-hatch"><rect data-hf-id="hf-vwtz" x="287.1" y="0" width="4.7" height="70" fill="url(#hatch)" /></g><g data-hf-id="hf-uoho" id="plan-thin" stroke="#d4f0c9" stroke-opacity=".55" stroke-width="1.8"><line data-hf-id="hf-1t2o" x1="52.2" y1="-10" x2="52.2" y2="80" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-cvur" x1="85.1" y1="0" x2="85.1" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-zpln" x1="114.5" y1="0" x2="114.5" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-lc4h" x1="145" y1="0" x2="145" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-vp6h" x1="188.1" y1="0" x2="188.1" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-exgv" x1="230.6" y1="0" x2="230.6" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-5ev5" x1="287.1" y1="0" x2="287.1" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-cy51" x1="291.8" y1="0" x2="291.8" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-yi5d" x1="348.3" y1="0" x2="348.3" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-71lx" x1="386.7" y1="0" x2="386.7" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-i2hd" x1="423.7" y1="0" x2="423.7" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-qpgj" x1="460.7" y1="0" x2="460.7" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-lk5j" x1="0" y1="35" x2="52.2" y2="35" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-pswd" x1="52.2" y1="35" x2="85.1" y2="35" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-72mz" x1="85.1" y1="35" x2="114.5" y2="35" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-nin3" x1="114.5" y1="35" x2="145" y2="35" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-2exu" x1="145" y1="35" x2="188.1" y2="35" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-3qe1" x1="188.1" y1="35" x2="230.6" y2="35" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-0gvb" x1="230.6" y1="35" x2="287.1" y2="35" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-nslw" x1="291.8" y1="35" x2="348.3" y2="35" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-vbnq" x1="348.3" y1="35" x2="386.7" y2="35" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-pbfc" x1="386.7" y1="35" x2="423.7" y2="35" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-ij5f" x1="460.7" y1="35" x2="489.5" y2="35" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-1hh7" id="plan-sale-outlines" fill="none" stroke="#1d3a3c" stroke-opacity=".7" stroke-width="2.4"><rect data-hf-id="hf-70qh" x="230.6" y="35" width="56.5" height="35" vector-effect="non-scaling-stroke" /><rect data-hf-id="hf-n3bi" x="291.8" y="35" width="56.5" height="35" vector-effect="non-scaling-stroke" /><rect data-hf-id="hf-9p6j" x="348.3" y="0" width="38.4" height="35" vector-effect="non-scaling-stroke" /><rect data-hf-id="hf-h7t1" x="348.3" y="35" width="38.4" height="35" vector-effect="non-scaling-stroke" /><rect data-hf-id="hf-jawl" x="423.7" y="0" width="37" height="70" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-dhp8" id="plan-walls" stroke="#d4f0c9" stroke-width="3.2" stroke-linecap="square"><line data-hf-id="hf-ps8b" x1="0" y1="-10" x2="3" y2="-10" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-14gl" x1="6" y1="-10" x2="38.2" y2="-10" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-h0ev" x1="48.2" y1="-10" x2="52.2" y2="-10" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-n74j" x1="0" y1="80" x2="3" y2="80" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-t2b9" x1="6" y1="80" x2="38.2" y2="80" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-ylf3" x1="48.2" y1="80" x2="52.2" y2="80" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-0yj5" x1="52.2" y1="-10" x2="55.2" y2="-10" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-yuum" x1="58.2" y1="-10" x2="71.1" y2="-10" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-rhhi" x1="81.1" y1="-10" x2="85.1" y2="-10" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-fv9d" x1="52.2" y1="80" x2="55.2" y2="80" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-up0i" x1="58.2" y1="80" x2="71.1" y2="80" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-hmsa" x1="81.1" y1="80" x2="85.1" y2="80" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-60so" x1="85.1" y1="-10" x2="85.1" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-q833" x1="85.1" y1="70" x2="85.1" y2="80" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-lhlf" x1="85.1" y1="0" x2="88.1" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-iwkl" x1="91.1" y1="0" x2="100.5" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-na6a" x1="110.5" y1="0" x2="114.5" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-peh3" x1="85.1" y1="70" x2="88.1" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-lbo9" x1="91.1" y1="70" x2="100.5" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-mmp6" x1="110.5" y1="70" x2="114.5" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-u529" x1="114.5" y1="0" x2="117.5" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-xue9" x1="120.5" y1="0" x2="131" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-tbbs" x1="141" y1="0" x2="145" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-v5xx" x1="114.5" y1="70" x2="117.5" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-55n9" x1="120.5" y1="70" x2="131" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-fbi0" x1="141" y1="70" x2="145" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-q5ad" x1="145" y1="0" x2="148" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-9vfe" x1="151" y1="0" x2="174.1" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-fv5k" x1="184.1" y1="0" x2="188.1" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-yam1" x1="145" y1="70" x2="148" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-dgxu" x1="151" y1="70" x2="174.1" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-7hso" x1="184.1" y1="70" x2="188.1" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-o1d2" x1="188.1" y1="0" x2="191.1" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-7xu8" x1="194.1" y1="0" x2="216.6" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-yhj9" x1="226.6" y1="0" x2="230.6" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-z24u" x1="188.1" y1="70" x2="191.1" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-4ufk" x1="194.1" y1="70" x2="216.6" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-a7nd" x1="226.6" y1="70" x2="230.6" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-gzy5" x1="230.6" y1="0" x2="233.6" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-t834" x1="236.6" y1="0" x2="273.1" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-bs14" x1="283.1" y1="0" x2="287.1" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-b0cx" x1="230.6" y1="70" x2="233.6" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-i2eo" x1="236.6" y1="70" x2="273.1" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-wqko" x1="283.1" y1="70" x2="287.1" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-5jug" x1="287.1" y1="0" x2="291.8" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-sqhk" x1="287.1" y1="70" x2="291.8" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-yypx" x1="291.8" y1="0" x2="294.8" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-s9jj" x1="297.8" y1="0" x2="334.3" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-a5yo" x1="344.3" y1="0" x2="348.3" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-uw55" x1="291.8" y1="70" x2="294.8" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-vnkz" x1="297.8" y1="70" x2="334.3" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-4k6o" x1="344.3" y1="70" x2="348.3" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-ooyy" x1="348.3" y1="0" x2="351.3" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-kbve" x1="354.3" y1="0" x2="372.7" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-zw64" x1="382.7" y1="0" x2="386.7" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-owlu" x1="348.3" y1="70" x2="351.3" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-02wy" x1="354.3" y1="70" x2="372.7" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-vk30" x1="382.7" y1="70" x2="386.7" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-hnfn" x1="386.7" y1="0" x2="389.7" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-jvmp" x1="392.7" y1="0" x2="409.7" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-6qk9" x1="419.7" y1="0" x2="423.7" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-78uv" x1="386.7" y1="70" x2="389.7" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-7nv9" x1="392.7" y1="70" x2="409.7" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-6elp" x1="419.7" y1="70" x2="423.7" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-tvkh" x1="423.7" y1="0" x2="426.7" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-5kap" x1="429.7" y1="0" x2="446.7" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-x6nb" x1="456.7" y1="0" x2="460.7" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-40ud" x1="423.7" y1="70" x2="426.7" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-axmd" x1="429.7" y1="70" x2="446.7" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-6hsr" x1="456.7" y1="70" x2="460.7" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-eda1" x1="460.7" y1="0" x2="463.7" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-tyo8" x1="466.7" y1="0" x2="475.5" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-9i8w" x1="485.5" y1="0" x2="489.5" y2="0" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-4enh" x1="460.7" y1="70" x2="463.7" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-e9ig" x1="466.7" y1="70" x2="475.5" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-r15s" x1="485.5" y1="70" x2="489.5" y2="70" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-1cpe" x1="0" y1="-10" x2="0" y2="80" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-jagx" x1="489.5" y1="0" x2="489.5" y2="70" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-dn7j" id="plan-doors" fill="none" stroke-width="1.8"><g data-hf-id="hf-b34l" class="door" stroke="#d4f0c9" stroke-opacity="0.55"><line data-hf-id="hf-v3ti" x1="38.2" y1="-8.2" x2="48.2" y2="-8.2" stroke-dasharray="3 2.5" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-zxfk" x1="3" y1="-10" x2="3" y2="-7" vector-effect="non-scaling-stroke" /><path data-hf-id="hf-7zbe" d="M6 -10 A3 3 0 0 1 3 -7" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-i0g9" class="door" stroke="#d4f0c9" stroke-opacity="0.55"><line data-hf-id="hf-npwi" x1="38.2" y1="78.2" x2="48.2" y2="78.2" stroke-dasharray="3 2.5" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-acbc" x1="3" y1="80" x2="3" y2="77" vector-effect="non-scaling-stroke" /><path data-hf-id="hf-wgvt" d="M6 80 A3 3 0 0 0 3 77" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-j7dc" class="door" stroke="#d4f0c9" stroke-opacity="0.55"><line data-hf-id="hf-58sa" x1="71.1" y1="-8.2" x2="81.1" y2="-8.2" stroke-dasharray="3 2.5" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-9j54" x1="55.2" y1="-10" x2="55.2" y2="-7" vector-effect="non-scaling-stroke" /><path data-hf-id="hf-6u8q" d="M58.2 -10 A3 3 0 0 1 55.2 -7" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-it2b" class="door" stroke="#d4f0c9" stroke-opacity="0.55"><line data-hf-id="hf-i5ly" x1="71.1" y1="78.2" x2="81.1" y2="78.2" stroke-dasharray="3 2.5" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-k2dc" x1="55.2" y1="80" x2="55.2" y2="77" vector-effect="non-scaling-stroke" /><path data-hf-id="hf-50jt" d="M58.2 80 A3 3 0 0 0 55.2 77" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-gtj6" class="door" stroke="#d4f0c9" stroke-opacity="0.55"><line data-hf-id="hf-piu0" x1="100.5" y1="1.8" x2="110.5" y2="1.8" stroke-dasharray="3 2.5" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-6ncp" x1="88.1" y1="0" x2="88.1" y2="3" vector-effect="non-scaling-stroke" /><path data-hf-id="hf-au0k" d="M91.1 0 A3 3 0 0 1 88.1 3" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-gf85" class="door" stroke="#d4f0c9" stroke-opacity="0.55"><line data-hf-id="hf-o2gy" x1="100.5" y1="68.2" x2="110.5" y2="68.2" stroke-dasharray="3 2.5" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-vfsq" x1="88.1" y1="70" x2="88.1" y2="67" vector-effect="non-scaling-stroke" /><path data-hf-id="hf-nxxy" d="M91.1 70 A3 3 0 0 0 88.1 67" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-hm58" class="door" stroke="#d4f0c9" stroke-opacity="0.55"><line data-hf-id="hf-abus" x1="131" y1="1.8" x2="141" y2="1.8" stroke-dasharray="3 2.5" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-st2j" x1="117.5" y1="0" x2="117.5" y2="3" vector-effect="non-scaling-stroke" /><path data-hf-id="hf-ae54" d="M120.5 0 A3 3 0 0 1 117.5 3" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-h7u7" class="door" stroke="#d4f0c9" stroke-opacity="0.55"><line data-hf-id="hf-z2bi" x1="131" y1="68.2" x2="141" y2="68.2" stroke-dasharray="3 2.5" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-uh9w" x1="117.5" y1="70" x2="117.5" y2="67" vector-effect="non-scaling-stroke" /><path data-hf-id="hf-tpag" d="M120.5 70 A3 3 0 0 0 117.5 67" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-f8b2" class="door" stroke="#d4f0c9" stroke-opacity="0.55"><line data-hf-id="hf-d45w" x1="174.1" y1="1.8" x2="184.1" y2="1.8" stroke-dasharray="3 2.5" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-5usd" x1="148" y1="0" x2="148" y2="3" vector-effect="non-scaling-stroke" /><path data-hf-id="hf-k6zq" d="M151 0 A3 3 0 0 1 148 3" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-eu01" class="door" stroke="#d4f0c9" stroke-opacity="0.55"><line data-hf-id="hf-oia6" x1="174.1" y1="68.2" x2="184.1" y2="68.2" stroke-dasharray="3 2.5" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-1sdi" x1="148" y1="70" x2="148" y2="67" vector-effect="non-scaling-stroke" /><path data-hf-id="hf-97k0" d="M151 70 A3 3 0 0 0 148 67" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-j08r" class="door" stroke="#d4f0c9" stroke-opacity="0.55"><line data-hf-id="hf-u7c0" x1="216.6" y1="1.8" x2="226.6" y2="1.8" stroke-dasharray="3 2.5" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-6wfn" x1="191.1" y1="0" x2="191.1" y2="3" vector-effect="non-scaling-stroke" /><path data-hf-id="hf-gqlv" d="M194.1 0 A3 3 0 0 1 191.1 3" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-jejs" class="door" stroke="#d4f0c9" stroke-opacity="0.55"><line data-hf-id="hf-pay2" x1="216.6" y1="68.2" x2="226.6" y2="68.2" stroke-dasharray="3 2.5" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-man0" x1="191.1" y1="70" x2="191.1" y2="67" vector-effect="non-scaling-stroke" /><path data-hf-id="hf-0vzj" d="M194.1 70 A3 3 0 0 0 191.1 67" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-i7mp" class="door" stroke="#d4f0c9" stroke-opacity="0.55"><line data-hf-id="hf-dkcg" x1="273.1" y1="1.8" x2="283.1" y2="1.8" stroke-dasharray="3 2.5" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-yw5z" x1="233.6" y1="0" x2="233.6" y2="3" vector-effect="non-scaling-stroke" /><path data-hf-id="hf-76i7" d="M236.6 0 A3 3 0 0 1 233.6 3" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-peyw" class="door door-sale" stroke="#1d3a3c" stroke-opacity="0.75"><line data-hf-id="hf-dfwq" x1="273.1" y1="68.2" x2="283.1" y2="68.2" stroke-dasharray="3 2.5" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-jwko" x1="233.6" y1="70" x2="233.6" y2="67" vector-effect="non-scaling-stroke" /><path data-hf-id="hf-1xsb" d="M236.6 70 A3 3 0 0 0 233.6 67" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-ilxq" class="door" stroke="#d4f0c9" stroke-opacity="0.55"><line data-hf-id="hf-e8io" x1="334.3" y1="1.8" x2="344.3" y2="1.8" stroke-dasharray="3 2.5" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-iozd" x1="294.8" y1="0" x2="294.8" y2="3" vector-effect="non-scaling-stroke" /><path data-hf-id="hf-z3p7" d="M297.8 0 A3 3 0 0 1 294.8 3" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-pl6o" class="door door-sale" stroke="#1d3a3c" stroke-opacity="0.75"><line data-hf-id="hf-jc8a" x1="334.3" y1="68.2" x2="344.3" y2="68.2" stroke-dasharray="3 2.5" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-l24a" x1="294.8" y1="70" x2="294.8" y2="67" vector-effect="non-scaling-stroke" /><path data-hf-id="hf-v0g9" d="M297.8 70 A3 3 0 0 0 294.8 67" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-oe9l" class="door door-sale" stroke="#1d3a3c" stroke-opacity="0.75"><line data-hf-id="hf-l9do" x1="372.7" y1="1.8" x2="382.7" y2="1.8" stroke-dasharray="3 2.5" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-4xw3" x1="351.3" y1="0" x2="351.3" y2="3" vector-effect="non-scaling-stroke" /><path data-hf-id="hf-qls3" d="M354.3 0 A3 3 0 0 1 351.3 3" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-oskm" class="door door-sale" stroke="#1d3a3c" stroke-opacity="0.75"><line data-hf-id="hf-nn12" x1="372.7" y1="68.2" x2="382.7" y2="68.2" stroke-dasharray="3 2.5" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-zlx8" x1="351.3" y1="70" x2="351.3" y2="67" vector-effect="non-scaling-stroke" /><path data-hf-id="hf-g2gv" d="M354.3 70 A3 3 0 0 0 351.3 67" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-hf0n" class="door" stroke="#d4f0c9" stroke-opacity="0.55"><line data-hf-id="hf-lgc0" x1="409.7" y1="1.8" x2="419.7" y2="1.8" stroke-dasharray="3 2.5" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-8pnx" x1="389.7" y1="0" x2="389.7" y2="3" vector-effect="non-scaling-stroke" /><path data-hf-id="hf-8wx4" d="M392.7 0 A3 3 0 0 1 389.7 3" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-htbo" class="door" stroke="#d4f0c9" stroke-opacity="0.55"><line data-hf-id="hf-npdm" x1="409.7" y1="68.2" x2="419.7" y2="68.2" stroke-dasharray="3 2.5" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-lj92" x1="389.7" y1="70" x2="389.7" y2="67" vector-effect="non-scaling-stroke" /><path data-hf-id="hf-mbee" d="M392.7 70 A3 3 0 0 0 389.7 67" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-nlnj" class="door door-sale" stroke="#1d3a3c" stroke-opacity="0.75"><line data-hf-id="hf-bolq" x1="446.7" y1="1.8" x2="456.7" y2="1.8" stroke-dasharray="3 2.5" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-ubh1" x1="426.7" y1="0" x2="426.7" y2="3" vector-effect="non-scaling-stroke" /><path data-hf-id="hf-darv" d="M429.7 0 A3 3 0 0 1 426.7 3" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-nzyk" class="door door-sale" stroke="#1d3a3c" stroke-opacity="0.75"><line data-hf-id="hf-y0bs" x1="446.7" y1="68.2" x2="456.7" y2="68.2" stroke-dasharray="3 2.5" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-yw8u" x1="426.7" y1="70" x2="426.7" y2="67" vector-effect="non-scaling-stroke" /><path data-hf-id="hf-owq9" d="M429.7 70 A3 3 0 0 0 426.7 67" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-gmel" class="door" stroke="#d4f0c9" stroke-opacity="0.55"><line data-hf-id="hf-hcpo" x1="475.5" y1="1.8" x2="485.5" y2="1.8" stroke-dasharray="3 2.5" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-7dqf" x1="463.7" y1="0" x2="463.7" y2="3" vector-effect="non-scaling-stroke" /><path data-hf-id="hf-1gdr" d="M466.7 0 A3 3 0 0 1 463.7 3" vector-effect="non-scaling-stroke" /></g><g data-hf-id="hf-h0pm" class="door" stroke="#d4f0c9" stroke-opacity="0.55"><line data-hf-id="hf-nfli" x1="475.5" y1="68.2" x2="485.5" y2="68.2" stroke-dasharray="3 2.5" vector-effect="non-scaling-stroke" /><line data-hf-id="hf-ar6g" x1="463.7" y1="70" x2="463.7" y2="67" vector-effect="non-scaling-stroke" /><path data-hf-id="hf-tf1j" d="M466.7 70 A3 3 0 0 0 463.7 67" vector-effect="non-scaling-stroke" /></g></g><rect data-hf-id="hf-vrk9" id="hl-12656" x="348.3" y="35" width="38.4" height="35" fill="none" stroke="#fff" stroke-width="5" vector-effect="non-scaling-stroke" opacity="0" /><g data-hf-id="hf-tkxi" id="plan-labels"><text data-hf-id="hf-t8df" x="26.1" y="12.5" text-anchor="middle" dominant-baseline="central" class="pl-code" fill="#d4f0c9" fill-opacity=".66">12680</text><text data-hf-id="hf-lfnx" x="26.1" y="57.5" text-anchor="middle" dominant-baseline="central" class="pl-code" fill="#d4f0c9" fill-opacity=".66">12672</text><text data-hf-id="hf-09b3" x="68.65" y="12.5" text-anchor="middle" dominant-baseline="central" class="pl-code" fill="#d4f0c9" fill-opacity=".66">12682</text><text data-hf-id="hf-cw0l" x="68.65" y="57.5" text-anchor="middle" dominant-baseline="central" class="pl-code" fill="#d4f0c9" fill-opacity=".66">12670</text><text data-hf-id="hf-phwv" x="99.8" y="17.5" text-anchor="middle" dominant-baseline="central" class="pl-code" fill="#d4f0c9" fill-opacity=".66">12684</text><text data-hf-id="hf-6g9i" x="99.8" y="52.5" text-anchor="middle" dominant-baseline="central" class="pl-code" fill="#d4f0c9" fill-opacity=".66">12668</text><text data-hf-id="hf-r1c5" x="129.75" y="17.5" text-anchor="middle" dominant-baseline="central" class="pl-code" fill="#d4f0c9" fill-opacity=".66">12686</text><text data-hf-id="hf-hvpg" x="129.75" y="52.5" text-anchor="middle" dominant-baseline="central" class="pl-code" fill="#d4f0c9" fill-opacity=".66">12666</text><text data-hf-id="hf-pdgo" x="166.55" y="17.5" text-anchor="middle" dominant-baseline="central" class="pl-code" fill="#d4f0c9" fill-opacity=".66">12688</text><text data-hf-id="hf-kpzl" x="166.55" y="52.5" text-anchor="middle" dominant-baseline="central" class="pl-code" fill="#d4f0c9" fill-opacity=".66">12664</text><text data-hf-id="hf-j5v5" x="209.35" y="17.5" text-anchor="middle" dominant-baseline="central" class="pl-code" fill="#d4f0c9" fill-opacity=".66">12690</text><text data-hf-id="hf-cf0f" x="209.35" y="52.5" text-anchor="middle" dominant-baseline="central" class="pl-code" fill="#d4f0c9" fill-opacity=".66">12662</text><text data-hf-id="hf-2od8" x="258.85" y="17.5" text-anchor="middle" dominant-baseline="central" class="pl-code" fill="#d4f0c9" fill-opacity=".66">12692</text><g data-hf-id="hf-0d1u" id="lbl-12660" class="sale-label" fill="#1d3a3c" opacity="0"><text data-hf-id="hf-kynv" x="258.85" y="48.9" text-anchor="middle" dominant-baseline="central" class="pl-civic">12660</text><text data-hf-id="hf-t1vs" x="258.85" y="58.1" text-anchor="middle" dominant-baseline="central" class="pl-area">1&#160;776&#160;pi²</text></g><text data-hf-id="hf-o9b2" x="320.05" y="17.5" text-anchor="middle" dominant-baseline="central" class="pl-code" fill="#d4f0c9" fill-opacity=".66">12694</text><g data-hf-id="hf-wh57" id="lbl-12658" class="sale-label" fill="#1d3a3c" opacity="0"><text data-hf-id="hf-bj44" x="320.05" y="48.9" text-anchor="middle" dominant-baseline="central" class="pl-civic">12658</text><text data-hf-id="hf-yjip" x="320.05" y="58.1" text-anchor="middle" dominant-baseline="central" class="pl-area">1&#160;780&#160;pi²</text></g><g data-hf-id="hf-eeih" id="lbl-12696" class="sale-label" fill="#1d3a3c" opacity="0"><text data-hf-id="hf-l7dt" x="367.5" y="13.9" text-anchor="middle" dominant-baseline="central" class="pl-civic">12696</text><text data-hf-id="hf-eiuj" x="367.5" y="23.1" text-anchor="middle" dominant-baseline="central" class="pl-area">1&#160;259&#160;pi²</text></g><g data-hf-id="hf-rfqd" id="lbl-12656" class="sale-label" fill="#1d3a3c" opacity="0"><text data-hf-id="hf-4ujt" x="367.5" y="48.9" text-anchor="middle" dominant-baseline="central" class="pl-civic">12656</text><text data-hf-id="hf-k1x0" x="367.5" y="58.1" text-anchor="middle" dominant-baseline="central" class="pl-area">1&#160;252&#160;pi²</text></g><text data-hf-id="hf-mz1p" x="405.2" y="17.5" text-anchor="middle" dominant-baseline="central" class="pl-code" fill="#d4f0c9" fill-opacity=".66">12698</text><text data-hf-id="hf-k35q" x="405.2" y="52.5" text-anchor="middle" dominant-baseline="central" class="pl-code" fill="#d4f0c9" fill-opacity=".66">12654</text><g data-hf-id="hf-j5qh" id="lbl-12652" class="sale-label" fill="#1d3a3c" opacity="0"><text data-hf-id="hf-fut6" x="442.2" y="17.5" text-anchor="middle" dominant-baseline="central" class="pl-civic">12700</text><text data-hf-id="hf-sfnz" x="442.2" y="35" text-anchor="middle" dominant-baseline="central" class="pl-area">2&#160;509&#160;pi²</text><text data-hf-id="hf-dttp" x="442.2" y="52.5" text-anchor="middle" dominant-baseline="central" class="pl-civic">12652</text></g><text data-hf-id="hf-oe6r" x="475.1" y="17.5" text-anchor="middle" dominant-baseline="central" class="pl-code" fill="#d4f0c9" fill-opacity=".66">12702</text><text data-hf-id="hf-1kr0" x="475.1" y="52.5" text-anchor="middle" dominant-baseline="central" class="pl-code" fill="#d4f0c9" fill-opacity=".66">12650</text></g></svg>
+          </div>
+          <div data-hf-id="hf-hasa" id="plan-legend">
+            <span data-hf-id="hf-uckh"><span data-hf-id="hf-u2r6" class="k"><i data-hf-id="hf-kx0g" class="sw" style="background:var(--mint)"></i>À vendre</span><span data-hf-id="hf-1qkg" class="k"><i data-hf-id="hf-cbxq" class="sw" style="border:2px solid rgba(212,240,201,.75)"></i>Non disponible</span></span>
+          </div>
+          <div data-hf-id="hf-135c" id="s2-note">Plan schématique, à l'échelle approximative. Disponibilités au 8 septembre 2026.</div>
+
+          <div data-hf-id="hf-gwqi" id="dir">
+            <div data-hf-id="hf-jxhi" class="row" id="row-12660"><i data-hf-id="hf-31m3" class="bar"></i><span data-hf-id="hf-j694" class="n civic">12660</span><span data-hf-id="hf-exqe" class="a">1&#160;776&#160;pi²</span><span data-hf-id="hf-z5i6" class="acc">Porte de garage 10' × 12' et porte piétonne</span><span data-hf-id="hf-gxrh" class="btn">Demander le prix<svg data-hf-id="hf-3lsi" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path data-hf-id="hf-vfdd" d="M4 10h11M10.5 5l5 5-5 5" /></svg></span></div>
+            <div data-hf-id="hf-ni0z" class="row" id="row-12658"><i data-hf-id="hf-54nf" class="bar"></i><span data-hf-id="hf-c3ej" class="n civic">12658</span><span data-hf-id="hf-m8jv" class="a">1&#160;780&#160;pi²</span><span data-hf-id="hf-veki" class="acc">Porte de garage 10' × 12' et porte piétonne</span><span data-hf-id="hf-0xpd" class="btn">Demander le prix<svg data-hf-id="hf-zpzq" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path data-hf-id="hf-yjgl" d="M4 10h11M10.5 5l5 5-5 5" /></svg></span></div>
+            <div data-hf-id="hf-9clp" class="row" id="row-12656"><i data-hf-id="hf-4qce" class="bar"></i><span data-hf-id="hf-1he1" class="n civic">12656</span><span data-hf-id="hf-tx47" class="a">1&#160;252&#160;pi²</span><span data-hf-id="hf-vsvj" class="acc">Porte de garage 10' × 12' et porte piétonne</span><span data-hf-id="hf-24mg" class="btn">Demander le prix<svg data-hf-id="hf-04ar" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path data-hf-id="hf-zqdo" d="M4 10h11M10.5 5l5 5-5 5" /></svg></span></div>
+            <div data-hf-id="hf-0kuh" class="row" id="row-12696"><i data-hf-id="hf-4c1d" class="bar"></i><span data-hf-id="hf-y2ex" class="n civic">12696</span><span data-hf-id="hf-cwhe" class="a">1&#160;259&#160;pi²</span><span data-hf-id="hf-w76k" class="acc">Porte de garage 10' × 12' et porte piétonne</span><span data-hf-id="hf-1qbf" class="btn">Demander le prix<svg data-hf-id="hf-0ils" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path data-hf-id="hf-zc2n" d="M4 10h11M10.5 5l5 5-5 5" /></svg></span></div>
+            <div data-hf-id="hf-lyll" class="row" id="row-12652"><i data-hf-id="hf-3xqc" class="bar"></i><span data-hf-id="hf-eh8p" class="n civic">12652<span data-hf-id="hf-xs9c" class="p">+12700</span></span><span data-hf-id="hf-narv" class="a">2&#160;509&#160;pi²</span><span data-hf-id="hf-sa9u" class="acc">Unité traversante : portes des deux côtés</span><span data-hf-id="hf-zqsa" class="btn">Demander le prix<svg data-hf-id="hf-xqgl" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path data-hf-id="hf-0izq" d="M4 10h11M10.5 5l5 5-5 5" /></svg></span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SCENE 3: recevez les prix ============ -->
+      <section data-hf-id="hf-hk8i" id="s3" class="clip" data-start="11.46" data-duration="5.04" data-track-index="3">
+        <div data-hf-id="hf-k7gj" id="s3-inner" class="inner">
+          <div data-hf-id="hf-tb59" id="s3-logo">
+            <svg data-hf-id="hf-xu4h" viewBox="0 0 32 32" width="52" height="52" aria-hidden="true"><rect data-hf-id="hf-fpjz" width="32" height="32" rx="7" fill="#26484a" /><path data-hf-id="hf-iv6z" d="M6 10.5h20v11H6z" fill="none" stroke="#d4f0c9" stroke-width="1.6" /><path data-hf-id="hf-pons" d="M6 16h20M11 10.5v11M16 10.5v11M21 10.5v11" stroke="#d4f0c9" stroke-width="1" stroke-opacity=".55" /><path data-hf-id="hf-ardk" d="M16 16h5v5.5h-5z" fill="#d4f0c9" /></svg>
+            <div data-hf-id="hf-pjbe" class="logo-word"><span data-hf-id="hf-8346" class="a" style="font-size:30px">Boul-Industriel</span><span data-hf-id="hf-3bgc" class="b" style="color:rgba(255,255,255,.72)">Montreal</span></div>
+          </div>
+          <div data-hf-id="hf-zgo1" id="s3-eyebrow" class="abs eyebrow">Contact</div>
+          <h2 data-hf-id="hf-g4k4" id="s3-title" class="h2"><span data-hf-id="hf-0w2y" class="ln">Recevez les prix</span><span data-hf-id="hf-cy9a" class="ln">et visitez les</span><span data-hf-id="hf-5y6p" class="ln">unités.</span></h2>
+          <p data-hf-id="hf-u85n" id="s3-lead">Laissez vos coordonnées : on vous envoie les prix et les détails des unités qui vous intéressent, puis on planifie une visite.</p>
+
+          <div data-hf-id="hf-55rf" id="card">
+            <span data-hf-id="hf-9z9f" class="f-label" style="left:48px;top:44px">Nom complet</span>
+            <div data-hf-id="hf-dixz" class="f-box" style="left:48px;top:78px;width:400px"></div>
+            <span data-hf-id="hf-8kwb" class="f-label" style="left:496px;top:44px">Entreprise (facultatif)</span>
+            <div data-hf-id="hf-6jie" class="f-box" style="left:496px;top:78px;width:400px"></div>
+            <span data-hf-id="hf-axxv" class="f-label" style="left:48px;top:164px">Courriel</span>
+            <div data-hf-id="hf-gkom" class="f-box" style="left:48px;top:198px;width:400px"></div>
+            <span data-hf-id="hf-ueov" class="f-label" style="left:496px;top:164px">Téléphone</span>
+            <div data-hf-id="hf-ovgl" class="f-box" style="left:496px;top:198px;width:400px"></div>
+            <span data-hf-id="hf-46ti" class="f-label" style="left:48px;top:284px">Unité qui vous intéresse</span>
+            <div data-hf-id="hf-0urv" id="sel-box">
+              <span data-hf-id="hf-gzku" id="sel-old">Pas encore décidé</span>
+              <span data-hf-id="hf-42i9" id="sel-new">12656 · 1&#160;252&#160;pi²</span>
+              <svg data-hf-id="hf-aa04" id="sel-chev" viewBox="0 0 16 16" fill="none" stroke="#0f1d1e" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path data-hf-id="hf-mako" d="M4 6l4 4 4-4" /></svg>
+            </div>
+            <span data-hf-id="hf-czl2" class="f-label" style="left:48px;top:404px">Vous souhaitez</span>
+            <div data-hf-id="hf-6jn0" id="seg"><span data-hf-id="hf-es9t" class="o on">Recevoir les prix</span><span data-hf-id="hf-8ue0" class="o">Visiter</span><span data-hf-id="hf-le6t" class="o">Poser une question</span></div>
+            <span data-hf-id="hf-l08h" class="f-label" style="left:48px;top:524px">Message (facultatif)</span>
+            <div data-hf-id="hf-h6cn" class="f-box" style="left:48px;top:558px;width:848px;height:104px"></div>
+            <p data-hf-id="hf-0pc7" id="consent">En envoyant ce formulaire, vous acceptez d'être contacté au sujet de ces unités.</p>
+            <div data-hf-id="hf-ey51" id="submit">Envoyer ma demande</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SCENE 4: arretez de payer le loyer ============ -->
+      <section data-hf-id="hf-xm3c" id="s4" class="clip" data-start="15.84" data-duration="6.16" data-track-index="4">
+        <div data-hf-id="hf-0u5s" id="s4-inner" class="inner">
+          <div data-hf-id="hf-z65y" id="lock-glow"></div>
+          <h2 data-hf-id="hf-ci9f" id="s4-line" class="display"><span data-hf-id="hf-2awm" class="ln s4l" id="s4l1">Arrêtez de payer</span><span data-hf-id="hf-2jmw" class="ln s4l" id="s4l2">le loyer de</span><span data-hf-id="hf-twbp" class="ln s4l" id="s4l3">quelqu'un d'autre.</span></h2>
+          <div data-hf-id="hf-mlav" id="lockup">
+            <div data-hf-id="hf-nihr" id="lock-row">
+              <svg data-hf-id="hf-jisb" viewBox="0 0 32 32" width="176" height="176" aria-hidden="true"><rect data-hf-id="hf-fb8y" width="32" height="32" rx="7" fill="#26484a" /><path data-hf-id="hf-j9i0" d="M6 10.5h20v11H6z" fill="none" stroke="#d4f0c9" stroke-width="1.6" /><path data-hf-id="hf-pacr" d="M6 16h20M11 10.5v11M16 10.5v11M21 10.5v11" stroke="#d4f0c9" stroke-width="1" stroke-opacity=".55" /><path data-hf-id="hf-ad2j" d="M16 16h5v5.5h-5z" fill="#d4f0c9" /></svg>
+              <div data-hf-id="hf-8xe1" id="lock-word"><span data-hf-id="hf-r56s" class="a">Boul-Industriel</span><span data-hf-id="hf-z9uj" class="b">Montreal</span></div>
+            </div>
+            <div data-hf-id="hf-4xab" id="lock-rule"></div>
+            <div data-hf-id="hf-2kaz" id="lock-sub">Condos industriels à vendre · Pointe-aux-Trembles, Montréal</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- cursor + click ripple (global overlay, moves across the S2 -> S3 scroll) -->
+      <div data-hf-id="hf-l3gf" id="ripple"></div>
+      <svg data-hf-id="hf-kz6g" id="cursor" viewBox="0 0 24 24" aria-hidden="true"><path data-hf-id="hf-swfe" d="M5 3l14 8.5-6.2 1.3 3.7 6.9-2.6 1.4-3.7-6.9L5 19z" fill="#ffffff" stroke="#0f1d1e" stroke-width="1.4" stroke-linejoin="round" /></svg>
+
+      <!-- audio: music bed + sparse SFX -->
+      <audio data-hf-id="hf-hpdu" id="bg-music" src="assets/music/happy-beats-business-moves-vol-12-by-ende-dot-app.mp3" data-start="0" data-duration="22" data-track-index="10" data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0},{&quot;t&quot;:0.5,&quot;v&quot;:0.3},{&quot;t&quot;:20.4,&quot;v&quot;:0.3},{&quot;t&quot;:22,&quot;v&quot;:0}]}]}"></audio>
+      <audio data-hf-id="hf-03fu" id="sfx-tile" src="assets/sfx/interface/bong_001.ogg" data-start="0.26" data-duration="0.13" data-track-index="11" data-volume="0.55"></audio>
+      <audio data-hf-id="hf-fdlc" id="sfx-unit-first" src="assets/sfx/interface/drop_001.ogg" data-start="6.52" data-duration="0.11" data-track-index="12" data-volume="0.55"></audio>
+      <audio data-hf-id="hf-fiou" id="sfx-unit-last" src="assets/sfx/impact/impactSoft_medium_001.ogg" data-start="8.7" data-duration="0.19" data-track-index="13" data-volume="0.65"></audio>
+      <audio data-hf-id="hf-izug" id="sfx-click" src="assets/sfx/ui/click2.ogg" data-start="11.43" data-duration="0.06" data-track-index="14" data-volume="0.7"></audio>
+      <audio data-hf-id="hf-rgfv" id="sfx-fill" src="assets/sfx/interface/select_008.ogg" data-start="13.08" data-duration="0.05" data-track-index="15" data-volume="0.6"></audio>
+      <audio data-hf-id="hf-26sq" id="sfx-lockup" src="assets/sfx/impact/impactBell_heavy_000.ogg" data-start="19.62" data-duration="1.48" data-track-index="16" data-volume="0.5"></audio>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const CELL = [1410, 562];   // cursor hover point inside cell 12656 (canvas px)
+      const BTN = [1708, 897]; // cursor target on the 12656 row button (canvas px, row 3 of 5)
+      const SUBMIT = [1716, 872]; // cursor rests at the lower right of the submit button
+      const P = (p) => ({ x: p[0] - 10, y: p[1] - 6 }); // cursor arrow tip is at (10,6) inside its 46px box
+
+      // ---- setup: measured outline length (svg-path-draw rule), initial states ----
+      const drawPoly = document.getElementById("draw-poly");
+      const DRAW_LEN = drawPoly.getTotalLength();
+      drawPoly.style.strokeDasharray = DRAW_LEN + " " + DRAW_LEN;
+      drawPoly.style.strokeDashoffset = String(DRAW_LEN);
+
+      tl.set("#pin-card", { xPercent: -50 }, 0);
+      tl.set("#cursor", { ...P([1820, 1060]), opacity: 0 }, 0);
+      tl.set("#ripple", { x: 0, y: 0, opacity: 0 }, 0);
+
+      // ============ ambient: drafting grid drifts one cell across the whole film ============
+      tl.fromTo("#bg-grid", { x: 0 }, { x: -96, duration: 22, ease: "none" }, 0);
+
+      // ============ SCENE 1 (0 - 4.39) ============
+      tl.fromTo("#photo", { scale: 1 }, { scale: 1.1, duration: 4.7, ease: "sine.inOut" }, 0);                    // slow push toward the pin
+      tl.fromTo("#band-eyebrow", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0.12);
+      tl.fromTo("#band-logo", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "sine.out" }, 0.3);
+      tl.fromTo("#draw-poly", { strokeDashoffset: DRAW_LEN }, { strokeDashoffset: 0, duration: 1.7, ease: "power2.inOut" }, 0.56); // beat-grid: 0.56s (site's outline-draw)
+      tl.fromTo("#shade", { opacity: 0 }, { opacity: 1, duration: 1.2, ease: "sine.inOut" }, 1.0);
+      tl.fromTo("#fill-poly", { opacity: 0 }, { opacity: 1, duration: 0.9, ease: "sine.out" }, 1.6);
+      tl.fromTo("#tile", { opacity: 0, scale: 0.55 }, { opacity: 1, scale: 1, duration: 0.55, ease: "back.out(1.7)" }, 0.3);
+      tl.fromTo("#h1-words", { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, 0.42);
+      tl.fromTo("#h1-l2", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.7, ease: "expo.out" }, 0.62);
+      tl.fromTo("#pin-dot", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2)" }, 2.19);       // beat-grid: 2.19s
+      tl.fromTo("#pin-line", { scaleY: 0 }, { scaleY: 1, duration: 0.5, ease: "power2.out" }, 2.3);
+      tl.fromTo("#pin-card", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.to("#s1-inner", { opacity: 0, duration: 0.61, ease: "sine.inOut" }, 4.39);                                     // crossfade to S2
+
+      // ============ SCENE 2 (4.39 - 12.25) ============
+      tl.fromTo("#s2-inner", { opacity: 0 }, { opacity: 1, duration: 0.61, ease: "sine.inOut" }, 4.39);
+      tl.fromTo("#s2-eyebrow", { opacity: 0, y: -12 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 4.75);
+      tl.fromTo("#s2-title", { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 0.7, ease: "expo.out" }, 4.85);
+      tl.fromTo("#s2-logo", { opacity: 0 }, { opacity: 1, duration: 0.6 }, 5.0);
+      tl.fromTo("#plan-wrap", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.3, ease: "power2.inOut" }, 5.0);
+      tl.fromTo("#plan-legend", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 6.1);
+      tl.fromTo("#s2-note", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 6.1);
+      // five units for sale switch on, one per beat, left to right (biggest last)
+      // beat-grid: 12660 at 6.56s, 12658 at 7.09s, 12656 at 7.64s, 12696 at 8.19s, 12652+12700 at 8.74s
+      // beat-locked: 8.74s (strong cue 0.985) = the largest unit lands
+      [["12660", 6.56], ["12658", 7.09], ["12656", 7.64], ["12696", 8.19], ["12652", 8.74]].forEach(([id, t]) => {
+        tl.fromTo("#u-" + id, { fillOpacity: 0 }, { fillOpacity: 1, duration: 0.4, ease: "power2.out" }, t);
+        tl.fromTo("#lbl-" + id, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power2.out" }, t + 0.12);
+        tl.fromTo("#row-" + id, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, t + 0.06);   // its directory row arrives with it
+      });
+            tl.fromTo("#dir", { borderTopColor: "rgba(255,255,255,0)" }, { borderTopColor: "rgba(255,255,255,0.16)", duration: 0.5 }, 6.1);
+      // cursor: enters bottom-right, hovers 12656 (cell + row light), then presses "Demander le prix"
+      tl.to("#cursor", { opacity: 1, duration: 0.25 }, 9.0);
+      tl.to("#cursor", { ...P(CELL), duration: 0.83, ease: "power2.inOut" }, 9.0);                        // arrives on beat 9.83s
+      tl.to("#u-12656", { fill: "#ffffff", duration: 0.18 }, 9.83);
+      tl.fromTo("#hl-12656", { opacity: 0 }, { opacity: 1, duration: 0.18 }, 9.83);
+      tl.to("#row-12656", { backgroundColor: "#26484a", duration: 0.25 }, 9.83);
+      tl.fromTo("#row-12656 .bar", { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1, duration: 0.25, ease: "power2.out" }, 9.83);
+      tl.to("#row-12656 .acc", { color: "#ffffff", duration: 0.25 }, 9.83);
+      tl.to("#cursor", { ...P(BTN), duration: 0.42, ease: "power2.inOut" }, 11.0);
+      // click on beat 11.46s
+      tl.to("#cursor", { scale: 0.86, duration: 0.06, ease: "power2.in" }, 11.4);
+      tl.to("#cursor", { scale: 1, duration: 0.16, ease: "power2.out" }, 11.46);
+      tl.to("#row-12656 .btn", { scale: 0.95, backgroundColor: "#ffffff", duration: 0.06 }, 11.4);
+      tl.to("#row-12656 .btn", { scale: 1, duration: 0.2, ease: "power2.out" }, 11.46);
+      tl.set("#ripple", { x: BTN[0], y: BTN[1] }, 11.44);
+      tl.fromTo("#ripple", { opacity: 0.9, scale: 0.2 }, { opacity: 0, scale: 1.5, duration: 0.5, ease: "power2.out" }, 11.46);
+      // the page scrolls to the form: S2 up, S3 in (same motion, same time)
+      tl.to("#s2-inner", { y: -1080, duration: 0.7, ease: "power2.inOut" }, 11.5);
+
+      // ============ SCENE 3 (11.46 - 16.5) ============
+      tl.fromTo("#s3-inner", { y: 1080 }, { y: 0, duration: 0.7, ease: "power2.inOut" }, 11.5);
+      // beat-locked: 13.11s (strong cue 0.978) = the unit field fills with the picked unit
+      tl.fromTo("#sel-box", { boxShadow: "0 0 0 0px rgba(85,122,124,0)", borderColor: "#cbd5d1" }, { boxShadow: "0 0 0 8px rgba(85,122,124,0.35)", borderColor: "#557a7c", duration: 0.3, ease: "power2.out" }, 13.08);
+      tl.fromTo("#sel-old", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 13.11);
+      tl.fromTo("#sel-new", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.32, ease: "power2.out" }, 13.11);
+      tl.to("#sel-box", { boxShadow: "0 0 0 0px rgba(85,122,124,0)", duration: 0.5, ease: "power2.inOut" }, 14.0);
+      // the cursor drifts to the submit button and rests on it (no send: the site would validate empty fields)
+      tl.to("#cursor", { ...P(SUBMIT), duration: 0.65, ease: "power2.inOut" }, 14.2);
+      tl.to("#submit", { backgroundColor: "#0f1d1e", duration: 0.25 }, 14.85);
+      tl.to("#s3-inner", { opacity: 0, duration: 0.6, ease: "sine.inOut" }, 15.84);                                  // crossfade to S4
+      tl.to("#cursor", { opacity: 0, duration: 0.3 }, 15.84);
+
+      // ============ SCENE 4 (15.84 - 22.0) ============
+      tl.fromTo("#s4-inner", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "sine.inOut" }, 15.84);
+      tl.fromTo("#s4l1", { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: 0.7, ease: "expo.out" }, 16.38);
+      tl.fromTo("#s4l2", { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: 0.7, ease: "expo.out" }, 16.53);
+      tl.fromTo("#s4l3", { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: 0.7, ease: "expo.out" }, 16.68);
+      tl.to("#s4-line", { opacity: 0, y: -24, duration: 0.45, ease: "power2.in" }, 19.3);                             // final scene: exits allowed
+      // beat-locked: 19.66s (strong cue 0.962) = lockup lands
+      tl.fromTo("#lockup", { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1, duration: 0.8, ease: "power3.out" }, 19.66);
+      tl.fromTo("#lock-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: "power2.inOut" }, 19.9);
+
+      // ============ audio-reactive (music RMS, smoothed at build time): outline glow, background glow, lockup glow ============
+      const FPS = window.AUDIO_FPS || 30;
+      const R = window.AUDIO_RMS || [];
+      const norm = (a, b) => { const seg = R.slice(Math.floor(a * FPS), Math.ceil(b * FPS)); const mn = Math.min(...seg), mx = Math.max(...seg); return (v) => (mx - mn > 1e-6 ? (v - mn) / (mx - mn) : 0); };
+      const nIntro = norm(1.6, 4.5), nBody = norm(5, 22);
+      for (let f = 0; f < 22 * FPS && f < R.length; f++) {
+        const t = f / FPS, v = R[f];
+        if (t >= 1.6 && t <= 4.5) tl.set("#glow-poly", { opacity: 0.25 + 0.75 * nIntro(v) }, t);       // building outline breathes with the bed
+        tl.set("#bg-glow", { opacity: 0.22 + 0.5 * nBody(v) }, t);                                       // drafting-grid glow
+        if (t >= 19.7) tl.set("#lock-glow", { opacity: 0.16 + 0.4 * nBody(v) }, t);                     // lockup halo
+      }
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

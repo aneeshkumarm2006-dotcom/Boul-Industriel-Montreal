@@ -1,7 +1,9 @@
 import type { Dictionary } from "@/content/fr";
-import { project } from "@/content/project";
-import { fill } from "@/lib/i18n";
 import UnitDrawing from "./UnitDrawing";
+import { Check } from "./icons";
+
+/** Items shown with a numbered marker on the unit drawing */
+const DRAWN = 4;
 
 export default function Included({ t }: { t: Dictionary }) {
   const s = t.included;
@@ -15,24 +17,20 @@ export default function Included({ t }: { t: Dictionary }) {
           </h2>
           <p className="lead mt-5 max-w-xl text-steel">{s.lead}</p>
 
-          <ol className="mt-10 grid gap-x-10 gap-y-7 sm:grid-cols-2">
+          <ul className="mt-10 grid gap-x-10 gap-y-6 sm:grid-cols-2">
             {s.items.map((item, i) => (
-              <li key={item.title} className="grid grid-cols-[2rem_1fr] gap-x-4">
-                <span
-                  aria-hidden
-                  className="mono grid h-8 w-8 place-items-center rounded-full bg-slate text-sm font-bold text-mint"
-                >
-                  {i + 1}
+              <li key={item.title} className="grid grid-cols-[1.75rem_1fr] gap-x-3.5">
+                {/* The first four are the unit features keyed on the drawing; the rest apply to the whole building */}
+                <span aria-hidden className="mono grid h-7 w-7 place-items-center rounded-full bg-slate text-sm font-bold text-mint">
+                  {i < DRAWN ? i + 1 : <Check />}
                 </span>
-                <div>
+                <div className="pt-0.5">
                   <h3 className="h3 text-[1.0625rem]">{item.title}</h3>
-                  <p className="mt-1.5 text-[0.9375rem] leading-relaxed text-steel">
-                    {fill(item.body, { gal: project.unitFeatures.waterHeaterGallons })}
-                  </p>
+                  {item.body && <p className="mt-1.5 text-[0.9375rem] leading-relaxed text-steel">{item.body}</p>}
                 </div>
               </li>
             ))}
-          </ol>
+          </ul>
         </div>
 
         <figure className="self-start rounded-[1.25rem] border border-line bg-white p-5 sm:p-8 lg:col-span-6 lg:row-start-1">

@@ -12,11 +12,13 @@ export interface Slide {
   h: number;
 }
 
-/** Native <dialog> lightbox, opened by any [data-lightbox] button on the page. */
+/** Native <dialog> lightbox, opened by any [data-lightbox="<group>:<index>"] button on the page. */
 export default function Lightbox({
+  group,
   slides,
   labels,
 }: {
+  group: string;
   slides: Slide[];
   labels: { close: string; prev: string; next: string; counter: string };
 }) {
@@ -26,13 +28,14 @@ export default function Lightbox({
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
       const btn = (e.target as HTMLElement).closest<HTMLElement>("[data-lightbox]");
-      if (!btn) return;
-      setIndex(Number(btn.dataset.lightbox));
+      const [g, i] = btn?.dataset.lightbox?.split(":") ?? [];
+      if (g !== group) return;
+      setIndex(Number(i));
       ref.current?.showModal();
     };
     document.addEventListener("click", onClick);
     return () => document.removeEventListener("click", onClick);
-  }, []);
+  }, [group]);
 
   const go = (d: number) => setIndex((i) => (i === null ? i : (i + d + slides.length) % slides.length));
   const slide = index === null ? null : slides[index];
