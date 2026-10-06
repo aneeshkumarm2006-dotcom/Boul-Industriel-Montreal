@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { fill } from "@/lib/format";
 import { Arrow } from "./icons";
 
 export interface Slide {
@@ -67,7 +68,7 @@ export default function Lightbox({
           <figcaption className="mt-4 flex flex-wrap items-center justify-between gap-4">
             <span className="max-w-xl text-sm text-white/80">
               <span className="mono mr-3 text-mint">
-                {labels.counter.replace("{i}", String(index! + 1)).replace("{n}", String(slides.length))}
+                {fill(labels.counter, { i: index! + 1, n: slides.length })}
               </span>
               {slide.alt}
             </span>

@@ -1,13 +1,15 @@
 // Pre-optimizes source photos into responsive AVIF/WebP sets + a tiny blur placeholder.
 // Output: public/images/<name>-<w>.<ext> and content/images.json (dimensions + blur data URI).
-import { readdir, mkdir, writeFile, stat, unlink } from "node:fs/promises";
+// Widths and quality come from content/image-settings.json, shared with admin uploads (lib/cms/media.ts).
+import { readdir, mkdir, writeFile, readFile, stat, unlink } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
 
 const SRC = "assets-src";
 const OUT = "public/images";
 const MANIFEST = "content/images.json";
-const WIDTHS = [480, 800, 1200, 1800];
+const settings = JSON.parse(await readFile("content/image-settings.json", "utf8"));
+const WIDTHS = settings.widths;
 
 await mkdir(OUT, { recursive: true });
 const files = (await readdir(SRC)).filter((f) => /\.(jpe?g|png|webp)$/i.test(f));
@@ -23,8 +25,8 @@ for (const file of files) {
 
   for (const w of widths) {
     for (const [fmt, opts] of [
-      ["avif", { quality: 50, effort: 6 }],
-      ["webp", { quality: 74 }],
+      ["avif", settings.avif],
+      ["webp", settings.webp],
     ]) {
       const dest = path.join(OUT, `${name}-${w}.${fmt}`);
       expected.add(path.basename(dest));
@@ -33,7 +35,7 @@ for (const file of files) {
     }
   }
 
-  const blur = await sharp(path.join(SRC, file)).resize({ width: 16 }).webp({ quality: 40 }).toBuffer();
+  const blur = await sharp(path.join(SRC, file)).resize({ width: settings.blur.width }).webp({ quality: settings.blur.quality }).toBuffer();
   manifest[name] = {
     width,
     height,

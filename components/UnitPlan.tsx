@@ -2,101 +2,34 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Dictionary } from "@/content/fr";
-import { forSale, project, saleByCivic, soldCivics, type PlanColumn, type UnitForSale } from "@/content/project";
-import { fill, formatDate, formatNumber } from "@/lib/i18n";
+import { DEEP, GARAGE, MAN_DOOR, ROW, type PlanLayout } from "@/lib/cms/plan";
+import type { UnitForSale } from "@/lib/cms/types";
+import { fill, formatDate, formatNumber } from "@/lib/format";
 import { requestUnit } from "@/lib/unit-events";
 import { Arrow, ArrowDown } from "./icons";
 
 type Strings = Dictionary["plan"];
 
-// ---------- Geometry (feet) ----------
-const ROW = 35; // each row of units is 35 ft deep; 70 ft for the building
-const DEEP = 10; // the office block at the boulevard end sticks out 10 ft on both sides
-const MAN_DOOR = [3, 6] as const; // offset from the unit's left wall
-const GARAGE = 10;
-
-type Side = "top" | "bottom";
-interface Cell {
-  civics: string[];
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-  walls: Side[];
-  sale?: UnitForSale;
-  sold?: boolean;
-}
-interface Seg {
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
-}
-
-function buildPlan() {
-  const cols = project.plan as readonly PlanColumn[];
-  const cells: Cell[] = [];
-  const services: { x: number; w: number }[] = [];
-  const partitions: Seg[] = [];
-  const demising: Seg[] = [];
-  const walls: Seg[] = [];
-  const span = (c: PlanColumn) => (c.deep ? [-DEEP, 2 * ROW + DEEP] : [0, 2 * ROW]);
-
-  let x = 0;
-  cols.forEach((c, i) => {
-    const [top, bottom] = span(c);
-    const unitCol = !c.service;
-
-    if (c.service) {
-      services.push({ x, w: c.w });
-    } else if (c.through) {
-      const sale = saleByCivic[c.top!] ?? saleByCivic[c.bottom!];
-      cells.push({ civics: [c.top!, c.bottom!], x, y: top, w: c.w, h: bottom - top, walls: ["top", "bottom"], sale, sold: !sale && soldCivics.has(c.top!) });
-    } else {
-      cells.push({ civics: [c.top!], x, y: top, w: c.w, h: ROW - top, walls: ["top"], sale: saleByCivic[c.top!], sold: soldCivics.has(c.top!) });
-      cells.push({ civics: [c.bottom!], x, y: ROW, w: c.w, h: bottom - ROW, walls: ["bottom"], sale: saleByCivic[c.bottom!], sold: soldCivics.has(c.bottom!) });
-      demising.push({ x1: x, y1: ROW, x2: x + c.w, y2: ROW });
-    }
-
-    // Exterior walls along both long sides, broken where the walk-in and garage doors are
-    for (const y of [top, bottom]) {
-      const gaps = unitCol ? [[x + MAN_DOOR[0], x + MAN_DOOR[1]], [x + c.w - 4 - GARAGE, x + c.w - 4]] : [];
-      let from = x;
-      for (const [a, b] of gaps) {
-        walls.push({ x1: from, y1: y, x2: a, y2: y });
-        from = b;
-      }
-      walls.push({ x1: from, y1: y, x2: x + c.w, y2: y });
-    }
-
-    const next = cols[i + 1];
-    if (next) {
-      const [nTop, nBottom] = span(next);
-      // Where the office block steps back to the main bar, the step is exterior wall
-      if (nTop !== top) {
-        walls.push({ x1: x + c.w, y1: Math.min(top, nTop), x2: x + c.w, y2: Math.max(top, nTop) });
-        walls.push({ x1: x + c.w, y1: Math.min(bottom, nBottom), x2: x + c.w, y2: Math.max(bottom, nBottom) });
-      }
-      partitions.push({ x1: x + c.w, y1: Math.max(top, nTop), x2: x + c.w, y2: Math.min(bottom, nBottom) });
-    }
-    x += c.w;
-  });
-
-  const first = span(cols[0]);
-  const last = span(cols[cols.length - 1]);
-  walls.push({ x1: 0, y1: first[0], x2: 0, y2: first[1] });
-  walls.push({ x1: x, y1: last[0], x2: x, y2: last[1] });
-
-  return { cells, services, partitions, demising, walls, length: x };
-}
-
-const PLAN = buildPlan();
-const L = PLAN.length;
-const VB = { x: -34, y: -38, w: L + 34 + 26, h: 2 * ROW + 2 * DEEP + 38 + 10 };
-const saleOrder = new Map(forSale.map((u, i) => [u.id, i]));
-
-// ---------- Component ----------
-export default function UnitPlan({ s, locale, sqft }: { s: Strings; locale: string; sqft: string }) {
+export default function UnitPlan({
+  s,
+  locale,
+  sqft,
+  layout: PLAN,
+  forSale,
+  sold,
+  asOf,
+}: {
+  s: Strings;
+  locale: string;
+  sqft: string;
+  layout: PlanLayout; // built on the server from the plan geometry and the current availability
+  forSale: UnitForSale[];
+  sold: string[];
+  asOf: string;
+}) {
+  const L = PLAN.length;
+  const VB = { x: -34, y: -38, w: L + 34 + 26, h: 2 * ROW + 2 * DEEP + 38 + 10 };
+  const saleOrder = new Map(forSale.map((u, i) => [u.id, i]));
   const n = (v: number) => formatNumber(locale, v);
   const [hover, setHover] = useState<string | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
@@ -160,7 +93,7 @@ export default function UnitPlan({ s, locale, sqft }: { s: Strings; locale: stri
   }, []);
 
   const list = forSale.map((u) => u.civics.join(" + ")).join(", ");
-  const soldList = project.sold.join(", ");
+  const soldList = sold.join(", ");
 
   return (
     <div>
@@ -398,7 +331,7 @@ export default function UnitPlan({ s, locale, sqft }: { s: Strings; locale: stri
         <div className="lg:col-span-4">
           <h3 className="h3 text-2xl text-white">{s.listTitle}</h3>
           <p className="mt-3 max-w-sm text-[0.9375rem] leading-relaxed text-white/60">
-            {fill(s.note, { date: formatDate(locale, project.availabilityAsOf) })}
+            {fill(s.note, { date: formatDate(locale, asOf) })}
           </p>
           <p className="eyebrow mt-5 flex items-center gap-2 text-mint/70">
             <ArrowDown className="h-3.5 w-3.5" />

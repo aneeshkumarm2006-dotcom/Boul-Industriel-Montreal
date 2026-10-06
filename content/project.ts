@@ -1,13 +1,10 @@
-// Single source of truth for project facts.
+// Project facts: the defaults behind the admin panel (/admin).
 // Sources: LoopNet listing 35093549 (industrial condo units, last updated 2026-09-08),
 // the building's earlier sale listing (unit features), and the client's unit plan.
-// To update availability, edit `forSale` below; every section reads from it.
+// Once the client publishes from /admin, their edits override these values field by field
+// (lib/cms); fields they never touched keep following this file.
 
-export interface UnitForSale {
-  id: string; // civic number used as the unit id
-  civics: readonly string[]; // more than one when units were combined
-  sqft?: number; // leave out when the area isn't confirmed: the site shows "on request"
-}
+import type { UnitForSale } from "@/lib/cms/types";
 
 export interface PlanColumn {
   w: number; // width in feet, measured off the client's floor plan
@@ -107,7 +104,8 @@ export const project = {
     phone: "+15142987050",
     phoneDisplay: "514 298-7050",
     email: "management@bayviewpartners.ca",
-    // app/api/contact emails each submission from automations@davnoot.com to `email` (SMTP env vars on Vercel)
+    // app/api/contact emails each submission from automations@davnoot.com to the inboxes set in /admin
+    // (Coordonnées), which start as `email` (SMTP env vars on Vercel)
     formEndpoint: "/api/contact/",
   },
 
@@ -116,22 +114,8 @@ export const project = {
     building: "aerial-outlined",
     map: "aerial-top",
     gallery: ["aerial-summer", "aerial-southwest", "aerial-top", "aerial-outlined", "building-end"],
-    // Interior photos, in display order. Drop the files in assets-src/ (e.g. interior-12656-shop.jpg),
-    // run `npm run images`, then list their names here. The section stays hidden while this is empty.
+    // Interior photos, in display order; the section stays hidden while this is empty. The client uploads
+    // them in /admin (Photos). Photos added in code go in assets-src/ (run `npm run images`), listed here by name.
     interior: [] as string[],
   },
 } as const;
-
-export const forSale = project.forSale;
-export const sqftRange = project.areaRange;
-export const soldCivics: ReadonlySet<string> = new Set(project.sold);
-
-/** "12652 + 12700" for combined units. */
-export function unitName(u: UnitForSale): string {
-  return u.civics.join(" + ");
-}
-
-/** Civic number → the unit for sale that contains it, if any. */
-export const saleByCivic: Record<string, UnitForSale> = Object.fromEntries(
-  forSale.flatMap((u) => u.civics.map((c) => [c, u])),
-);

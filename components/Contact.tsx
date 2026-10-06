@@ -1,10 +1,21 @@
 import type { Dictionary } from "@/content/fr";
-import { forSale, project } from "@/content/project";
-import { formatNumber } from "@/lib/i18n";
+import { project } from "@/content/project";
+import type { ContactInfo, UnitForSale } from "@/lib/cms/types";
+import { formatNumber } from "@/lib/format";
 import ContactForm from "./ContactForm";
 import { Mail, Phone } from "./icons";
 
-export default function Contact({ t, lang }: { t: Dictionary; lang: string }) {
+export default function Contact({
+  t,
+  lang,
+  forSale,
+  contact,
+}: {
+  t: Dictionary;
+  lang: string;
+  forSale: UnitForSale[];
+  contact: Pick<ContactInfo, "phone" | "phoneDisplay" | "email">;
+}) {
   const c = t.contact;
   const units = forSale.map((u) => ({
     id: u.id,
@@ -24,23 +35,23 @@ export default function Contact({ t, lang }: { t: Dictionary; lang: string }) {
           <div className="mt-10 border-t border-white/15 pt-6">
             <p className="eyebrow text-white/55">{c.phoneLabel}</p>
             <a
-              href={`tel:${project.contact.phone}`}
+              href={`tel:${contact.phone}`}
               className="mt-2 inline-flex items-center gap-3 text-[1.75rem] font-bold tracking-[-0.01em] text-mint transition-colors hover:text-white"
               style={{ fontVariationSettings: '"wdth" 112' }}
             >
               <Phone className="h-6 w-6" />
-              <span className="mono !font-semibold">{project.contact.phoneDisplay}</span>
+              <span className="mono !font-semibold">{contact.phoneDisplay}</span>
             </a>
             <p className="mt-1 text-sm text-white/60">{c.team}</p>
-            {project.contact.email && (
+            {contact.email && (
               <>
                 <p className="eyebrow mt-7 text-white/55">{c.emailLabel}</p>
                 <a
-                  href={`mailto:${project.contact.email}`}
+                  href={`mailto:${contact.email}`}
                   className="mt-2 inline-flex items-center gap-2.5 font-semibold text-white transition-colors hover:text-mint"
                 >
                   <Mail />
-                  {project.contact.email}
+                  {contact.email}
                 </a>
               </>
             )}
@@ -52,8 +63,9 @@ export default function Contact({ t, lang }: { t: Dictionary; lang: string }) {
             s={c}
             units={units}
             endpoint={project.contact.formEndpoint}
-            email={project.contact.email}
-            phoneDisplay={project.contact.phoneDisplay}
+            email={contact.email}
+            phone={contact.phone}
+            phoneDisplay={contact.phoneDisplay}
             lang={lang}
           />
         </div>

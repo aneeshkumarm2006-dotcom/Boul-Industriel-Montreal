@@ -1,11 +1,12 @@
 import type { Dictionary } from "@/content/fr";
 import { project } from "@/content/project";
-import { fill, formatNumber } from "@/lib/i18n";
+import { builtinImage } from "@/lib/cms/defaults";
+import type { BuildingFacts } from "@/lib/cms/types";
+import { fill, formatNumber } from "@/lib/format";
 import Picture from "./Picture";
 
-export default function Building({ t }: { t: Dictionary }) {
+export default function Building({ t, building: b }: { t: Dictionary; building: BuildingFacts }) {
   const s = t.building;
-  const b = project.building;
   const n = (v: number, digits = 0) => formatNumber(t.locale, v, digits);
   const ft = t.units.ft;
 
@@ -44,7 +45,7 @@ export default function Building({ t }: { t: Dictionary }) {
         </div>
         <figure className="overflow-hidden rounded-[1.25rem] bg-paper-2 lg:col-span-7">
           <Picture
-            name={project.images.building}
+            image={builtinImage(project.images.building)}
             alt={s.photoAlt}
             sizes="(min-width: 1024px) 58vw, 100vw"
             className="aspect-[4/3] h-full w-full object-cover object-[18%_50%] lg:aspect-[5/4]"

@@ -1,0 +1,6 @@
+{
+  "widths": [480, 800, 1200, 1800],
+  "avif": { "quality": 50, "effort": 6 },
+  "webp": { "quality": 74 },
+  "blur": { "width": 16, "quality": 40 }
+}

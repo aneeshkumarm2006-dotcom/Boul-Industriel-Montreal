@@ -1,6 +1,6 @@
 import type { Dictionary } from "@/content/fr";
-import images from "@/content/images.json";
-import { fill } from "@/lib/i18n";
+import type { Photo } from "@/lib/cms/types";
+import { fill } from "@/lib/format";
 import Picture from "./Picture";
 import Lightbox, { type Slide } from "./Lightbox";
 import { Expand } from "./icons";
@@ -20,7 +20,7 @@ export default function Gallery({
   group,
   eyebrow,
   title,
-  names,
+  photos: shown,
   alt,
   className,
 }: {
@@ -29,20 +29,18 @@ export default function Gallery({
   group: string;
   eyebrow: string;
   title: string;
-  names: readonly string[];
-  alt: (name: string, i: number) => string;
+  photos: readonly Photo[];
+  alt: (photo: Photo, i: number) => string;
   className?: string;
 }) {
   const s = t.gallery;
-  const shown = names.filter((name) => name in images);
-  const slides: Slide[] = shown.map((name, i) => {
-    const img = images[name as keyof typeof images];
-    const set = (ext: string) => img.widths.map((w) => `/images/${name}-${w}.${ext} ${w}w`).join(", ");
+  const slides: Slide[] = shown.map((img, i) => {
+    const set = (ext: string) => img.widths.map((w) => `${img.base}${w}.${ext} ${w}w`).join(", ");
     return {
       avif: set("avif"),
       webp: set("webp"),
-      src: `/images/${name}-${img.widths.at(-1)}.webp`,
-      alt: alt(name, i),
+      src: `${img.base}${img.widths.at(-1)}.webp`,
+      alt: alt(img, i),
       w: img.width,
       h: img.height,
     };
@@ -65,8 +63,8 @@ export default function Gallery({
             isFive ? "sm:h-[600px] sm:grid-cols-4 sm:grid-rows-2" : "sm:auto-rows-[190px] sm:grid-cols-3 lg:auto-rows-[220px] lg:grid-cols-4"
           }`}
         >
-          {shown.map((name, i) => (
-            <li key={name} className={`relative overflow-hidden rounded-xl bg-paper-2 ${cell(i)}`}>
+          {shown.map((photo, i) => (
+            <li key={photo.key} className={`relative overflow-hidden rounded-xl bg-paper-2 ${cell(i)}`}>
               <button
                 type="button"
                 data-lightbox={`${group}:${i}`}
@@ -74,7 +72,7 @@ export default function Gallery({
                 className="group block h-full w-full"
               >
                 <Picture
-                  name={name}
+                  image={photo}
                   alt=""
                   sizes={i === 0 ? "(min-width: 640px) 50vw, 100vw" : "(min-width: 640px) 25vw, 50vw"}
                   className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.035]"

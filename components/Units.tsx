@@ -1,7 +1,21 @@
 import type { Dictionary } from "@/content/fr";
+import type { PlanLayout } from "@/lib/cms/plan";
+import type { UnitForSale } from "@/lib/cms/types";
 import UnitPlan from "./UnitPlan";
 
-export default function Units({ t }: { t: Dictionary }) {
+export default function Units({
+  t,
+  layout,
+  forSale,
+  sold,
+  asOf,
+}: {
+  t: Dictionary;
+  layout: PlanLayout;
+  forSale: UnitForSale[];
+  sold: string[];
+  asOf: string;
+}) {
   const s = t.plan;
   return (
     <section id="units" aria-labelledby="units-title" className="on-dark bg-slate py-20 text-white sm:py-28">
@@ -15,7 +29,7 @@ export default function Units({ t }: { t: Dictionary }) {
           </div>
           <p className="lead text-white/70 lg:col-span-5">{s.intro}</p>
         </div>
-        <UnitPlan s={s} locale={t.locale} sqft={t.units.sqft} />
+        <UnitPlan s={s} locale={t.locale} sqft={t.units.sqft} layout={layout} forSale={forSale} sold={sold} asOf={asOf} />
       </div>
     </section>
   );

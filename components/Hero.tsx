@@ -1,14 +1,24 @@
 import type { Dictionary } from "@/content/fr";
-import { forSale, project, sqftRange } from "@/content/project";
 import hero from "@/content/hero.json";
-import { fill, formatNumber } from "@/lib/i18n";
+import { builtinImage } from "@/lib/cms/defaults";
+import type { UnitForSale } from "@/lib/cms/types";
+import { fill, formatNumber } from "@/lib/format";
 import Picture from "./Picture";
 import PlateStrip from "./PlateStrip";
 import { Arrow } from "./icons";
 
-export default function Hero({ t }: { t: Dictionary }) {
+export default function Hero({
+  t,
+  forSale,
+  areaRange,
+  a40,
+}: {
+  t: Dictionary;
+  forSale: UnitForSale[];
+  areaRange: [number, number];
+  a40: number;
+}) {
   const n = (v: number) => formatNumber(t.locale, v);
-  const a40 = project.driveTimes.find((d) => d.key === "a40")!.min;
 
   return (
     <section id="top" aria-labelledby="hero-title" className="relative pb-16 sm:pb-24">
@@ -20,7 +30,7 @@ export default function Hero({ t }: { t: Dictionary }) {
           </h1>
           <div className="lg:col-span-4 lg:pb-1.5">
             <p className="lead text-steel">
-              {fill(t.hero.lead, { min: n(sqftRange[0]), max: n(sqftRange[1]), a40 })}
+              {fill(t.hero.lead, { min: n(areaRange[0]), max: n(areaRange[1]), a40 })}
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <a href="#units" className="btn btn-primary">
@@ -37,7 +47,7 @@ export default function Hero({ t }: { t: Dictionary }) {
 
       <div className="mx-auto mt-10 max-w-[90rem] sm:mt-12 sm:px-6 lg:px-8">
         <HeroAerial t={t} />
-        <Plates t={t} />
+        <Plates t={t} forSale={forSale} />
       </div>
     </section>
   );
@@ -59,7 +69,7 @@ function HeroAerial({ t }: { t: Dictionary }) {
         style={{ width: `max(100cqw, calc(100cqh * ${W} / ${H}))`, aspectRatio: `${W} / ${H}` }}
       >
         <Picture
-          name={hero.image}
+          image={builtinImage(hero.image)}
           alt={t.hero.photoAlt}
           sizes="(min-width: 1440px) 1376px, 100vw"
           priority
@@ -96,7 +106,7 @@ function HeroAerial({ t }: { t: Dictionary }) {
 }
 
 /** Civic-number plates: every address for sale, set like the numbers painted over each door. */
-function Plates({ t }: { t: Dictionary }) {
+function Plates({ t, forSale }: { t: Dictionary; forSale: UnitForSale[] }) {
   const n = (v: number) => formatNumber(t.locale, v);
   return (
     <PlateStrip label={t.hero.platesLabel} hint={t.hero.platesHint} prev={t.gallery.prev} next={t.gallery.next}

@@ -12,3 +12,7 @@ next-env.d.ts
 # Secrets (SMTP app password)
 .env
 .env*.local
+
+# Admin content when running locally (lib/cms/store.ts); production uses Vercel Blob
+/.cms-data/
+/public/_cms/

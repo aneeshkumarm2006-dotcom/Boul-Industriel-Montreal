@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Dictionary } from "@/content/fr";
+import { fill } from "@/lib/format";
 import { UNIT_SELECT } from "@/lib/unit-events";
 
 type Strings = Dictionary["contact"];
@@ -17,6 +18,7 @@ export default function ContactForm({
   units,
   endpoint,
   email,
+  phone,
   phoneDisplay,
   lang,
 }: {
@@ -24,6 +26,7 @@ export default function ContactForm({
   units: { id: string; label: string }[];
   endpoint: string;
   email: string;
+  phone: string;
   phoneDisplay: string;
   lang: string;
 }) {
@@ -129,11 +132,11 @@ export default function ContactForm({
       <div role="status" className="rounded-[1.25rem] bg-paper p-8 text-ink sm:p-10">
         <p className="h2 !text-[2rem]">{s.successTitle}</p>
         <p className="lead mt-3 text-steel">
-          {status === "mailto" ? s.mailtoNote : s.success.replace("{name}", firstName)}
+          {status === "mailto" ? s.mailtoNote : fill(s.success, { name: firstName })}
         </p>
         <p className="mt-6 border-t border-line pt-5 text-[0.9375rem] text-steel">
           {s.faster}{" "}
-          <a href={`tel:+1${phoneDisplay.replace(/\D/g, "")}`} className="mono font-semibold text-ink underline decoration-teal/40 underline-offset-4 hover:decoration-teal">
+          <a href={`tel:${phone}`} className="mono font-semibold text-ink underline decoration-teal/40 underline-offset-4 hover:decoration-teal">
             {phoneDisplay}
           </a>
         </p>
@@ -237,7 +240,7 @@ export default function ContactForm({
       </div>
       {status === "error" && (
         <p role="alert" className="text-sm font-semibold text-red-800 sm:col-span-2">
-          {s.sendError.replace("{phone}", phoneDisplay)}
+          {fill(s.sendError, { phone: phoneDisplay })}
         </p>
       )}
     </form>

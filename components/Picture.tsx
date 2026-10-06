@@ -1,21 +1,18 @@
-import images from "@/content/images.json";
-
-type ImageName = keyof typeof images;
+import type { ImageSource } from "@/lib/cms/types";
 
 interface Props {
-  name: string;
+  image: ImageSource | null;
   alt: string;
   sizes: string;
   priority?: boolean;
   className?: string;
 }
 
-/** Responsive AVIF/WebP picture from the pre-optimized set, with a blurred placeholder. */
-export default function Picture({ name, alt, sizes, priority, className }: Props) {
-  const img = images[name as ImageName];
+/** Responsive AVIF/WebP picture from a pre-optimized set (build-time or uploaded), with a blurred placeholder. */
+export default function Picture({ image: img, alt, sizes, priority, className }: Props) {
   if (!img) return null;
-  const srcset = (ext: string) => img.widths.map((w) => `/images/${name}-${w}.${ext} ${w}w`).join(", ");
-  const fallback = `/images/${name}-${img.widths[Math.min(1, img.widths.length - 1)]}.webp`;
+  const srcset = (ext: string) => img.widths.map((w) => `${img.base}${w}.${ext} ${w}w`).join(", ");
+  const fallback = `${img.base}${img.widths[Math.min(1, img.widths.length - 1)]}.webp`;
 
   return (
     <picture>

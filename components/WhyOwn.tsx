@@ -20,8 +20,8 @@ export default function WhyOwn({ t }: { t: Dictionary }) {
           <div className="rounded-[1.25rem] border border-line bg-white p-6 sm:p-9 lg:col-span-7">
             <h3 className="eyebrow text-teal">{s.ownerTitle}</h3>
             <ul className="mt-6 grid gap-x-8 gap-y-7 sm:grid-cols-2">
-              {s.items.map((item) => (
-                <li key={item.title} className="grid grid-cols-[1.75rem_1fr] gap-x-3.5">
+              {s.items.map((item, i) => (
+                <li key={i} className="grid grid-cols-[1.75rem_1fr] gap-x-3.5">
                   <span aria-hidden className="grid h-7 w-7 place-items-center rounded-md bg-slate text-mint">
                     <Check />
                   </span>
@@ -39,8 +39,8 @@ export default function WhyOwn({ t }: { t: Dictionary }) {
             <h3 className="h3 mt-3 text-[1.75rem]">{s.investor.title}</h3>
             <p className="mt-3 text-[0.9375rem] leading-relaxed text-white/70">{s.investor.body}</p>
             <ul className="mt-6 grid gap-3 border-t border-white/15 pt-6">
-              {s.investor.points.map((p) => (
-                <li key={p} className="flex items-center gap-3 font-semibold">
+              {s.investor.points.map((p, i) => (
+                <li key={i} className="flex items-center gap-3 font-semibold">
                   <span aria-hidden className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-mint text-slate">
                     <Check className="h-3.5 w-3.5" />
                   </span>

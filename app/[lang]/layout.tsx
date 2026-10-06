@@ -1,15 +1,17 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import { fill, formatNumber, getDictionary, isLocale, locales } from "@/lib/i18n";
+import { project } from "@/content/project";
+import { getSiteContent } from "@/lib/cms/content";
+import { fill, formatNumber } from "@/lib/format";
+import { isLocale, locales } from "@/lib/i18n";
 import { fontVariables } from "@/lib/fonts";
-import { project, sqftRange } from "@/content/project";
 import "../globals.css";
 
 // Production origin, used for canonical URLs and the social preview image
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.example.com";
 
-export const dynamicParams = false;
-
+// fr and en are prerendered. Other segments render on demand and hit notFound() below; `dynamicParams = false`
+// is left off because on-demand revalidation can turn such routes into 404s (Next.js issue #58137).
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
 }
@@ -23,11 +25,12 @@ export const viewport: Viewport = {
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
   if (!isLocale(lang)) return {};
-  const t = getDictionary(lang);
+  const site = await getSiteContent();
+  const t = site.dict[lang];
   const description = fill(t.meta.description, {
-    min: formatNumber(t.locale, sqftRange[0]),
-    max: formatNumber(t.locale, sqftRange[1]),
-    a40: project.driveTimes[0].min,
+    min: formatNumber(t.locale, site.areaRange[0]),
+    max: formatNumber(t.locale, site.areaRange[1]),
+    a40: site.driveTimes.find((d) => d.key === "a40")?.min ?? 0,
   });
   return {
     metadataBase: new URL(SITE_URL),

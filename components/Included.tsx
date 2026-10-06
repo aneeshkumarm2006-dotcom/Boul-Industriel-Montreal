@@ -19,7 +19,7 @@ export default function Included({ t }: { t: Dictionary }) {
 
           <ul className="mt-10 grid gap-x-10 gap-y-6 sm:grid-cols-2">
             {s.items.map((item, i) => (
-              <li key={item.title} className="grid grid-cols-[1.75rem_1fr] gap-x-3.5">
+              <li key={i} className="grid grid-cols-[1.75rem_1fr] gap-x-3.5">
                 {/* The first four are the unit features keyed on the drawing; the rest apply to the whole building */}
                 <span aria-hidden className="mono grid h-7 w-7 place-items-center rounded-full bg-slate text-sm font-bold text-mint">
                   {i < DRAWN ? i + 1 : <Check />}

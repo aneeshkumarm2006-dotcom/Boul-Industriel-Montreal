@@ -1,12 +1,14 @@
 import type { Dictionary } from "@/content/fr";
 import { project } from "@/content/project";
-import { fill } from "@/lib/i18n";
+import { builtinImage } from "@/lib/cms/defaults";
+import type { DriveTime } from "@/lib/cms/types";
+import { fill } from "@/lib/format";
 import MapFacade from "./MapFacade";
 import Picture from "./Picture";
 
-export default function Location({ t }: { t: Dictionary }) {
+export default function Location({ t, driveTimes }: { t: Dictionary; driveTimes: DriveTime[] }) {
   const l = t.location;
-  const a40 = project.driveTimes.find((d) => d.key === "a40")!.min;
+  const a40 = driveTimes.find((d) => d.key === "a40")?.min ?? 0;
 
   return (
     <section id="location" aria-labelledby="location-title" className="bg-paper-2 py-20 sm:py-28">
@@ -21,7 +23,7 @@ export default function Location({ t }: { t: Dictionary }) {
           <div className="sign mt-10 px-6 py-6 sm:px-8 sm:py-7">
             <h3 className="eyebrow text-white/70">{l.timesTitle}</h3>
             <ul className="mt-3 divide-y divide-white/20">
-              {project.driveTimes.map((d) => (
+              {driveTimes.map((d) => (
                 <li key={d.key} className="flex items-baseline justify-between gap-4 py-2.5">
                   <span className="font-semibold" style={{ fontVariationSettings: '"wdth" 94' }}>
                     {l.places[d.key]}
@@ -45,7 +47,7 @@ export default function Location({ t }: { t: Dictionary }) {
             openLabel={l.openMaps}
             address={l.address}
           >
-            <Picture name={project.images.map} alt="" sizes="(min-width: 1024px) 58vw, 100vw" className="h-full w-full object-cover" />
+            <Picture image={builtinImage(project.images.map)} alt="" sizes="(min-width: 1024px) 58vw, 100vw" className="h-full w-full object-cover" />
           </MapFacade>
         </div>
       </div>
