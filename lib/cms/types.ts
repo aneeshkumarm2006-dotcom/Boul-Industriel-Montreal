@@ -40,9 +40,6 @@ export interface BuildingFacts {
   units: number;
   lengthFt: number;
   depthFt: number;
-  yearBuilt: number;
-  lotAcres: number;
-  parkingPer1000: number;
   zoning: string;
 }
 
@@ -57,6 +54,7 @@ export interface ContactInfo {
 export interface SiteContent {
   dict: Record<Locale, Dictionary>;
   forSale: UnitForSale[];
+  reserved: string[];
   sold: string[];
   availabilityAsOf: string;
   areaRange: [number, number];

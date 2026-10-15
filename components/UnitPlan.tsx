@@ -16,6 +16,7 @@ export default function UnitPlan({
   sqft,
   layout: PLAN,
   forSale,
+  reserved,
   sold,
   asOf,
 }: {
@@ -24,6 +25,7 @@ export default function UnitPlan({
   sqft: string;
   layout: PlanLayout; // built on the server from the plan geometry and the current availability
   forSale: UnitForSale[];
+  reserved: string[];
   sold: string[];
   asOf: string;
 }) {
@@ -94,6 +96,7 @@ export default function UnitPlan({
 
   const list = forSale.map((u) => u.civics.join(" + ")).join(", ");
   const soldList = sold.join(", ");
+  const reservedList = reserved.join(", ");
 
   return (
     <div>
@@ -110,7 +113,7 @@ export default function UnitPlan({
           <svg
             viewBox={`${VB.x} ${VB.y} ${VB.w} ${VB.h}`}
             role="img"
-            aria-label={fill(s.aria, { list, sold: soldList })}
+            aria-label={fill(s.aria, { list, reserved: reservedList, sold: soldList })}
             className="block w-full min-w-[860px] select-none lg:min-w-0"
           >
             <defs>
@@ -158,6 +161,11 @@ export default function UnitPlan({
             {/* Sold units */}
             {PLAN.cells.map((c) =>
               c.sold ? <rect key={`s-${c.civics[0]}`} x={c.x} y={c.y} width={c.w} height={c.h} fill="url(#sold)" /> : null,
+            )}
+
+            {/* Reserved units */}
+            {PLAN.cells.map((c) =>
+              c.reserved ? <rect key={`r-${c.civics[0]}`} x={c.x} y={c.y} width={c.w} height={c.h} fill="#d4f0c9" fillOpacity=".16" /> : null,
             )}
 
             {/* Units for sale */}
@@ -236,12 +244,15 @@ export default function UnitPlan({
             {/* Labels */}
             {PLAN.cells.map((c) => {
               const cx = c.x + c.w / 2;
-              if (c.sold) {
+              if (c.sold || c.reserved) {
+                // Reserved units get a solid mint stamp, sold ones an outlined dark one; wide enough for the word
+                const label = c.reserved ? s.reserved : s.sold;
+                const w = Math.max(25, label.length * 3.4 + 6);
                 const stamp = (y: number) => (
                   <>
-                    <rect x={cx - 12.5} y={y - 4.3} width={25} height={8.6} rx={1.2} fill="#0f1d1e" fillOpacity=".5" stroke="#d4f0c9" strokeOpacity=".8" strokeWidth={1.5} vectorEffect="non-scaling-stroke" />
-                    <text x={cx} y={y + 0.2} textAnchor="middle" dominantBaseline="central" className="pl-sold mono" fill="#d4f0c9">
-                      {s.sold}
+                    <rect x={cx - w / 2} y={y - 4.3} width={w} height={8.6} rx={1.2} fill={c.reserved ? "#d4f0c9" : "#0f1d1e"} fillOpacity={c.reserved ? 0.9 : 0.5} stroke="#d4f0c9" strokeOpacity=".8" strokeWidth={1.5} vectorEffect="non-scaling-stroke" />
+                    <text x={cx} y={y + 0.2} textAnchor="middle" dominantBaseline="central" className="pl-sold mono" fill={c.reserved ? "#1d3a3c" : "#d4f0c9"}>
+                      {label}
                     </text>
                   </>
                 );
@@ -318,6 +329,12 @@ export default function UnitPlan({
               {s.sold}
             </span>
             {s.legendSold}
+          </li>
+          <li className="flex items-center gap-2.5">
+            <span aria-hidden className="grid h-3.5 place-items-center rounded-[2px] border border-mint/55 bg-mint/90 px-1 font-mono text-[0.5rem] leading-none tracking-wider text-slate">
+              {s.reserved}
+            </span>
+            {s.legendReserved}
           </li>
           <li className="flex items-center gap-2.5">
             <span aria-hidden className="h-3.5 w-5 rounded-[2px] border border-mint/40 bg-[repeating-linear-gradient(45deg,rgb(212_240_201/.45)_0_1px,transparent_1px_4px)]" />

@@ -3,7 +3,7 @@ import en from "@/content/en";
 import images from "@/content/images.json";
 import { project } from "@/content/project";
 import type { Bi, ImageSource, Photo } from "./types";
-import { BUILDING_FACTS, CALLOUTS, LISTS, TEXT_FIELDS, type ListItem } from "./registry";
+import { BUILDING_FACTS, LISTS, TEXT_FIELDS, type ListItem } from "./registry";
 import { codeUnitStates, UNIT_ROWS } from "./units";
 
 /** Every editable value, keyed like the stored overrides (see registry.ts). */
@@ -43,8 +43,6 @@ function buildDefaults(): Values {
   const v: Values = {};
   for (const f of TEXT_FIELDS) v[f.key] = { ...f.defaults };
 
-  v["l:included.callouts"] = pairItems(fr.included.items.slice(0, CALLOUTS), en.included.items.slice(0, CALLOUTS));
-  v["l:included.extra"] = pairItems(fr.included.items.slice(CALLOUTS), en.included.items.slice(CALLOUTS));
   v["l:why.items"] = pairItems(fr.why.items, en.why.items);
   v["l:why.points"] = fr.why.investor.points.map((p, i) => ({ title: { fr: p, en: en.why.investor.points[i] ?? p } }));
   for (const l of LISTS) if (!(l.key in v)) throw new Error(`No default for ${l.key}`);

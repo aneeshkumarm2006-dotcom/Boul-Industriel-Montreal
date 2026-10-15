@@ -31,7 +31,7 @@ function Segmented<T extends string>({
           aria-checked={value === v}
           onClick={() => onChange(v)}
           className={`whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-semibold transition-colors ${
-            value === v ? (v === "sale" ? "bg-mint text-slate" : "bg-slate text-white") : "text-steel hover:bg-paper-2"
+            value === v ? (v === "sale" ? "bg-mint text-slate" : v === "reserved" ? "bg-teal text-white" : "bg-slate text-white") : "text-steel hover:bg-paper-2"
           }`}
         >
           {text}
@@ -51,6 +51,7 @@ export default function UnitsTab({ onUnitChange, onDateEdit }: { onUnitChange: (
     pub: published[`u:${row.id}`] as UnitState,
   }));
   const forSale = rows.filter((r) => r.state.status === "sale").length;
+  const reserved = rows.filter((r) => r.state.status === "reserved").length;
   const range = values["p:areaRange"] as [number, number];
   const asOf = values["p:availabilityAsOf"] as string;
 
@@ -69,7 +70,7 @@ export default function UnitsTab({ onUnitChange, onDateEdit }: { onUnitChange: (
       <SectionCard
         title={u.title}
         hint={u.intro}
-        aside={<p className="mono rounded-md bg-paper-2 px-2.5 py-1.5 text-sm">{fill(u.summary, { sale: forSale, sold: rows.length - forSale })}</p>}
+        aside={<p className="mono rounded-md bg-paper-2 px-2.5 py-1.5 text-sm">{fill(u.summary, { sale: forSale, reserved, sold: rows.length - forSale - reserved })}</p>}
       >
         <ul>
           <li aria-hidden className="eyebrow hidden grid-cols-[minmax(0,1fr)_auto_9rem] gap-4 pb-2 text-steel sm:grid">
@@ -98,6 +99,7 @@ export default function UnitsTab({ onUnitChange, onDateEdit }: { onUnitChange: (
                   value={state.status}
                   options={[
                     ["sale", u.forSale],
+                    ["reserved", u.reserved],
                     ["sold", u.sold],
                   ]}
                   onChange={(status) => setUnit(key, { ...state, status })}
@@ -115,7 +117,7 @@ export default function UnitsTab({ onUnitChange, onDateEdit }: { onUnitChange: (
                       const n = num(e.target.value);
                       setUnit(key, { ...state, sqft: Number.isFinite(n) && n > 0 ? n : null });
                     }}
-                    className={`${inputBase} w-32 sm:w-full ${state.status === "sold" ? "opacity-50" : ""}`}
+                    className={`${inputBase} w-32 sm:w-full ${state.status !== "sale" ? "opacity-50" : ""}`}
                   />
                   <IssueList ui={ui} issues={issues.get(key)} />
                 </div>

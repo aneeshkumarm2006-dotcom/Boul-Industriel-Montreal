@@ -214,7 +214,7 @@ export function checkValue(key: string, value: unknown): Issue[] {
   if (LIST_BY_KEY.has(key)) return listIssues(key, value);
   if (key === "m:gallery" || key === "m:interior") return photoIssues(key, value);
   if (key.startsWith("u:")) {
-    const ok = isObj(value) && (value.status === "sale" || value.status === "sold") && (value.sqft === null || isInt(value.sqft, 1, 1_000_000));
+    const ok = isObj(value) && (value.status === "sale" || value.status === "reserved" || value.status === "sold") && (value.sqft === null || isInt(value.sqft, 1, 1_000_000));
     return ok ? [] : [{ key, level: "error", code: "invalid" }];
   }
   if (key.startsWith("p:building.")) {
@@ -341,7 +341,6 @@ export function toSiteContent(values: Values): SiteContent {
     setPath(dict.en, f.path, v.en);
   }
 
-  const items = [...(values["l:included.callouts"] as ListItem[]), ...(values["l:included.extra"] as ListItem[])];
   const why = values["l:why.items"] as ListItem[];
   const points = values["l:why.points"] as ListItem[];
   const driveTimes = values["p:driveTimes"] as DriveTimeValue[];
@@ -350,7 +349,6 @@ export function toSiteContent(values: Values): SiteContent {
 
   for (const lang of LOCALES) {
     const t = dict[lang];
-    t.included.items = items.map((it) => (it.body ? { title: it.title[lang], body: it.body[lang] } : { title: it.title[lang] }));
     t.why.items = why.map((it) => ({ title: it.title[lang], body: it.body?.[lang] ?? "" }));
     t.why.investor.points = points.map((it) => it.title[lang]);
     t.location.places = Object.fromEntries(driveTimes.map((d) => [d.key, d.name[lang]]));

@@ -16,6 +16,7 @@ export interface Cell {
   h: number;
   walls: Side[];
   sale?: UnitForSale;
+  reserved?: boolean;
   sold?: boolean;
 }
 export interface Seg {
@@ -33,9 +34,10 @@ export interface PlanLayout {
   length: number;
 }
 
-/** Lays out the plan columns as unit cells and wall segments, marking the units for sale and the sold ones. */
-export function buildPlan(cols: readonly PlanColumn[], forSale: readonly UnitForSale[], sold: readonly string[]): PlanLayout {
+/** Lays out the plan columns as unit cells and wall segments, marking the units for sale, the reserved and the sold ones. */
+export function buildPlan(cols: readonly PlanColumn[], forSale: readonly UnitForSale[], reserved: readonly string[], sold: readonly string[]): PlanLayout {
   const saleByCivic: Record<string, UnitForSale> = Object.fromEntries(forSale.flatMap((u) => u.civics.map((c) => [c, u])));
+  const reservedCivics = new Set(reserved);
   const soldCivics = new Set(sold);
   const cells: Cell[] = [];
   const services: { x: number; w: number }[] = [];
@@ -53,10 +55,10 @@ export function buildPlan(cols: readonly PlanColumn[], forSale: readonly UnitFor
       services.push({ x, w: c.w });
     } else if (c.through) {
       const sale = saleByCivic[c.top!] ?? saleByCivic[c.bottom!];
-      cells.push({ civics: [c.top!, c.bottom!], x, y: top, w: c.w, h: bottom - top, walls: ["top", "bottom"], sale, sold: !sale && soldCivics.has(c.top!) });
+      cells.push({ civics: [c.top!, c.bottom!], x, y: top, w: c.w, h: bottom - top, walls: ["top", "bottom"], sale, reserved: !sale && reservedCivics.has(c.top!), sold: !sale && soldCivics.has(c.top!) });
     } else {
-      cells.push({ civics: [c.top!], x, y: top, w: c.w, h: ROW - top, walls: ["top"], sale: saleByCivic[c.top!], sold: soldCivics.has(c.top!) });
-      cells.push({ civics: [c.bottom!], x, y: ROW, w: c.w, h: bottom - ROW, walls: ["bottom"], sale: saleByCivic[c.bottom!], sold: soldCivics.has(c.bottom!) });
+      cells.push({ civics: [c.top!], x, y: top, w: c.w, h: ROW - top, walls: ["top"], sale: saleByCivic[c.top!], reserved: reservedCivics.has(c.top!), sold: soldCivics.has(c.top!) });
+      cells.push({ civics: [c.bottom!], x, y: ROW, w: c.w, h: bottom - ROW, walls: ["bottom"], sale: saleByCivic[c.bottom!], reserved: reservedCivics.has(c.bottom!), sold: soldCivics.has(c.bottom!) });
       demising.push({ x1: x, y1: ROW, x2: x + c.w, y2: ROW });
     }
 

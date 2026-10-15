@@ -19,7 +19,6 @@ export type SectionId =
   | "menu"
   | "hero"
   | "plan"
-  | "included"
   | "why"
   | "building"
   | "photos"
@@ -38,8 +37,7 @@ export const SECTIONS: Section[] = [
   { id: "menu", label: { fr: "Menu et barre mobile", en: "Menu & mobile bar" }, anchor: "" },
   { id: "hero", label: { fr: "Haut de page", en: "Top of page" }, anchor: "#top" },
   { id: "plan", label: { fr: "Plan et liste des unités", en: "Plan & unit list" }, anchor: "#units" },
-  { id: "included", label: { fr: "Ce qui est inclus", en: "What's included" }, anchor: "#included" },
-  { id: "why", label: { fr: "Propriétaire plutôt que locataire", en: "Own instead of rent" }, anchor: "#included" },
+  { id: "why", label: { fr: "Propriétaire plutôt que locataire", en: "Own instead of rent" }, anchor: "#why" },
   { id: "building", label: { fr: "Le bâtiment", en: "The building" }, anchor: "#building" },
   { id: "photos", label: { fr: "Photos", en: "Photos" }, anchor: "#photos" },
   { id: "location", label: { fr: "Emplacement", en: "Location" }, anchor: "#location" },
@@ -89,7 +87,6 @@ const SECTION_OF: Record<string, SectionId> = {
   mobileBar: "menu",
   hero: "hero",
   plan: "plan",
-  included: "included",
   why: "why",
   building: "building",
   interior: "photos",
@@ -117,7 +114,6 @@ const META: Partial<Record<TextPath, Meta>> = {
   },
 
   "nav.units": { label: ["Menu : Unités", "Menu: Units"] },
-  "nav.included": { label: ["Menu : Inclus", "Menu: Included"] },
   "nav.building": { label: ["Menu : Bâtiment", "Menu: Building"] },
   "nav.location": { label: ["Menu : Emplacement", "Menu: Location"] },
   "nav.photos": { label: ["Menu : Photos", "Menu: Photos"] },
@@ -158,6 +154,8 @@ const META: Partial<Record<TextPath, Meta>> = {
   "plan.legendSale": { label: ["Légende : à vendre", "Legend: for sale"] },
   "plan.legendSold": { label: ["Légende : vendu", "Legend: sold"] },
   "plan.sold": { label: ["Tampon sur les unités vendues", "Stamp on sold units"] },
+  "plan.legendReserved": { label: ["Légende : réservé", "Legend: reserved"] },
+  "plan.reserved": { label: ["Tampon sur les unités réservées", "Stamp on reserved units"] },
   "plan.scrollHint": { label: ["Indication de défilement (mobile)", "Scroll hint (mobile)"] },
   "plan.note": { label: ["Note à côté de la liste", "Note beside the list"] },
   "plan.listTitle": { label: ["Liste : titre", "List: heading"] },
@@ -169,19 +167,6 @@ const META: Partial<Record<TextPath, Meta>> = {
   "plan.aria": { label: ["Plan (lecteurs d'écran)", "Plan (screen readers)"], multiline: true, advanced: true },
   "plan.requestAria": { label: ["Bouton de la liste (lecteurs d'écran)", "List button (screen readers)"], advanced: true },
 
-  "included.eyebrow": { label: EYEBROW },
-  "included.title": { label: TITLE },
-  "included.lead": { label: LEAD, multiline: true },
-  "included.drawingTitle": { label: ["Dessin : titre", "Drawing: title"] },
-  "included.drawingNote": { label: ["Dessin : note", "Drawing: note"] },
-  "included.drawing.garage": { label: ["Dessin : porte de garage", "Drawing: garage door"] },
-  "included.drawing.door": { label: ["Dessin : porte", "Drawing: door"] },
-  "included.drawing.window": { label: ["Dessin : fenêtre", "Drawing: window"] },
-  "included.drawing.panel": { label: ["Dessin : électricité", "Drawing: electrical"] },
-  "included.drawing.washroom": { label: ["Dessin : salle de bain", "Drawing: washroom"] },
-  "included.drawing.heater": { label: ["Dessin : chauffe-eau", "Drawing: water heater"] },
-  "included.drawing.open": { label: ["Dessin : aire ouverte", "Drawing: open floor"] },
-  "included.drawing.width": { label: ["Dessin : largeur de la porte", "Drawing: door width"] },
 
   "why.eyebrow": { label: EYEBROW },
   "why.title": { label: TITLE },
@@ -202,9 +187,6 @@ const META: Partial<Record<TextPath, Meta>> = {
   "building.facts.units": { label: ["Fiche : libellé « unités »", "Facts: “units” label"] },
   "building.facts.unitsValue": { label: ["Fiche : nombre d'unités", "Facts: number of units"] },
   "building.facts.size": { label: ["Fiche : libellé « dimensions »", "Facts: “dimensions” label"] },
-  "building.facts.year": { label: ["Fiche : libellé « construction »", "Facts: “built” label"] },
-  "building.facts.lot": { label: ["Fiche : libellé « terrain »", "Facts: “lot” label"] },
-  "building.facts.lotValue": { label: ["Fiche : valeur du terrain", "Facts: lot value"] },
   "building.facts.parking": { label: ["Fiche : libellé « stationnement »", "Facts: “parking” label"] },
   "building.facts.parkingValue": { label: ["Fiche : valeur du stationnement", "Facts: parking value"] },
   "building.facts.zoning": { label: ["Fiche : libellé « zonage »", "Facts: “zoning” label"] },
@@ -279,11 +261,9 @@ export const TOKEN_HELP: Record<string, Bi> = {
   max: { fr: "la plus grande superficie (onglet Unités)", en: "the largest area (Units tab)" },
   a40: { fr: "minutes jusqu'à l'autoroute 40 (onglet Bâtiment)", en: "minutes to Highway 40 (Building tab)" },
   sqft: { fr: "une superficie en pi²", en: "an area in sq ft" },
-  year: { fr: "l'année de construction", en: "the year built" },
-  acres: { fr: "la superficie du terrain", en: "the lot size" },
-  ratio: { fr: "le ratio de stationnement", en: "the parking ratio" },
   date: { fr: "la date des disponibilités", en: "the availability date" },
   list: { fr: "la liste des unités à vendre", en: "the list of units for sale" },
+  reserved: { fr: "la liste des unités réservées", en: "the list of reserved units" },
   sold: { fr: "la liste des unités vendues", en: "the list of sold units" },
   unit: { fr: "le numéro de l'unité", en: "the unit number" },
   name: { fr: "le prénom du visiteur", en: "the visitor's first name" },
@@ -372,33 +352,7 @@ export interface ListDef {
   body: "none" | "optional" | "required";
 }
 
-/** The first four "included" items are the numbered callouts on the unit drawing. */
-export const CALLOUTS = 4;
-
 export const LISTS: ListDef[] = [
-  {
-    key: "l:included.callouts",
-    section: "included",
-    label: { fr: "Points numérotés sur le dessin", en: "Numbered points on the drawing" },
-    hint: {
-      fr: "Les numéros 1 à 4 du dessin renvoient à ces quatre points, dans cet ordre.",
-      en: "Numbers 1 to 4 on the drawing point to these four items, in this order.",
-    },
-    fixed: CALLOUTS,
-    after: "included.lead",
-    min: CALLOUTS,
-    max: CALLOUTS,
-    body: "optional",
-  },
-  {
-    key: "l:included.extra",
-    section: "included",
-    label: { fr: "Autres points inclus", en: "Other included points" },
-    after: "included.lead",
-    min: 0,
-    max: 8,
-    body: "optional",
-  },
   {
     key: "l:why.items",
     section: "why",
@@ -427,9 +381,6 @@ export const BUILDING_FACTS = [
   { key: "units", label: { fr: "Nombre d'unités", en: "Number of units" }, min: 1, max: 1000, step: 1 },
   { key: "lengthFt", label: { fr: "Longueur (pi)", en: "Length (ft)" }, min: 1, max: 10_000, step: 1 },
   { key: "depthFt", label: { fr: "Profondeur (pi)", en: "Depth (ft)" }, min: 1, max: 10_000, step: 1 },
-  { key: "yearBuilt", label: { fr: "Année de construction", en: "Year built" }, min: 1800, max: 2100, step: 1 },
-  { key: "lotAcres", label: { fr: "Terrain (acres)", en: "Lot (acres)" }, min: 0.1, max: 10_000, step: 0.1 },
-  { key: "parkingPer1000", label: { fr: "Stationnement (cases / 1 000 pi²)", en: "Parking (spaces / 1,000 sq ft)" }, min: 0, max: 100, step: 0.01 },
   { key: "zoning", label: { fr: "Zonage", en: "Zoning" } },
 ] as const;
 

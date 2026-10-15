@@ -14,9 +14,7 @@ export default function Building({ t, building: b }: { t: Dictionary; building: 
     [s.facts.area, `${n(b.sqft)} ${t.units.sqft}`],
     [s.facts.units, s.facts.unitsValue],
     [s.facts.size, `≈ ${n(b.lengthFt)} × ${n(b.depthFt)} ${ft}`],
-    [s.facts.year, String(b.yearBuilt)],
-    [s.facts.lot, fill(s.facts.lotValue, { acres: n(b.lotAcres, 1) })],
-    [s.facts.parking, fill(s.facts.parkingValue, { ratio: n(b.parkingPer1000, 2) })],
+    [s.facts.parking, s.facts.parkingValue],
     [s.facts.zoning, b.zoning],
     [s.facts.transit, s.facts.transitValue],
   ];
@@ -30,7 +28,7 @@ export default function Building({ t, building: b }: { t: Dictionary; building: 
             {s.title}
           </h2>
           <p className="lead mt-5 text-steel">
-            {fill(s.lead, { sqft: n(b.sqft), year: b.yearBuilt, acres: n(b.lotAcres, 1) })}
+            {fill(s.lead, { sqft: n(b.sqft) })}
           </p>
           <dl className="mt-10 grid grid-cols-2 border-t border-line">
             {facts.map(([k, v], i) => (

@@ -8,7 +8,7 @@ export interface UnitRow {
 }
 
 export interface UnitState {
-  status: "sale" | "sold";
+  status: "sale" | "reserved" | "sold";
   sqft: number | null; // null: the site shows "on request"
 }
 
@@ -32,25 +32,31 @@ export function unitRows(cols: readonly PlanColumn[]): UnitRow[] {
 
 export const UNIT_ROWS = unitRows(project.plan);
 
-/** Unit states as written in content/project.ts: listed for sale, otherwise sold. */
+/** Unit states as written in content/project.ts: listed for sale, listed as reserved, otherwise sold. */
 export function codeUnitStates(): Record<string, UnitState> {
   const listed = new Map<string, UnitForSale>(project.forSale.flatMap((u) => u.civics.map((c) => [c, u] as const)));
+  const reserved = new Set<string>(project.reserved);
   return Object.fromEntries(
     UNIT_ROWS.map((r) => {
       const u = r.civics.map((c) => listed.get(c)).find(Boolean);
-      return [r.id, u ? { status: "sale", sqft: u.sqft ?? null } : { status: "sold", sqft: null }];
+      const state: UnitState = u
+        ? { status: "sale", sqft: u.sqft ?? null }
+        : { status: r.civics.some((c) => reserved.has(c)) ? "reserved" : "sold", sqft: null };
+      return [r.id, state];
     }),
   );
 }
 
-/** Units for sale (civic order) and sold civic numbers, the shape every section renders from. */
-export function deriveAvailability(states: Record<string, UnitState>): { forSale: UnitForSale[]; sold: string[] } {
+/** Units for sale (civic order), reserved and sold civic numbers, the shape every section renders from. */
+export function deriveAvailability(states: Record<string, UnitState>): { forSale: UnitForSale[]; reserved: string[]; sold: string[] } {
   const forSale: UnitForSale[] = [];
+  const reserved: string[] = [];
   const sold: string[] = [];
   for (const r of UNIT_ROWS) {
     const s = states[r.id];
     if (s?.status === "sale") forSale.push(s.sqft ? { id: r.id, civics: r.civics, sqft: s.sqft } : { id: r.id, civics: r.civics });
+    else if (s?.status === "reserved") reserved.push(...r.civics);
     else sold.push(...r.civics);
   }
-  return { forSale, sold: sold.sort(byCivic) };
+  return { forSale, reserved: reserved.sort(byCivic), sold: sold.sort(byCivic) };
 }

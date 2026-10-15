@@ -6,7 +6,6 @@ import Logo from "./Logo";
 export default function Header({ t, lang }: { t: Dictionary; lang: Locale }) {
   const links = [
     ["#units", t.nav.units],
-    ["#included", t.nav.included],
     ["#building", t.nav.building],
     ["#location", t.nav.location],
     ["#photos", t.nav.photos],

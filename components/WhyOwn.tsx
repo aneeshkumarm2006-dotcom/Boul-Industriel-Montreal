@@ -4,7 +4,7 @@ import { Arrow, Check } from "./icons";
 export default function WhyOwn({ t }: { t: Dictionary }) {
   const s = t.why;
   return (
-    <section aria-labelledby="why-title" className="bg-paper-2 py-20 sm:py-24">
+    <section id="why" aria-labelledby="why-title" className="bg-paper-2 py-20 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-12 lg:items-end lg:gap-12">
           <div className="lg:col-span-7">

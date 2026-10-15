@@ -31,32 +31,26 @@ export const project = {
     units: 24,
     lengthFt: 490,
     depthFt: 70,
-    yearBuilt: 1989,
-    lotAcres: 2.2,
-    parkingPer1000: 3.41,
     zoning: "I269",
   },
 
   // Every unit in the building has these (per the listing)
   unitFeatures: {
-    garageDoor: "10' × 12'",
     voltage: "110 V / 220 V / 550 V",
     waterHeaterGallons: 15,
   },
 
   availabilityAsOf: "2026-10-01",
-  // Every civic number not listed in `sold` is shown as available.
+  // Units listed here are for sale; those in `reserved` are stamped as reserved; every other one is sold.
   // Areas: LoopNet 35093549 where known; add the others as the client confirms them.
   forSale: [
     { id: "12654", civics: ["12654"] },
-    { id: "12656", civics: ["12656"], sqft: 1252 },
     { id: "12658", civics: ["12658"], sqft: 1780 },
     { id: "12660", civics: ["12660"], sqft: 1776 },
     { id: "12664", civics: ["12664"] },
     { id: "12668", civics: ["12668"] },
     { id: "12670", civics: ["12670"] },
     { id: "12672", civics: ["12672"] },
-    { id: "12680", civics: ["12680"] },
     { id: "12682", civics: ["12682"] },
     { id: "12686", civics: ["12686"] },
     { id: "12688", civics: ["12688"] },
@@ -65,6 +59,9 @@ export const project = {
     { id: "12696", civics: ["12696"], sqft: 1259 },
     { id: "12698", civics: ["12698"] },
   ] as readonly UnitForSale[],
+
+  // Shown as "RÉSERVÉ" on the plan (client, 2026-10-16)
+  reserved: ["12656", "12680"],
 
   // Shown as "VENDU" on the plan (client, 2026-10-01)
   sold: ["12650", "12652", "12662", "12666", "12684", "12692", "12700", "12702"],

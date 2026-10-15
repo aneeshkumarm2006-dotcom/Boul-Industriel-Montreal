@@ -3,13 +3,12 @@ const fr = {
   meta: {
     title: "Condos industriels à vendre dans l'est de Montréal | 12650–12702, boul. Industriel",
     description:
-      "Unités industrielles de {min} à {max} pi² à vendre au 12650–12702, boulevard Industriel, à Pointe-aux-Trembles, dans l'est de Montréal. Porte de garage 10' × 12', salle de bain et stationnement sur place. À {a40} minutes de l'autoroute 40.",
+      "Unités industrielles de {min} à {max} pi² à vendre au 12650–12702, boulevard Industriel, à Pointe-aux-Trembles, dans l'est de Montréal. Porte de garage, salle de bain et stationnement sur place. À {a40} minutes de l'autoroute 40.",
   },
   nav: {
     skip: "Aller au contenu",
     menu: "Menu principal",
     units: "Unités",
-    included: "Inclus",
     building: "Bâtiment",
     location: "Emplacement",
     photos: "Photos",
@@ -21,7 +20,7 @@ const fr = {
   hero: {
     eyebrow: "12650–12702, boul. Industriel · Pointe-aux-Trembles",
     title: "Condos industriels à vendre dans l'est de Montréal.",
-    lead: "Des locaux de {min} à {max} pi², chacun avec sa porte de garage 10' × 12' et sa salle de bain, et du stationnement sur place. À {a40} minutes de l'autoroute 40.",
+    lead: "Des locaux de {min} à {max} pi², chacun avec sa porte de garage et sa salle de bain, et du stationnement sur place. À {a40} minutes de l'autoroute 40.",
     ctaPrimary: "Voir les unités",
     ctaSecondary: "Recevoir les prix",
     photoAlt:
@@ -39,8 +38,8 @@ const fr = {
     eyebrow: "Plan du bâtiment",
     title: "Choisissez votre unité.",
     intro:
-      "Le bâtiment compte 24 unités, dos à dos sur un seul niveau. Les unités en vert sont à vendre, les autres ont déjà trouvé preneur. Survolez ou touchez une unité pour la retrouver dans la liste.",
-    aria: "Plan schématique du bâtiment : 24 unités sur deux rangées. Unités à vendre : {list}. Unités vendues : {sold}.",
+      "Le bâtiment compte 24 unités, dos à dos sur un seul niveau. Les unités en vert sont à vendre, les autres sont réservées ou ont déjà trouvé preneur. Survolez ou touchez une unité pour la retrouver dans la liste.",
+    aria: "Plan schématique du bâtiment : 24 unités sur deux rangées. Unités à vendre : {list}. Unités réservées : {reserved}. Unités vendues : {sold}.",
     street: "Boulevard Industriel",
     length: "≈ 490 pi",
     depth: "70 pi",
@@ -48,6 +47,8 @@ const fr = {
     legendSale: "À vendre",
     legendSold: "Vendu",
     sold: "VENDU",
+    legendReserved: "Réservé",
+    reserved: "RÉSERVÉ",
     scrollHint: "Glissez pour voir tout le plan",
     note: "Plan schématique, à l'échelle approximative. Disponibilités au {date}.",
     listTitle: "Unités à vendre",
@@ -57,45 +58,10 @@ const fr = {
     headAccess: "Accès",
     areaOnRequest: "Sur demande",
     through: "Unité traversante : portes des deux côtés",
-    standard: "Porte de garage 10' × 12' et entrée indépendante",
+    standard: "Porte de garage et entrée indépendante",
     status: "À vendre",
     request: "Demander le prix",
     requestAria: "Demander le prix de l'unité {unit}",
-  },
-  included: {
-    eyebrow: "Ce qui est inclus",
-    title: "Tout ce dont votre entreprise a besoin.",
-    lead: "Un bâtiment existant, prêt à occuper : pas d'attente de construction.",
-    drawingTitle: "Unité type, vue en plan",
-    drawingNote: "Schéma indicatif. L'aménagement varie d'une unité à l'autre.",
-    drawing: {
-      garage: "Porte de garage",
-      door: "Porte",
-      window: "Fenêtre",
-      panel: "Électricité",
-      washroom: "S. de bain",
-      heater: "Chauffe-eau",
-      open: "Aire ouverte",
-      width: "10 pi",
-    },
-    items: [
-      { title: "Porte de garage 10' × 12'" },
-      { title: "Entrée indépendante avec son propre numéro civique" },
-      { title: "Entrée électrique indépendante : chaque unité a son propre compteur" },
-      { title: "Salle de bain et chauffe-eau" },
-      {
-        title: "Unités combinables",
-        body: "Réunissez plusieurs unités pour créer un espace plus grand et flexible, adapté aux besoins de votre entreprise.",
-      },
-      {
-        title: "Au cœur du parc industriel de Pointe-aux-Trembles",
-        body: "Un secteur d'affaires établi, au service des entreprises locales de l'est de Montréal.",
-      },
-      {
-        title: "Une équipe de gestion d'expérience",
-        body: "L'immeuble est géré par une équipe de gestion solide et expérimentée.",
-      },
-    ] as { title: string; body?: string }[],
   },
   why: {
     eyebrow: "Propriétaire plutôt que locataire",
@@ -119,6 +85,14 @@ const fr = {
         title: "Un actif rare sur l'île",
         body: "Les petits locaux industriels à vendre se font rares à Montréal. Une unité bien située se revend ou se loue facilement.",
       },
+      {
+        title: "Unités combinables",
+        body: "Réunissez plusieurs unités pour créer un espace plus grand et flexible, adapté aux besoins de votre entreprise.",
+      },
+      {
+        title: "Une équipe de gestion d'expérience",
+        body: "L'immeuble est géré par une équipe de gestion solide et expérimentée.",
+      },
     ],
     investor: {
       eyebrow: "Pour les investisseurs",
@@ -131,18 +105,15 @@ const fr = {
   building: {
     eyebrow: "Le bâtiment",
     title: "24 unités sur un seul niveau.",
-    lead: "Un bâtiment industriel de {sqft} pi² construit en {year} sur un terrain de {acres} acres, avec du stationnement tout autour.",
+    lead: "Un bâtiment industriel de {sqft} pi² avec un grand stationnement sur place.",
     photoAlt: "Vue aérienne du secteur, le bâtiment à vendre encadré en blanc.",
     facts: {
       area: "Superficie du bâtiment",
       units: "Unités",
       unitsValue: "24, sur un seul niveau",
       size: "Dimensions",
-      year: "Construction",
-      lot: "Terrain",
-      lotValue: "{acres} acres",
       parking: "Stationnement",
-      parkingValue: "{ratio} cases / 1 000 pi²",
+      parkingValue: "Grand stationnement sur place",
       zoning: "Zonage",
       transit: "Transport en commun",
       transitValue: "Ligne d'autobus à proximité",

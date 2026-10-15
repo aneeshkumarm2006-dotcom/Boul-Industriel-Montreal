@@ -7,7 +7,6 @@ import { isLocale } from "@/lib/i18n";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Units from "@/components/Units";
-import Included from "@/components/Included";
 import WhyOwn from "@/components/WhyOwn";
 import Building from "@/components/Building";
 import Gallery from "@/components/Gallery";
@@ -57,12 +56,12 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
         <Hero t={t} forSale={site.forSale} areaRange={site.areaRange} a40={a40} />
         <Units
           t={t}
-          layout={buildPlan(project.plan, site.forSale, site.sold)}
+          layout={buildPlan(project.plan, site.forSale, site.reserved, site.sold)}
           forSale={site.forSale}
+          reserved={site.reserved}
           sold={site.sold}
           asOf={site.availabilityAsOf}
         />
-        <Included t={t} />
         {site.interior.length > 0 && (
           <Gallery
             id="interior"
