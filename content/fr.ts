@@ -38,7 +38,7 @@ const fr = {
     eyebrow: "Plan du bâtiment",
     title: "Choisissez votre unité.",
     intro:
-      "Le bâtiment compte 24 unités, dos à dos sur un seul niveau. Les unités en vert sont à vendre, les autres sont réservées ou ont déjà trouvé preneur. Survolez ou touchez une unité pour la retrouver dans la liste.",
+      "Le bâtiment compte 24 unités, dos à dos sur un seul niveau. Les unités en vert sont à vendre, celles en orange sont réservées et celles en rouge sont vendues. Survolez ou touchez une unité pour la retrouver dans la liste.",
     aria: "Plan schématique du bâtiment : 24 unités sur deux rangées. Unités à vendre : {list}. Unités réservées : {reserved}. Unités vendues : {sold}.",
     street: "Boulevard Industriel",
     length: "≈ 490 pi",

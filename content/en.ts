@@ -39,7 +39,7 @@ const en: Dictionary = {
     eyebrow: "Building plan",
     title: "Choose your unit.",
     intro:
-      "The building has 24 units, back to back on a single level. Units in green are for sale; the others are reserved or already sold. Hover over or tap a unit to find it in the list.",
+      "The building has 24 units, back to back on a single level. Units in green are for sale, orange ones are reserved and red ones are sold. Hover over or tap a unit to find it in the list.",
     aria: "Schematic building plan: 24 units in two rows. Units for sale: {list}. Reserved units: {reserved}. Sold units: {sold}.",
     street: "Boulevard Industriel",
     length: "≈ 490 ft",

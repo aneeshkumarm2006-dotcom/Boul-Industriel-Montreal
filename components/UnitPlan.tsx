@@ -118,8 +118,8 @@ export default function UnitPlan({
           >
             <defs>
               <pattern id="sold" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
-                <rect width="3" height="3" fill="#0f1d1e" fillOpacity=".35" />
-                <line x1="0" y1="0" x2="0" y2="3" stroke="#d4f0c9" strokeOpacity=".08" strokeWidth=".6" />
+                <rect width="3" height="3" fill="#e5645a" fillOpacity=".14" />
+                <line x1="0" y1="0" x2="0" y2="3" stroke="#e5645a" strokeOpacity=".3" strokeWidth=".6" />
               </pattern>
               <pattern id="hatch" width="2.2" height="2.2" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
                 <line x1="0" y1="0" x2="0" y2="2.2" stroke="#d4f0c9" strokeOpacity=".4" strokeWidth=".5" />
@@ -128,7 +128,7 @@ export default function UnitPlan({
 
             {/* Boulevard at the office end */}
             <line x1={-17} y1={-30} x2={-17} y2={86} stroke="#d4f0c9" strokeOpacity=".3" strokeDasharray="6 5" vectorEffect="non-scaling-stroke" />
-            <text x={-25} y={ROW} transform={`rotate(-90 -25 ${ROW})`} textAnchor="middle" dominantBaseline="middle" className="pl-anno mono uppercase" fill="#d4f0c9" fillOpacity=".6">
+            <text x={-25} y={ROW} transform={`rotate(-90 -25 ${ROW})`} textAnchor="middle" dominantBaseline="middle" className="pl-anno num uppercase" fill="#d4f0c9" fillOpacity=".6">
               {s.street}
             </text>
 
@@ -141,7 +141,7 @@ export default function UnitPlan({
               <line x1={L - 1.6} y1={-23.4} x2={L + 1.6} y2={-26.6} vectorEffect="non-scaling-stroke" />
             </g>
             <rect x={L / 2 - 17} y={-29} width={34} height={8} fill="#1d3a3c" />
-            <text x={L / 2} y={-25} textAnchor="middle" dominantBaseline="central" className="pl-anno mono" fill="#d4f0c9" fillOpacity=".8">
+            <text x={L / 2} y={-25} textAnchor="middle" dominantBaseline="central" className="pl-anno num" fill="#d4f0c9" fillOpacity=".8">
               {s.length}
             </text>
 
@@ -154,7 +154,7 @@ export default function UnitPlan({
               <line x1={L + 11.4} y1={2 * ROW + 1.6} x2={L + 14.6} y2={2 * ROW - 1.6} vectorEffect="non-scaling-stroke" />
             </g>
             <rect x={L + 9} y={ROW - 11} width={8} height={22} fill="#1d3a3c" />
-            <text x={L + 13} y={ROW} transform={`rotate(90 ${L + 13} ${ROW})`} textAnchor="middle" dominantBaseline="central" className="pl-anno mono" fill="#d4f0c9" fillOpacity=".8">
+            <text x={L + 13} y={ROW} transform={`rotate(90 ${L + 13} ${ROW})`} textAnchor="middle" dominantBaseline="central" className="pl-anno num" fill="#d4f0c9" fillOpacity=".8">
               {s.depth}
             </text>
 
@@ -165,7 +165,7 @@ export default function UnitPlan({
 
             {/* Reserved units */}
             {PLAN.cells.map((c) =>
-              c.reserved ? <rect key={`r-${c.civics[0]}`} x={c.x} y={c.y} width={c.w} height={c.h} fill="#d4f0c9" fillOpacity=".16" /> : null,
+              c.reserved ? <rect key={`r-${c.civics[0]}`} x={c.x} y={c.y} width={c.w} height={c.h} fill="#f2a541" fillOpacity=".42" /> : null,
             )}
 
             {/* Units for sale */}
@@ -245,19 +245,19 @@ export default function UnitPlan({
             {PLAN.cells.map((c) => {
               const cx = c.x + c.w / 2;
               if (c.sold || c.reserved) {
-                // Reserved units get a solid mint stamp, sold ones an outlined dark one; wide enough for the word
+                // Reserved units get a solid amber stamp, sold ones an outlined red one; wide enough for the word
                 const label = c.reserved ? s.reserved : s.sold;
                 const w = Math.max(25, label.length * 3.4 + 6);
                 const stamp = (y: number) => (
                   <>
-                    <rect x={cx - w / 2} y={y - 4.3} width={w} height={8.6} rx={1.2} fill={c.reserved ? "#d4f0c9" : "#0f1d1e"} fillOpacity={c.reserved ? 0.9 : 0.5} stroke="#d4f0c9" strokeOpacity=".8" strokeWidth={1.5} vectorEffect="non-scaling-stroke" />
-                    <text x={cx} y={y + 0.2} textAnchor="middle" dominantBaseline="central" className="pl-sold mono" fill={c.reserved ? "#1d3a3c" : "#d4f0c9"}>
+                    <rect x={cx - w / 2} y={y - 4.3} width={w} height={8.6} rx={1.2} fill={c.reserved ? "#f2a541" : "#0f1d1e"} fillOpacity={c.reserved ? 0.95 : 0.6} stroke={c.reserved ? "#f2a541" : "#e5645a"} strokeWidth={1.5} vectorEffect="non-scaling-stroke" />
+                    <text x={cx} y={y + 0.2} textAnchor="middle" dominantBaseline="central" className="pl-sold num" fill={c.reserved ? "#0f1d1e" : "#e5645a"}>
                       {label}
                     </text>
                   </>
                 );
                 const civic = (y: number, v: string) => (
-                  <text x={cx} y={y} textAnchor="middle" dominantBaseline="central" className="pl-code mono" fill="#d4f0c9" fillOpacity=".45">
+                  <text x={cx} y={y} textAnchor="middle" dominantBaseline="central" className="pl-code num" fill="#ffffff" fillOpacity=".55">
                     {v}
                   </text>
                 );
@@ -281,7 +281,7 @@ export default function UnitPlan({
               }
               if (!c.sale) {
                 return (
-                  <text key={`l-${c.civics[0]}`} x={cx} y={c.y + c.h / 2} textAnchor="middle" dominantBaseline="central" className="pl-code mono" fill="#d4f0c9" fillOpacity=".5" pointerEvents="none">
+                  <text key={`l-${c.civics[0]}`} x={cx} y={c.y + c.h / 2} textAnchor="middle" dominantBaseline="central" className="pl-code num" fill="#d4f0c9" fillOpacity=".5" pointerEvents="none">
                     {c.civics[0]}
                   </text>
                 );
@@ -293,7 +293,7 @@ export default function UnitPlan({
                     <text x={cx} y={ROW / 2} textAnchor="middle" dominantBaseline="central" className="pl-civic civic">
                       {c.civics[0]}
                     </text>
-                    <text x={cx} y={ROW} textAnchor="middle" dominantBaseline="central" className="pl-area mono" fillOpacity=".75">
+                    <text x={cx} y={ROW} textAnchor="middle" dominantBaseline="central" className="pl-area num" fillOpacity=".75">
                       {area}
                     </text>
                     <text x={cx} y={ROW + ROW / 2} textAnchor="middle" dominantBaseline="central" className="pl-civic civic">
@@ -309,7 +309,7 @@ export default function UnitPlan({
                     {c.civics[0]}
                   </text>
                   {area && (
-                    <text x={cx} y={cy + 4.6} textAnchor="middle" dominantBaseline="central" className="pl-area mono" fillOpacity=".75">
+                    <text x={cx} y={cy + 4.6} textAnchor="middle" dominantBaseline="central" className="pl-area num" fillOpacity=".75">
                       {area}
                     </text>
                   )}
@@ -325,13 +325,13 @@ export default function UnitPlan({
             {s.legendSale}
           </li>
           <li className="flex items-center gap-2.5">
-            <span aria-hidden className="grid h-3.5 place-items-center rounded-[2px] border border-mint/55 bg-ink/35 px-1 font-mono text-[0.5rem] leading-none tracking-wider text-mint/85">
+            <span aria-hidden className="grid h-3.5 place-items-center rounded-[2px] border border-red bg-ink/60 px-1 font-sans text-[0.5rem] font-bold leading-none tracking-wider text-red">
               {s.sold}
             </span>
             {s.legendSold}
           </li>
           <li className="flex items-center gap-2.5">
-            <span aria-hidden className="grid h-3.5 place-items-center rounded-[2px] border border-mint/55 bg-mint/90 px-1 font-mono text-[0.5rem] leading-none tracking-wider text-slate">
+            <span aria-hidden className="grid h-3.5 place-items-center rounded-[2px] border border-amber bg-amber px-1 font-sans text-[0.5rem] font-bold leading-none tracking-wider text-ink">
               {s.reserved}
             </span>
             {s.legendReserved}
@@ -379,9 +379,9 @@ export default function UnitPlan({
               >
                 <p className="flex items-baseline gap-1.5">
                   <span className="civic text-[1.75rem] text-mint">{u.civics[0]}</span>
-                  {u.civics.length > 1 && <span className="mono text-sm text-mint/70">+{u.civics[1]}</span>}
+                  {u.civics.length > 1 && <span className="num text-sm text-mint/70">+{u.civics[1]}</span>}
                 </p>
-                <p className="mono whitespace-nowrap text-right text-lg text-white sm:text-left">
+                <p className="num whitespace-nowrap text-right text-lg text-white sm:text-left">
                   {u.sqft ? (
                     <>
                       {n(u.sqft)} <span className="text-white/60">{sqft}</span>

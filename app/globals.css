@@ -9,6 +9,8 @@
   slate    #1D3A3C  plan + contact bands, primary actions
   teal     #557A7C  the client's cell teal: secondary lines, focus rings on light
   mint     #D4F0C9  marks what can be bought, nothing else
+  amber    #F2A541  reserved units on the plan
+  red      #E5645A  sold units on the plan
   steel    #56666A  secondary text
   line     #CBD5D1  hairlines
 
@@ -25,6 +27,8 @@
   --color-teal: #557a7c;
   --color-mint: #d4f0c9;
   --color-mint-2: #bfe6b1;
+  --color-amber: #f2a541;
+  --color-red: #e5645a;
   --color-steel: #56666a;
   --color-line: #cbd5d1;
 
@@ -118,6 +122,13 @@
   .mono {
     font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
+  }
+  /* Plan labels and areas: Archivo at normal width, figures aligned */
+  .num {
+    font-family: var(--font-sans);
+    font-variation-settings: "wdth" 100;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums lining-nums;
   }
   .lead {
     font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
