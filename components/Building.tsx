@@ -8,12 +8,10 @@ import Picture from "./Picture";
 export default function Building({ t, building: b }: { t: Dictionary; building: BuildingFacts }) {
   const s = t.building;
   const n = (v: number, digits = 0) => formatNumber(t.locale, v, digits);
-  const ft = t.units.ft;
 
   const facts: [string, string][] = [
     [s.facts.area, `${n(b.sqft)} ${t.units.sqft}`],
     [s.facts.units, s.facts.unitsValue],
-    [s.facts.size, `≈ ${n(b.lengthFt)} × ${n(b.depthFt)} ${ft}`],
     [s.facts.parking, s.facts.parkingValue],
     [s.facts.zoning, b.zoning],
     [s.facts.transit, s.facts.transitValue],
@@ -32,7 +30,7 @@ export default function Building({ t, building: b }: { t: Dictionary; building: 
           </p>
           <dl className="mt-10 grid grid-cols-2 border-t border-line">
             {facts.map(([k, v], i) => (
-              <div key={k} className={`border-b border-line py-4 ${i % 2 ? "pl-5" : "pr-5"}`}>
+              <div key={k} className={`border-b border-line py-4 ${i % 2 ? "pl-5" : "pr-5"} ${i === facts.length - 1 && i % 2 === 0 ? "col-span-2" : ""}`}>
                 <dt className="eyebrow text-steel">{k}</dt>
                 <dd className="mt-1.5 text-[1.0625rem] font-semibold" style={{ fontVariationSettings: '"wdth" 104' }}>
                   {v}
