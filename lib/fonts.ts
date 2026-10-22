@@ -1,4 +1,4 @@
-import { Archivo, Overpass_Mono } from "next/font/google";
+import { Archivo, Barlow, Overpass_Mono } from "next/font/google";
 
 export const archivo = Archivo({
   // Google's "latin" subset already covers French (é, à, ç, œ)
@@ -14,4 +14,12 @@ export const overpassMono = Overpass_Mono({
   variable: "--font-overpass-mono",
 });
 
-export const fontVariables = `${archivo.variable} ${overpassMono.variable}`;
+// Building plan numbers: civic numbers, areas, dimensions
+export const barlow = Barlow({
+  subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
+  display: "swap",
+  variable: "--font-barlow",
+});
+
+export const fontVariables = `${archivo.variable} ${overpassMono.variable} ${barlow.variable}`;

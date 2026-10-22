@@ -128,7 +128,7 @@ export default function UnitPlan({
 
             {/* Boulevard at the office end */}
             <line x1={-17} y1={-30} x2={-17} y2={86} stroke="#d4f0c9" strokeOpacity=".3" strokeDasharray="6 5" vectorEffect="non-scaling-stroke" />
-            <text x={-25} y={ROW} transform={`rotate(-90 -25 ${ROW})`} textAnchor="middle" dominantBaseline="middle" className="pl-anno num uppercase" fill="#d4f0c9" fillOpacity=".6">
+            <text x={-25} y={ROW} transform={`rotate(-90 -25 ${ROW})`} textAnchor="middle" dominantBaseline="middle" className="pl-anno plan-num uppercase" fill="#d4f0c9" fillOpacity=".6">
               {s.street}
             </text>
 
@@ -141,7 +141,7 @@ export default function UnitPlan({
               <line x1={L - 1.6} y1={-23.4} x2={L + 1.6} y2={-26.6} vectorEffect="non-scaling-stroke" />
             </g>
             <rect x={L / 2 - 17} y={-29} width={34} height={8} fill="#1d3a3c" />
-            <text x={L / 2} y={-25} textAnchor="middle" dominantBaseline="central" className="pl-anno num" fill="#d4f0c9" fillOpacity=".8">
+            <text x={L / 2} y={-25} textAnchor="middle" dominantBaseline="central" className="pl-anno plan-num" fill="#d4f0c9" fillOpacity=".8">
               {s.length}
             </text>
 
@@ -154,7 +154,7 @@ export default function UnitPlan({
               <line x1={L + 11.4} y1={2 * ROW + 1.6} x2={L + 14.6} y2={2 * ROW - 1.6} vectorEffect="non-scaling-stroke" />
             </g>
             <rect x={L + 9} y={ROW - 11} width={8} height={22} fill="#1d3a3c" />
-            <text x={L + 13} y={ROW} transform={`rotate(90 ${L + 13} ${ROW})`} textAnchor="middle" dominantBaseline="central" className="pl-anno num" fill="#d4f0c9" fillOpacity=".8">
+            <text x={L + 13} y={ROW} transform={`rotate(90 ${L + 13} ${ROW})`} textAnchor="middle" dominantBaseline="central" className="pl-anno plan-num" fill="#d4f0c9" fillOpacity=".8">
               {s.depth}
             </text>
 
@@ -251,13 +251,13 @@ export default function UnitPlan({
                 const stamp = (y: number) => (
                   <>
                     <rect x={cx - w / 2} y={y - 4.3} width={w} height={8.6} rx={1.2} fill={c.reserved ? "#f2a541" : "#0f1d1e"} fillOpacity={c.reserved ? 0.95 : 0.6} stroke={c.reserved ? "#f2a541" : "#e5645a"} strokeWidth={1.5} vectorEffect="non-scaling-stroke" />
-                    <text x={cx} y={y + 0.2} textAnchor="middle" dominantBaseline="central" className="pl-sold num" fill={c.reserved ? "#0f1d1e" : "#e5645a"}>
+                    <text x={cx} y={y + 0.2} textAnchor="middle" dominantBaseline="central" className="pl-sold plan-num" fill={c.reserved ? "#0f1d1e" : "#e5645a"}>
                       {label}
                     </text>
                   </>
                 );
                 const civic = (y: number, v: string) => (
-                  <text x={cx} y={y} textAnchor="middle" dominantBaseline="central" className="pl-code num" fill="#ffffff" fillOpacity=".55">
+                  <text x={cx} y={y} textAnchor="middle" dominantBaseline="central" className="pl-code plan-num" fill="#ffffff" fillOpacity=".55">
                     {v}
                   </text>
                 );
@@ -281,7 +281,7 @@ export default function UnitPlan({
               }
               if (!c.sale) {
                 return (
-                  <text key={`l-${c.civics[0]}`} x={cx} y={c.y + c.h / 2} textAnchor="middle" dominantBaseline="central" className="pl-code num" fill="#d4f0c9" fillOpacity=".5" pointerEvents="none">
+                  <text key={`l-${c.civics[0]}`} x={cx} y={c.y + c.h / 2} textAnchor="middle" dominantBaseline="central" className="pl-code plan-num" fill="#d4f0c9" fillOpacity=".5" pointerEvents="none">
                     {c.civics[0]}
                   </text>
                 );
@@ -290,13 +290,13 @@ export default function UnitPlan({
               if (c.civics.length > 1) {
                 return (
                   <g key={`l-${c.civics[0]}`} className="sale-label" pointerEvents="none" fill="#1d3a3c">
-                    <text x={cx} y={ROW / 2} textAnchor="middle" dominantBaseline="central" className="pl-civic civic">
+                    <text x={cx} y={ROW / 2} textAnchor="middle" dominantBaseline="central" className="pl-civic plan-civic">
                       {c.civics[0]}
                     </text>
-                    <text x={cx} y={ROW} textAnchor="middle" dominantBaseline="central" className="pl-area num" fillOpacity=".75">
+                    <text x={cx} y={ROW} textAnchor="middle" dominantBaseline="central" className="pl-area plan-num" fillOpacity=".75">
                       {area}
                     </text>
-                    <text x={cx} y={ROW + ROW / 2} textAnchor="middle" dominantBaseline="central" className="pl-civic civic">
+                    <text x={cx} y={ROW + ROW / 2} textAnchor="middle" dominantBaseline="central" className="pl-civic plan-civic">
                       {c.civics[1]}
                     </text>
                   </g>
@@ -305,11 +305,11 @@ export default function UnitPlan({
               const cy = c.y + c.h / 2;
               return (
                 <g key={`l-${c.civics[0]}`} className="sale-label" pointerEvents="none" fill="#1d3a3c">
-                  <text x={cx} y={area ? cy - 3 : cy} textAnchor="middle" dominantBaseline="central" className="pl-civic civic">
+                  <text x={cx} y={area ? cy - 3 : cy} textAnchor="middle" dominantBaseline="central" className="pl-civic plan-civic">
                     {c.civics[0]}
                   </text>
                   {area && (
-                    <text x={cx} y={cy + 4.6} textAnchor="middle" dominantBaseline="central" className="pl-area num" fillOpacity=".75">
+                    <text x={cx} y={cy + 4.6} textAnchor="middle" dominantBaseline="central" className="pl-area plan-num" fillOpacity=".75">
                       {area}
                     </text>
                   )}
@@ -378,10 +378,10 @@ export default function UnitPlan({
                 }`}
               >
                 <p className="flex items-baseline gap-1.5">
-                  <span className="civic text-[1.75rem] text-mint">{u.civics[0]}</span>
-                  {u.civics.length > 1 && <span className="num text-sm text-mint/70">+{u.civics[1]}</span>}
+                  <span className="plan-civic text-[1.75rem] text-mint">{u.civics[0]}</span>
+                  {u.civics.length > 1 && <span className="plan-num text-sm text-mint/70">+{u.civics[1]}</span>}
                 </p>
-                <p className="num whitespace-nowrap text-right text-lg text-white sm:text-left">
+                <p className="plan-num whitespace-nowrap text-right text-lg text-white sm:text-left">
                   {u.sqft ? (
                     <>
                       {n(u.sqft)} <span className="text-white/60">{sqft}</span>

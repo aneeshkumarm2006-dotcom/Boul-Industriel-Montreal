@@ -34,6 +34,7 @@
 
   --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-overpass-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-plan: var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
 
   --ease-draft: cubic-bezier(0.65, 0, 0.35, 1);
 }
@@ -127,6 +128,19 @@
   .num {
     font-family: var(--font-sans);
     font-variation-settings: "wdth" 100;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+  /* Building plan numbers (plan, dimensions, unit list): Barlow */
+  .plan-civic {
+    font-family: var(--font-plan);
+    font-weight: 700;
+    letter-spacing: 0;
+    font-variant-numeric: tabular-nums lining-nums;
+    line-height: 1;
+  }
+  .plan-num {
+    font-family: var(--font-plan);
     font-weight: 600;
     font-variant-numeric: tabular-nums lining-nums;
   }
