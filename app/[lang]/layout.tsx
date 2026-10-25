@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
+import { GoogleTagManager, GoogleTagManagerNoScript } from "@/components/GoogleTagManager";
 import { project } from "@/content/project";
 import { getSiteContent } from "@/lib/cms/content";
 import { fill, formatNumber } from "@/lib/format";
@@ -66,7 +67,11 @@ export default async function LangLayout({
 
   return (
     <html lang={lang === "fr" ? "fr-CA" : "en-CA"} className={fontVariables}>
-      <body>{children}</body>
+      <body>
+        <GoogleTagManagerNoScript />
+        {children}
+        <GoogleTagManager />
+      </body>
     </html>
   );
 }
