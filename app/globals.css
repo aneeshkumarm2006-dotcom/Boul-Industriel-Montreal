@@ -311,6 +311,33 @@
   }
 }
 
+/* Unit card: in the flow under the plan below lg; from lg it floats over the unit,
+   above it for the top row and below it for the bottom row (--x/--above/--below set inline, in % of the plan) */
+.unit-card {
+  animation: fade-in 0.18s ease both;
+  opacity: 0;
+}
+@media (min-width: 1024px) {
+  .unit-card {
+    position: absolute;
+    width: 17rem;
+    left: clamp(8.5rem, var(--x), calc(100% - 8.5rem));
+    translate: -50% 0;
+  }
+  .unit-card[data-side="top"] {
+    bottom: calc(var(--above) + 0.6rem);
+  }
+  .unit-card[data-side="bottom"] {
+    top: calc(var(--below) + 0.6rem);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .unit-card {
+    animation: none;
+    opacity: 1;
+  }
+}
+
 /* Horizontal plan scroller below lg */
 .plan-scroll {
   scrollbar-width: thin;

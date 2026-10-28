@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import type { Dictionary } from "@/content/fr";
 import { DEEP, GARAGE, MAN_DOOR, ROW, type PlanLayout } from "@/lib/cms/plan";
 import type { UnitForSale } from "@/lib/cms/types";
 import { fill, formatDate, formatNumber } from "@/lib/format";
 import { requestUnit } from "@/lib/unit-events";
-import { Arrow, ArrowDown } from "./icons";
+import { Arrow, ArrowDown, Close, Doc } from "./icons";
 
 type Strings = Dictionary["plan"];
 
@@ -16,6 +16,7 @@ export default function UnitPlan({
   sqft,
   layout: PLAN,
   forSale,
+  plans,
   reserved,
   sold,
   asOf,
@@ -25,6 +26,8 @@ export default function UnitPlan({
   sqft: string;
   layout: PlanLayout; // built on the server from the plan geometry and the current availability
   forSale: UnitForSale[];
+  plans: Record<string, string>; // unit id → floor plan PDF
+
   reserved: string[];
   sold: string[];
   asOf: string;
@@ -35,6 +38,7 @@ export default function UnitPlan({
   const n = (v: number) => formatNumber(locale, v);
   const [hover, setHover] = useState<string | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
+  const [tip, setTip] = useState<string | null>(null); // unit hovered on the plan itself (not in the list)
   const [armed, setArmed] = useState(false);
   const [lit, setLit] = useState(false);
   const planRef = useRef<HTMLDivElement>(null);
@@ -94,6 +98,17 @@ export default function UnitPlan({
     sc.scrollLeft = ((mid - VB.x) / VB.w) * sc.scrollWidth - sc.clientWidth / 2;
   }, []);
 
+  // The unit card: the unit hovered on the plan, else the one picked
+  const cardId = tip ?? selected;
+  const cardUnit = forSale.find((u) => u.id === cardId);
+  const cardCell = PLAN.cells.find((c) => c.sale?.id === cardId);
+  useEffect(() => {
+    if (!selected) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setSelected(null);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [selected]);
+
   const list = forSale.map((u) => u.civics.join(" + ")).join(", ");
   const soldList = sold.join(", ");
   const reservedList = reserved.join(", ");
@@ -103,18 +118,23 @@ export default function UnitPlan({
       <div
         ref={planRef}
         className={`plan ${armed ? "is-armed" : ""} ${lit ? "is-lit" : ""}`}
-        onMouseLeave={() => setHover(null)}
+        onMouseLeave={() => {
+          setHover(null);
+          setTip(null);
+        }}
       >
         <p className="eyebrow mb-3 flex items-center gap-2 text-white/55 lg:hidden">
           {s.scrollHint}
           <Arrow className="h-3.5 w-3.5" />
         </p>
-        <div ref={scrollRef} className="plan-scroll -mx-4 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6 lg:mx-0 lg:overflow-visible lg:px-0">
+        <div className="relative">
+        <div ref={scrollRef} className="plan-scroll -mx-4 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6 lg:mx-0 lg:overflow-visible lg:px-0 lg:pb-0">
           <svg
             viewBox={`${VB.x} ${VB.y} ${VB.w} ${VB.h}`}
             role="img"
             aria-label={fill(s.aria, { list, reserved: reservedList, sold: soldList })}
             className="block w-full min-w-[860px] select-none lg:min-w-0"
+            onClick={(e) => (e.target as Element).classList.contains("sale-fill") || setSelected(null)}
           >
             <defs>
               <pattern id="sold" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
@@ -185,6 +205,7 @@ export default function UnitPlan({
                   style={{ transitionDelay: `${lit ? 120 + order * 110 : 0}ms, 0ms` }}
                   onMouseEnter={() => {
                     setHover(c.sale!.id);
+                    setTip(c.sale!.id);
                     showInList(c.sale!.id);
                   }}
                   onClick={() => setSelected(c.sale!.id)}
@@ -319,6 +340,71 @@ export default function UnitPlan({
           </svg>
         </div>
 
+        {/* Unit card: floats beside the unit on desktop (above the top row, below the bottom one), sits under the plan on smaller screens */}
+        {cardUnit && cardCell && (
+          <div
+            key={cardUnit.id}
+            data-side={cardCell.y + cardCell.h <= ROW ? "top" : "bottom"}
+            className="unit-card relative z-10 mt-4 flex flex-col gap-3 rounded-xl bg-ink p-4 shadow-[0_18px_40px_-12px_rgb(0_0_0/.6)] ring-1 ring-white/12 lg:mt-0"
+            style={
+              {
+                "--x": `${((cardCell.x + cardCell.w / 2 - VB.x) / VB.w) * 100}%`,
+                "--above": `${((VB.y + VB.h - cardCell.y) / VB.h) * 100}%`,
+                "--below": `${((cardCell.y + cardCell.h - VB.y) / VB.h) * 100}%`,
+              } as CSSProperties
+            }
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="eyebrow text-mint/70">{s.unitLabel}</p>
+                <p className="mt-1 flex items-baseline gap-2.5">
+                  <span className="plan-civic text-[1.75rem] leading-none text-mint">{cardUnit.civics.join(" + ")}</span>
+                  <span className="plan-num whitespace-nowrap text-sm text-white/70">
+                    {cardUnit.sqft ? `${n(cardUnit.sqft)} ${sqft}` : s.areaOnRequest}
+                  </span>
+                </p>
+              </div>
+              {selected === cardUnit.id && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelected(null);
+                    setTip(null);
+                  }}
+                  aria-label={s.close}
+                  className="-m-1.5 grid h-8 w-8 shrink-0 place-items-center rounded-md text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+                >
+                  <Close />
+                </button>
+              )}
+            </div>
+            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
+              {plans[cardUnit.id] && (
+                <a
+                  href={plans[cardUnit.id]}
+                  target="_blank"
+                  rel="noopener"
+                  aria-label={fill(s.floorPlanAria, { unit: cardUnit.civics.join(" + ") })}
+                  className="btn btn-mint !min-h-11 text-sm"
+                >
+                  <Doc />
+                  {s.floorPlan}
+                </a>
+              )}
+              <button
+                type="button"
+                onClick={() => requestUnit(cardUnit.id)}
+                aria-label={fill(s.requestAria, { unit: cardUnit.civics.join(" + ") })}
+                className="btn btn-ghost !min-h-11 text-sm text-white"
+              >
+                {s.request}
+                <Arrow />
+              </button>
+            </div>
+          </div>
+        )}
+        </div>
+
         <ul className="mx-auto mt-5 flex max-w-7xl flex-wrap gap-x-7 gap-y-2 text-sm text-white/70">
           <li className="flex items-center gap-2.5">
             <span aria-hidden className="h-3.5 w-5 rounded-[2px] bg-mint" />
@@ -373,7 +459,7 @@ export default function UnitPlan({
                 onMouseEnter={() => setHover(u.id)}
                 onFocus={() => setHover(u.id)}
                 onBlur={() => setHover(null)}
-                className={`grid grid-cols-[1fr_auto] items-center gap-x-6 gap-y-2 border-b border-white/15 py-5 pl-4 pr-1 transition-[background-color,box-shadow] duration-200 sm:grid-cols-[10.5rem_8.75rem_1fr_auto] sm:py-4 ${
+                className={`grid grid-cols-[1fr_auto] items-center gap-x-6 gap-y-2 border-b border-white/15 py-5 pl-4 pr-1 transition-[background-color,box-shadow] duration-200 sm:grid-cols-[9rem_1fr_auto] sm:py-4 xl:grid-cols-[10.5rem_8.75rem_1fr_auto] ${
                   on ? "bg-slate-2 shadow-[inset_4px_0_0_var(--color-mint)]" : "shadow-[inset_0_0_0_transparent]"
                 }`}
               >
@@ -390,16 +476,30 @@ export default function UnitPlan({
                     <span className="text-[0.9375rem] text-white/60">{s.areaOnRequest}</span>
                   )}
                 </p>
-                <p className="col-span-2 text-sm text-white/65 sm:col-span-1">{u.civics.length > 1 ? s.through : s.standard}</p>
-                <button
-                  type="button"
-                  onClick={() => requestUnit(u.id)}
-                  aria-label={fill(s.requestAria, { unit: name })}
-                  className="btn btn-mint col-span-2 mt-2 !min-h-11 text-sm sm:col-span-1 sm:mt-0"
-                >
-                  {s.request}
-                  <Arrow />
-                </button>
+                <p className="col-span-2 text-sm text-white/65 sm:col-span-3 sm:row-start-2 xl:col-span-1 xl:row-start-auto">{u.civics.length > 1 ? s.through : s.standard}</p>
+                <div className="col-span-2 mt-2 flex gap-2 sm:col-span-1 sm:mt-0">
+                  {plans[u.id] && (
+                    <a
+                      href={plans[u.id]}
+                      target="_blank"
+                      rel="noopener"
+                      aria-label={fill(s.floorPlanAria, { unit: name })}
+                      className="btn btn-ghost !min-h-11 !px-4 text-sm text-mint"
+                    >
+                      <Doc />
+                      {s.floorPlanShort}
+                    </a>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => requestUnit(u.id)}
+                    aria-label={fill(s.requestAria, { unit: name })}
+                    className="btn btn-mint !min-h-11 flex-1 text-sm"
+                  >
+                    {s.request}
+                    <Arrow />
+                  </button>
+                </div>
               </li>
             );
           })}

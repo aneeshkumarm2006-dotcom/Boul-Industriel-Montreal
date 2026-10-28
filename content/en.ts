@@ -39,7 +39,7 @@ const en: Dictionary = {
     eyebrow: "Building plan",
     title: "Choose your unit.",
     intro:
-      "The building has 24 units, back to back on a single level. Units in green are for sale, orange ones are reserved and red ones are sold. Hover over or tap a unit to find it in the list.",
+      "The building has 24 units, back to back on a single level. Units in green are for sale, orange ones are reserved and red ones are sold. Hover over or tap a unit to see its detailed floor plan.",
     aria: "Schematic building plan: 24 units in two rows. Units for sale: {list}. Reserved units: {reserved}. Sold units: {sold}.",
     street: "Boulevard Industriel",
     length: "≈ 490 ft",
@@ -63,6 +63,11 @@ const en: Dictionary = {
     status: "For sale",
     request: "Request price",
     requestAria: "Request the price of unit {unit}",
+    unitLabel: "Unit",
+    floorPlan: "View floor plan (PDF)",
+    floorPlanShort: "Plan",
+    floorPlanAria: "Open the floor plan of unit {unit} (PDF, new tab)",
+    close: "Close",
   },
   why: {
     eyebrow: "Own instead of rent",

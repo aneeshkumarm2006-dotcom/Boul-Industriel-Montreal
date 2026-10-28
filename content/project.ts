@@ -42,23 +42,27 @@ export const project = {
 
   availabilityAsOf: "2026-10-01",
   // Units listed here are for sale; those in `reserved` are stamped as reserved; every other one is sold.
-  // Areas: LoopNet 35093549 where known; add the others as the client confirms them.
+  // Areas: rentable area from each unit's floor plan (Extreme Measures, BOMA 2019; client 2026-10-28).
   forSale: [
-    { id: "12654", civics: ["12654"] },
+    { id: "12654", civics: ["12654"], sqft: 1251 },
     { id: "12658", civics: ["12658"], sqft: 1780 },
     { id: "12660", civics: ["12660"], sqft: 1776 },
-    { id: "12664", civics: ["12664"] },
-    { id: "12668", civics: ["12668"] },
-    { id: "12670", civics: ["12670"] },
-    { id: "12672", civics: ["12672"] },
-    { id: "12682", civics: ["12682"] },
-    { id: "12686", civics: ["12686"] },
-    { id: "12688", civics: ["12688"] },
-    { id: "12690", civics: ["12690"] },
-    { id: "12694", civics: ["12694"] },
+    { id: "12664", civics: ["12664"], sqft: 1435 },
+    { id: "12668", civics: ["12668"], sqft: 1005 },
+    { id: "12670", civics: ["12670"], sqft: 1437 },
+    { id: "12672", civics: ["12672"], sqft: 2086 },
+    { id: "12682", civics: ["12682"], sqft: 1095 },
+    { id: "12686", civics: ["12686"], sqft: 1004 },
+    { id: "12688", civics: ["12688"], sqft: 1435 },
+    { id: "12690", civics: ["12690"], sqft: 1434 },
+    { id: "12694", civics: ["12694"], sqft: 1789 },
     { id: "12696", civics: ["12696"], sqft: 1259 },
-    { id: "12698", civics: ["12698"] },
+    { id: "12698", civics: ["12698"], sqft: 1256 },
   ] as readonly UnitForSale[],
+
+  // Units with a floor plan PDF at public/plans/unit-<id>.pdf (Extreme Measures plans, client 2026-10-28).
+  // Units for sale offer it from the plan and the list; add the id here when a new plan comes in.
+  unitPlans: ["12654", "12658", "12660", "12664", "12668", "12670", "12672", "12682", "12686", "12688", "12690", "12694", "12696", "12698"],
 
   // Shown as "RÉSERVÉ" on the plan (client, 2026-10-16)
   reserved: ["12656", "12680"],
@@ -66,8 +70,8 @@ export const project = {
   // Shown as "VENDU" on the plan (client, 2026-10-01)
   sold: ["12650", "12652", "12662", "12666", "12684", "12692", "12700", "12702"],
 
-  // Range quoted in the hero and meta description (client-approved copy; units can be combined)
-  areaRange: [1252, 2509],
+  // Range quoted in the hero and meta description: smallest to largest unit for sale (12686 and 12672, per their floor plans)
+  areaRange: [1004, 2086],
 
   // Left to right from the boulevard end. Row depth 35 ft (70 ft total).
   plan: [

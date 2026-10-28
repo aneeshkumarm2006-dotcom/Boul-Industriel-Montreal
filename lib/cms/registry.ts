@@ -166,6 +166,11 @@ const META: Partial<Record<TextPath, Meta>> = {
   "plan.request": { label: ["Liste : bouton", "List: button"] },
   "plan.aria": { label: ["Plan (lecteurs d'écran)", "Plan (screen readers)"], multiline: true, advanced: true },
   "plan.requestAria": { label: ["Bouton de la liste (lecteurs d'écran)", "List button (screen readers)"], advanced: true },
+  "plan.unitLabel": { label: ["Fiche d'unité : mot « Unité »", "Unit card: the word \"Unit\""] },
+  "plan.floorPlan": { label: ["Fiche d'unité : bouton du plan PDF", "Unit card: PDF plan button"] },
+  "plan.floorPlanShort": { label: ["Liste : bouton du plan PDF", "List: PDF plan button"] },
+  "plan.floorPlanAria": { label: ["Bouton du plan PDF (lecteurs d'écran)", "PDF plan button (screen readers)"], advanced: true },
+  "plan.close": { label: ["Fiche d'unité : fermer (lecteurs d'écran)", "Unit card: close (screen readers)"], advanced: true },
 
 
   "why.eyebrow": { label: EYEBROW },

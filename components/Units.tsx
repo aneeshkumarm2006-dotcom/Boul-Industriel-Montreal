@@ -1,4 +1,5 @@
 import type { Dictionary } from "@/content/fr";
+import { project } from "@/content/project";
 import type { PlanLayout } from "@/lib/cms/plan";
 import type { UnitForSale } from "@/lib/cms/types";
 import UnitPlan from "./UnitPlan";
@@ -19,6 +20,7 @@ export default function Units({
   asOf: string;
 }) {
   const s = t.plan;
+  const plans: Record<string, string> = Object.fromEntries(project.unitPlans.map((id) => [id, `/plans/unit-${id}.pdf`]));
   return (
     <section id="units" aria-labelledby="units-title" className="on-dark bg-slate py-20 text-white sm:py-28">
       <div className="mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8">
@@ -31,7 +33,7 @@ export default function Units({
           </div>
           <p className="lead text-white/70 lg:col-span-5">{s.intro}</p>
         </div>
-        <UnitPlan s={s} locale={t.locale} sqft={t.units.sqft} layout={layout} forSale={forSale} reserved={reserved} sold={sold} asOf={asOf} />
+        <UnitPlan s={s} locale={t.locale} sqft={t.units.sqft} layout={layout} forSale={forSale} plans={plans} reserved={reserved} sold={sold} asOf={asOf} />
       </div>
     </section>
   );

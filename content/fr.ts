@@ -38,7 +38,7 @@ const fr = {
     eyebrow: "Plan du bâtiment",
     title: "Choisissez votre unité.",
     intro:
-      "Le bâtiment compte 24 unités, dos à dos sur un seul niveau. Les unités en vert sont à vendre, celles en orange sont réservées et celles en rouge sont vendues. Survolez ou touchez une unité pour la retrouver dans la liste.",
+      "Le bâtiment compte 24 unités, dos à dos sur un seul niveau. Les unités en vert sont à vendre, celles en orange sont réservées et celles en rouge sont vendues. Survolez ou touchez une unité pour voir son plan détaillé.",
     aria: "Plan schématique du bâtiment : 24 unités sur deux rangées. Unités à vendre : {list}. Unités réservées : {reserved}. Unités vendues : {sold}.",
     street: "Boulevard Industriel",
     length: "≈ 490 pi",
@@ -62,6 +62,11 @@ const fr = {
     status: "À vendre",
     request: "Demander le prix",
     requestAria: "Demander le prix de l'unité {unit}",
+    unitLabel: "Unité",
+    floorPlan: "Voir le plan (PDF)",
+    floorPlanShort: "Plan",
+    floorPlanAria: "Ouvrir le plan de l'unité {unit} (PDF, nouvel onglet)",
+    close: "Fermer",
   },
   why: {
     eyebrow: "Propriétaire plutôt que locataire",

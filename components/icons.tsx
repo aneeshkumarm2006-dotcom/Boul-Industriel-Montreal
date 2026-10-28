@@ -41,6 +41,23 @@ export function Expand({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
+export function Doc({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 16 16" aria-hidden className={className} {...base}>
+      <path d="M9.25 1.75H4.5c-.7 0-1.25.55-1.25 1.25v10c0 .7.55 1.25 1.25 1.25h7c.7 0 1.25-.55 1.25-1.25V5.25l-3.5-3.5Z" />
+      <path d="M9.25 1.75v3.5h3.5M5.75 8.5h4.5M5.75 11h3" />
+    </svg>
+  );
+}
+
+export function Close({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 16 16" aria-hidden className={className} {...base}>
+      <path d="m3.5 3.5 9 9M12.5 3.5l-9 9" />
+    </svg>
+  );
+}
+
 export function Check({ className = "h-4 w-4" }: { className?: string }) {
   return (
     <svg viewBox="0 0 16 16" aria-hidden className={className} {...base} strokeWidth={2.25}>
