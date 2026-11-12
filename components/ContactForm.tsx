@@ -10,6 +10,9 @@ type Intent = keyof Strings["intents"];
 type Errors = Partial<Record<"name" | "email" | "phone", string>>;
 type Status = "idle" | "sending" | "sent" | "mailto" | "error";
 
+// Same values in FR and EN so GTM triggers and reports don't split by language
+const GTM_INTENT: Record<Intent, string> = { prices: "get_pricing", visit: "book_visit", question: "ask_question" };
+
 const field =
   "mt-1.5 block w-full rounded-lg border border-line bg-white px-3.5 py-3 text-base text-ink outline-none transition-[border-color,box-shadow] placeholder:text-steel/60 focus:border-teal focus:ring-3 focus:ring-teal/20 aria-[invalid=true]:border-red-700 aria-[invalid=true]:ring-red-700/15";
 
@@ -98,7 +101,19 @@ export default function ContactForm({
           body: JSON.stringify(payload),
         });
         const out = await res.json().catch(() => ({ ok: res.ok }));
-        setStatus(res.ok && out.ok !== false ? "sent" : "error");
+        const ok = res.ok && out.ok !== false;
+        // GTM conversion: only once the server has accepted a valid request, never on the button click
+        if (ok) {
+          const w = window as typeof window & { dataLayer?: Record<string, unknown>[] };
+          w.dataLayer = w.dataLayer || [];
+          w.dataLayer.push({
+            event: "lead_form_success",
+            unit: String(data.get("unit") || "any"),
+            intent: GTM_INTENT[intent],
+            language: lang,
+          });
+        }
+        setStatus(ok ? "sent" : "error");
       } catch {
         setStatus("error");
       }
